@@ -4,7 +4,7 @@ namespace MilkaHR.Application.Common.Interfaces;
 
 public interface IApplicationDbContext
 {
-    DbSet<Candidate> Candidates { get; }
+    DbSet<Domain.Entities.Candidate> Candidates { get; }
 
     DbSet<Cv> Cvs { get; }
     
