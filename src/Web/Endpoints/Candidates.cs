@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Extensions.DependencyInjection.Candidate.Queries.GetCandidateById;
 using MilkaHR.Application.Candidate.Commands.AddCandidate;
 using MilkaHR.Application.Candidate.Commands.RemoveCandidate;
@@ -30,12 +31,13 @@ public class Candidates : EndpointGroupBase
 
     public async Task<IResult> RemoveCandidate(ISender sender, int id)
     {
-        await sender.Send(new RemoveCandidateCommand(id));
-        return Results.NoContent();
+        var isDeleted = await sender.Send(new RemoveCandidateCommand(id));
+        return !isDeleted ? Results.NotFound() : Results.NoContent();
     }
 
-    public Task<MilkaHR.Domain.Entities.Candidate> GetCandidate(ISender sender, int id)
+    public async Task<IResult> GetCandidate(ISender sender, int id)
     {
-        return sender.Send(new GetCandidateById(id));
+        var candidate = await sender.Send(new GetCandidateById(id));
+        return candidate is null ? Results.NotFound() : Results.Ok(candidate);
     }
 }
