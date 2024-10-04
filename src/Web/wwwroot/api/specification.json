@@ -5,5 +5,321 @@
     "title": "MilkaHR API",
     "version": "1.0.0"
   },
-  "components": {}
+  "paths": {
+    "/api/Recruiter": {
+      "post": {
+        "tags": [
+          "Recruiter"
+        ],
+        "operationId": "CreateRecruiter",
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRecruiterCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Recruiter"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Recruiter": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseAuditableEntity"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "lastName": {
+                "type": "string"
+              },
+              "middleName": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string"
+              },
+              "phone": {
+                "type": "string"
+              },
+              "workExperience": {
+                "type": "integer",
+                "format": "byte"
+              },
+              "jobs": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Job"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "Job": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseAuditableEntity"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "title": {
+                "type": "string"
+              },
+              "priority": {
+                "$ref": "#/components/schemas/PriorityLevel"
+              },
+              "status": {
+                "$ref": "#/components/schemas/JobStatus"
+              },
+              "publicationDate": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "closingDate": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true
+              },
+              "recruiter": {
+                "$ref": "#/components/schemas/Recruiter"
+              },
+              "candidates": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Candidate"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "PriorityLevel": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "VeryLow",
+          "Low",
+          "Medium",
+          "High",
+          "VeryHigh"
+        ],
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "JobStatus": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "Closed",
+          "Postponed",
+          "Opened"
+        ],
+        "enum": [
+          0,
+          1,
+          2
+        ]
+      },
+      "Candidate": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseAuditableEntity"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "lastName": {
+                "type": "string"
+              },
+              "middleName": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string"
+              },
+              "phone": {
+                "type": "string"
+              },
+              "address": {
+                "type": "string"
+              },
+              "salaryPreference": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "status": {
+                "$ref": "#/components/schemas/CandidateStatus"
+              },
+              "cvs": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Cv"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "CandidateStatus": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "CvCreated",
+          "CvApproved",
+          "InterviewScheduled",
+          "InterviewCompleted",
+          "Hired",
+          "Denied"
+        ],
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "Cv": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseAuditableEntity"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "candidate": {
+                "$ref": "#/components/schemas/Candidate"
+              },
+              "jobs": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Job"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "BaseAuditableEntity": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseEntity"
+          },
+          {
+            "type": "object",
+            "x-abstract": true,
+            "additionalProperties": false,
+            "properties": {
+              "created": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "createdBy": {
+                "type": "string",
+                "nullable": true
+              },
+              "lastModified": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "lastModifiedBy": {
+                "type": "string",
+                "nullable": true
+              }
+            }
+          }
+        ]
+      },
+      "BaseEntity": {
+        "type": "object",
+        "x-abstract": true,
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "domainEvents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BaseEvent"
+            }
+          }
+        }
+      },
+      "BaseEvent": {
+        "type": "object",
+        "x-abstract": true,
+        "additionalProperties": false
+      },
+      "CreateRecruiterCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "middleName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "workExperience": {
+            "type": "integer",
+            "format": "byte"
+          },
+          "jobs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Job"
+            }
+          }
+        }
+      }
+    }
+  }
 }

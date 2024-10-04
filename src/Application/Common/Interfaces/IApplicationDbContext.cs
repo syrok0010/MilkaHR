@@ -10,7 +10,7 @@ public interface IApplicationDbContext
     
     DbSet<Job> Jobs { get; }
     
-    DbSet<Recruiter> Recruiters { get; }
+    DbSet<Domain.Entities.Recruiter> Recruiters { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }
