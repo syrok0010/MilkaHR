@@ -430,16 +430,18 @@
         "type": "integer",
         "description": "",
         "x-enumNames": [
-          "None",
+          "VeryLow",
           "Low",
           "Medium",
-          "High"
+          "High",
+          "VeryHigh"
         ],
         "enum": [
           0,
           1,
           2,
-          3
+          3,
+          4
         ]
       },
       "TodosVm": {
