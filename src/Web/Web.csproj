@@ -6,6 +6,7 @@
     <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
     <RootNamespace>MilkaHR.Web</RootNamespace>
     <AssemblyName>MilkaHR.Web</AssemblyName>
+    <UserSecretsId>d191bee5-b99b-48b5-a0cd-f5d1f23778b9</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,6 +24,10 @@
     <PackageReference Include="Microsoft.AspNetCore.SpaProxy">
       <!-- The SPA Proxy is only used at development time -->
       <Publish>false</Publish>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" />
     <PackageReference Include="NSwag.AspNetCore" />
