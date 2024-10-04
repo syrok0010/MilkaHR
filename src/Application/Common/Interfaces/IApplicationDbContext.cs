@@ -4,9 +4,13 @@ namespace MilkaHR.Application.Common.Interfaces;
 
 public interface IApplicationDbContext
 {
-    DbSet<TodoList> TodoLists { get; }
+    DbSet<Candidate> Candidates { get; }
 
-    DbSet<TodoItem> TodoItems { get; }
+    DbSet<Cv> Cvs { get; }
+    
+    DbSet<Job> Jobs { get; }
+    
+    DbSet<Recruiter> Recruiters { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

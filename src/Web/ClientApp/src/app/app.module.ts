@@ -12,6 +12,8 @@ import { AppComponent } from './app.component';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+
 
 @NgModule({
   declarations: [
@@ -21,12 +23,14 @@ import { SidebarComponent } from './sidebar/sidebar.component';
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
-    RouterModule.forRoot([
+    RouterModule.forRoot([{
+      path: '', component: DashboardComponent
+    }
     ]),
     BrowserAnimationsModule,
     ModalModule.forRoot(),
     TuiRoot,
-    SidebarComponent
+    SidebarComponent,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true },
