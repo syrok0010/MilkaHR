@@ -85,6 +85,228 @@ export class RecruiterClient implements IRecruiterClient {
     }
 }
 
+export interface ICandidatesClient {
+    addCandidate(command: AddCandidateCommand): Observable<Candidate>;
+    updateCandidate(id: number, command: UpdateCandidateByIdCommand): Observable<void>;
+    removeCandidate(id: number): Observable<void>;
+    getCandidate(id: number): Observable<Candidate>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class CandidatesClient implements ICandidatesClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    addCandidate(command: AddCandidateCommand): Observable<Candidate> {
+        let url_ = this.baseUrl + "/api/Candidates";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddCandidate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddCandidate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<Candidate>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<Candidate>;
+        }));
+    }
+
+    protected processAddCandidate(response: HttpResponseBase): Observable<Candidate> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = Candidate.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    updateCandidate(id: number, command: UpdateCandidateByIdCommand): Observable<void> {
+        let url_ = this.baseUrl + "/api/Candidates/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdateCandidate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateCandidate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processUpdateCandidate(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    removeCandidate(id: number): Observable<void> {
+        let url_ = this.baseUrl + "/api/Candidates/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRemoveCandidate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRemoveCandidate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processRemoveCandidate(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    getCandidate(id: number): Observable<Candidate> {
+        let url_ = this.baseUrl + "/api/Candidates/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetCandidate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetCandidate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<Candidate>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<Candidate>;
+        }));
+    }
+
+    protected processGetCandidate(response: HttpResponseBase): Observable<Candidate> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = Candidate.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
 export abstract class BaseEntity implements IBaseEntity {
     id?: number;
     domainEvents?: BaseEvent[];
@@ -539,6 +761,134 @@ export interface ICreateRecruiterCommand {
     phone?: string;
     workExperience?: number;
     jobs?: Job[];
+}
+
+export class AddCandidateCommand implements IAddCandidateCommand {
+    name?: string;
+    lastName?: string;
+    middleName?: string;
+    email?: string;
+    phone?: string;
+    address?: string;
+    salaryPreference?: number;
+
+    constructor(data?: IAddCandidateCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.lastName = _data["lastName"];
+            this.middleName = _data["middleName"];
+            this.email = _data["email"];
+            this.phone = _data["phone"];
+            this.address = _data["address"];
+            this.salaryPreference = _data["salaryPreference"];
+        }
+    }
+
+    static fromJS(data: any): AddCandidateCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new AddCandidateCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["lastName"] = this.lastName;
+        data["middleName"] = this.middleName;
+        data["email"] = this.email;
+        data["phone"] = this.phone;
+        data["address"] = this.address;
+        data["salaryPreference"] = this.salaryPreference;
+        return data;
+    }
+}
+
+export interface IAddCandidateCommand {
+    name?: string;
+    lastName?: string;
+    middleName?: string;
+    email?: string;
+    phone?: string;
+    address?: string;
+    salaryPreference?: number;
+}
+
+export class UpdateCandidateByIdCommand implements IUpdateCandidateByIdCommand {
+    id?: number;
+    name?: string;
+    lastName?: string;
+    middleName?: string;
+    email?: string;
+    phone?: string;
+    address?: string;
+    salaryPreference?: number;
+    status?: CandidateStatus;
+
+    constructor(data?: IUpdateCandidateByIdCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.lastName = _data["lastName"];
+            this.middleName = _data["middleName"];
+            this.email = _data["email"];
+            this.phone = _data["phone"];
+            this.address = _data["address"];
+            this.salaryPreference = _data["salaryPreference"];
+            this.status = _data["status"];
+        }
+    }
+
+    static fromJS(data: any): UpdateCandidateByIdCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateCandidateByIdCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["lastName"] = this.lastName;
+        data["middleName"] = this.middleName;
+        data["email"] = this.email;
+        data["phone"] = this.phone;
+        data["address"] = this.address;
+        data["salaryPreference"] = this.salaryPreference;
+        data["status"] = this.status;
+        return data;
+    }
+}
+
+export interface IUpdateCandidateByIdCommand {
+    id?: number;
+    name?: string;
+    lastName?: string;
+    middleName?: string;
+    email?: string;
+    phone?: string;
+    address?: string;
+    salaryPreference?: number;
+    status?: CandidateStatus;
 }
 
 export class SwaggerException extends Error {
