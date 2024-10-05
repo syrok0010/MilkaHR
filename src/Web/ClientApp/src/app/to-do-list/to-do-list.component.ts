@@ -1,17 +1,13 @@
 import { AsyncPipe, NgFor } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { TuiCardLarge, TuiHeader } from '@taiga-ui/layout';
 import { TuiButton, TuiSurface, TuiTitle } from '@taiga-ui/core';
 import { TuiInputModule, TuiTextfieldControllerModule } from '@taiga-ui/legacy';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { TuiCheckbox } from '@taiga-ui/kit';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
-
-interface Task {
-  title: string;
-  completed: boolean;
-}
+import { CreateNoteCommand, Note, RecruiterClient } from '../web-api-client';
 
 @Component({
   selector: 'app-to-do-list',
@@ -31,16 +27,13 @@ interface Task {
   templateUrl: './to-do-list.component.html',
   standalone: true,
 })
-export class ToDoListComponent {
+export class ToDoListComponent implements OnInit {
   newTask: string = '';
-  tasks = new BehaviorSubject<Task[]>([
-    { title: 'Finish report', completed: false },
-    { title: 'Grocery shopping', completed: false },
-    { title: 'Call mom', completed: true },
-  ]);
+  tasks = new BehaviorSubject<Note[]>([]);
   addTaskControl = new FormControl<string>('');
-
   allTasksCompleted$ = this.tasks.pipe(map((v) => v.every((t) => t.completed)));
+
+  apiClient = inject(RecruiterClient);
 
   toggleAllTaskCompletion() {
     const allCompleted = this.tasks.value.every((t) => t.completed);
@@ -52,24 +45,31 @@ export class ToDoListComponent {
     ]);
   }
 
-  onInputChange(event: Event) {
-    this.newTask = (event.target as HTMLInputElement).value;
-  }
-  onTaskTitleChange(index: number, event: Event) {
-    this.tasks[index].title = (event.target as HTMLInputElement).value;
+  async ngOnInit() {
+    this.tasks.next(await firstValueFrom(this.apiClient.getAllNotes()));
   }
 
-  addTask() {
-    if (this.addTaskControl.value.trim() !== '') {
-      this.tasks.next([
-        ...this.tasks.value,
-        { title: this.addTaskControl.value, completed: false },
-      ]);
-      this.addTaskControl.reset('');
+  async addTask() {
+    if (this.addTaskControl.value.trim() === '') {
+      return;
     }
+
+    const text = this.addTaskControl.value;
+    const result = await firstValueFrom(
+      this.apiClient.createNote(
+        new CreateNoteCommand({
+          text,
+        }),
+      ),
+    );
+    this.tasks.next([...this.tasks.value, result]);
+    this.addTaskControl.reset('');
   }
 
-  toggleTaskCompletion(index: number) {
+  async toggleTaskCompletion(index: number) {
+    await firstValueFrom(
+      this.apiClient.completeNote(this.tasks.value[index].id),
+    );
     this.tasks.next(
       this.tasks.value.map((e, i) => {
         if (i == index) e.completed = !e.completed;
@@ -78,10 +78,19 @@ export class ToDoListComponent {
     );
   }
 
-  removeTask(index: number) {
+  async removeTask(index: number) {
+    await firstValueFrom(this.apiClient.deleteNote(this.tasks.value[index].id));
     this.tasks.next([...this.tasks.value.filter((e, i) => i !== index)]);
   }
-  clearCompletedTasks() {
-    this.tasks.next([...this.tasks.value.filter((e) => !e.completed)]);
+  async clearCompletedTasks() {
+    const toDelete = [];
+    for (let i = 0; i < this.tasks.value.length; i++) {
+      const element = this.tasks.value[i];
+      if (element.completed) toDelete.push(i);
+    }
+
+    for (const toDeleteElement of toDelete) {
+      await this.removeTask(toDeleteElement);
+    }
   }
 }
