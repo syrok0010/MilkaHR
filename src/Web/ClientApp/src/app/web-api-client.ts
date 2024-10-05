@@ -512,6 +512,7 @@ export interface IRecruiterClient {
     getAllRecruiters(): Observable<Recruiter[]>;
     setInterview(command: SetInterviewCommand): Observable<Interview>;
     setCandidateStatus(processingId: number, command: SetCandidateStatusCommand): Observable<void>;
+    getApiRecruiterInterviews(): Observable<Interview[]>;
 }
 
 @Injectable({
@@ -873,6 +874,61 @@ export class RecruiterClient implements IRecruiterClient {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    getApiRecruiterInterviews(): Observable<Interview[]> {
+        let url_ = this.baseUrl + "/api/Recruiter/interviews";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetApiRecruiterInterviews(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetApiRecruiterInterviews(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<Interview[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<Interview[]>;
+        }));
+    }
+
+    protected processGetApiRecruiterInterviews(response: HttpResponseBase): Observable<Interview[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(Interview.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -1654,6 +1710,7 @@ export class UpdateRecruiterCommand implements IUpdateRecruiterCommand {
     phone?: string;
     workExperience?: number;
     jobs?: Job[];
+    interviews?: Interview[];
 
     constructor(data?: IUpdateRecruiterCommand) {
         if (data) {
@@ -1677,6 +1734,11 @@ export class UpdateRecruiterCommand implements IUpdateRecruiterCommand {
                 this.jobs = [] as any;
                 for (let item of _data["jobs"])
                     this.jobs!.push(Job.fromJS(item));
+            }
+            if (Array.isArray(_data["interviews"])) {
+                this.interviews = [] as any;
+                for (let item of _data["interviews"])
+                    this.interviews!.push(Interview.fromJS(item));
             }
         }
     }
@@ -1702,6 +1764,11 @@ export class UpdateRecruiterCommand implements IUpdateRecruiterCommand {
             for (let item of this.jobs)
                 data["jobs"].push(item.toJSON());
         }
+        if (Array.isArray(this.interviews)) {
+            data["interviews"] = [];
+            for (let item of this.interviews)
+                data["interviews"].push(item.toJSON());
+        }
         return data;
     }
 }
@@ -1715,6 +1782,7 @@ export interface IUpdateRecruiterCommand {
     phone?: string;
     workExperience?: number;
     jobs?: Job[];
+    interviews?: Interview[];
 }
 
 export class SetInterviewCommand implements ISetInterviewCommand {

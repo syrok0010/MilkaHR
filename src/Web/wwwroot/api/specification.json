@@ -419,6 +419,29 @@
           }
         }
       }
+    },
+    "/api/Recruiter/interviews": {
+      "get": {
+        "tags": [
+          "Recruiter"
+        ],
+        "operationId": "GetApiRecruiterInterviews",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Interview"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -882,6 +905,12 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Job"
+            }
+          },
+          "interviews": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Interview"
             }
           }
         }

@@ -19,6 +19,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplica
     public DbSet<Recruiter> Recruiters => Set<Recruiter>();
     public DbSet<CandidateJobProcessing> CandidateJobProcessings => Set<CandidateJobProcessing>();
     public DbSet<Interview> Interviews => Set<Interview>();
+    public DbSet<Note> Notes => Set<Note>();
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
