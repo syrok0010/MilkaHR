@@ -20,6 +20,7 @@ public class Recruiter : EndpointGroupBase
             .MapPut(SetCandidateStatus, "set-status/{processingId}")
             .MapDelete(DeleteNote, "note/{id}")
             .MapPost(CreateNote, "create-note")
+            .MapPut(CompleteNote, "complete-note")
             .MapGet("interviews", GetRecruiterInterviews).Produces<List<Interview>>();
     }
 
@@ -79,6 +80,12 @@ public class Recruiter : EndpointGroupBase
     private Task<Note> CreateNote(ISender sender, CreateNoteCommand command)
     {
         return sender.Send(command);
+    }
+    
+    private async Task<IResult> CompleteNote(ISender sender, int id)
+    {
+        var note = await sender.Send(new CompleteNoteCommand(id));
+        return note is false ? Results.NotFound() : Results.NoContent();
     }
 }
 
