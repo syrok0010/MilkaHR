@@ -22,7 +22,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     FormsModule,
     RouterModule.forRoot([
       {
-        path: '',/
+        path: '',
         component: DashboardComponent,
       },
     ]),
