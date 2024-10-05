@@ -12,12 +12,13 @@ import {
 import {TuiCardLarge, TuiHeader} from "@taiga-ui/layout";
 import {TuiSurface, TuiTitle} from "@taiga-ui/core";
 import { ToDoListComponent } from '../to-do-list/to-do-list.component';
+import { RelevantJobsRingChartComponent } from "../relevant-jobs-ring-chart/relevant-jobs-ring-chart.component";
 
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [DashboardSummaryComponent, JobByStatusTableComponent, JobsMonthBarChartComponent, TuiAxes, TuiCardLarge, TuiHeader, TuiLineChart, TuiSurface, TuiTitle, TuiBarChart,ToDoListComponent],
+  imports: [DashboardSummaryComponent, JobByStatusTableComponent, JobsMonthBarChartComponent, TuiAxes, TuiCardLarge, TuiHeader, TuiLineChart, TuiSurface, TuiTitle, TuiBarChart, ToDoListComponent, RelevantJobsRingChartComponent],
   templateUrl: './dashboard.component.html',
   styles: ``,
 })
