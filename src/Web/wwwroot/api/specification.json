@@ -6,6 +6,159 @@
     "version": "1.0.0"
   },
   "paths": {
+    "/api/Candidates": {
+      "post": {
+        "tags": [
+          "Candidates"
+        ],
+        "operationId": "AddCandidate",
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddCandidateCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Candidate"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Candidates/{id}": {
+      "put": {
+        "tags": [
+          "Candidates"
+        ],
+        "operationId": "UpdateCandidate",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCandidateByIdCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Candidates"
+        ],
+        "operationId": "RemoveCandidate",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Candidates"
+        ],
+        "operationId": "GetCandidate",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/Candidates/candidates/{jobId}": {
+      "get": {
+        "tags": [
+          "Candidates"
+        ],
+        "operationId": "AllCandidatesByStatusByJob",
+        "parameters": [
+          {
+            "name": "jobId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/Candidates/get-candidates-count-by-jobs": {
+      "get": {
+        "tags": [
+          "Candidates"
+        ],
+        "operationId": "GetCandidatesCountsByJobs",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/api/Jobs/monthly-stats": {
       "get": {
         "tags": [
@@ -165,151 +318,11 @@
           }
         }
       }
-    },
-    "/api/Candidates": {
-      "post": {
-        "tags": [
-          "Candidates"
-        ],
-        "operationId": "AddCandidate",
-        "requestBody": {
-          "x-name": "command",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddCandidateCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Candidate"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Candidates/{id}": {
-      "put": {
-        "tags": [
-          "Candidates"
-        ],
-        "operationId": "UpdateCandidate",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 1
-          }
-        ],
-        "requestBody": {
-          "x-name": "command",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateCandidateByIdCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 2
-        },
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Candidates"
-        ],
-        "operationId": "RemoveCandidate",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "Candidates"
-        ],
-        "operationId": "GetCandidate",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/api/Candidates/candidates/{jobId}": {
-      "get": {
-        "tags": [
-          "Candidates"
-        ],
-        "operationId": "AllCandidatesByStatusByJob",
-        "parameters": [
-          {
-            "name": "jobId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        }
-      }
     }
   },
   "components": {
     "schemas": {
-      "Recruiter": {
+      "Candidate": {
         "allOf": [
           {
             "$ref": "#/components/schemas/BaseAuditableEntity"
@@ -333,9 +346,40 @@
               "phone": {
                 "type": "string"
               },
-              "workExperience": {
+              "address": {
+                "type": "string"
+              },
+              "salaryPreference": {
                 "type": "integer",
-                "format": "byte"
+                "format": "int32"
+              },
+              "cvs": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Cv"
+                }
+              },
+              "jobStatuses": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/CandidateJobProcessing"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "Cv": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseAuditableEntity"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "candidate": {
+                "$ref": "#/components/schemas/Candidate"
               },
               "jobs": {
                 "type": "array",
@@ -419,49 +463,7 @@
           2
         ]
       },
-      "CandidateJobProcessing": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/BaseAuditableEntity"
-          },
-          {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "processingStatus": {
-                "$ref": "#/components/schemas/CandidateStatus"
-              },
-              "candidate": {
-                "$ref": "#/components/schemas/Candidate"
-              },
-              "job": {
-                "$ref": "#/components/schemas/Job"
-              }
-            }
-          }
-        ]
-      },
-      "CandidateStatus": {
-        "type": "integer",
-        "description": "",
-        "x-enumNames": [
-          "CvCreated",
-          "CvApproved",
-          "InterviewScheduled",
-          "InterviewCompleted",
-          "Hired",
-          "Denied"
-        ],
-        "enum": [
-          0,
-          1,
-          2,
-          3,
-          4,
-          5
-        ]
-      },
-      "Candidate": {
+      "Recruiter": {
         "allOf": [
           {
             "$ref": "#/components/schemas/BaseAuditableEntity"
@@ -485,40 +487,9 @@
               "phone": {
                 "type": "string"
               },
-              "address": {
-                "type": "string"
-              },
-              "salaryPreference": {
+              "workExperience": {
                 "type": "integer",
-                "format": "int32"
-              },
-              "cvs": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/Cv"
-                }
-              },
-              "jobStatuses": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/CandidateJobProcessing"
-                }
-              }
-            }
-          }
-        ]
-      },
-      "Cv": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/BaseAuditableEntity"
-          },
-          {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "candidate": {
-                "$ref": "#/components/schemas/Candidate"
+                "format": "byte"
               },
               "jobs": {
                 "type": "array",
@@ -582,71 +553,47 @@
         "x-abstract": true,
         "additionalProperties": false
       },
-      "CreateRecruiterCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "name": {
-            "type": "string"
+      "CandidateJobProcessing": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseAuditableEntity"
           },
-          "lastName": {
-            "type": "string"
-          },
-          "middleName": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "phone": {
-            "type": "string"
-          },
-          "workExperience": {
-            "type": "integer",
-            "format": "byte"
-          },
-          "jobs": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Job"
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "processingStatus": {
+                "$ref": "#/components/schemas/CandidateStatus"
+              },
+              "candidate": {
+                "$ref": "#/components/schemas/Candidate"
+              },
+              "job": {
+                "$ref": "#/components/schemas/Job"
+              }
             }
           }
-        }
+        ]
       },
-      "UpdateRecruiterCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "name": {
-            "type": "string"
-          },
-          "lastName": {
-            "type": "string"
-          },
-          "middleName": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "phone": {
-            "type": "string"
-          },
-          "workExperience": {
-            "type": "integer",
-            "format": "byte"
-          },
-          "jobs": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Job"
-            }
-          }
-        }
+      "CandidateStatus": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "CvCreated",
+          "CvApproved",
+          "InterviewScheduled",
+          "InterviewCompleted",
+          "Hired",
+          "Denied"
+        ],
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
       },
       "AddCandidateCommand": {
         "type": "object",
@@ -711,9 +658,72 @@
           "salaryPreference": {
             "type": "integer",
             "format": "int32"
+          }
+        }
+      },
+      "CreateRecruiterCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string"
           },
-          "status": {
-            "$ref": "#/components/schemas/CandidateStatus"
+          "lastName": {
+            "type": "string"
+          },
+          "middleName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "workExperience": {
+            "type": "integer",
+            "format": "byte"
+          },
+          "jobs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Job"
+            }
+          }
+        }
+      },
+      "UpdateRecruiterCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "middleName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "workExperience": {
+            "type": "integer",
+            "format": "byte"
+          },
+          "jobs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Job"
+            }
           }
         }
       }

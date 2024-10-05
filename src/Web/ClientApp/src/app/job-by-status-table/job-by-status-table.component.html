@@ -1,0 +1,72 @@
+<tui-scrollbar>
+  <cdk-virtual-scroll-viewport
+      #viewport
+      appendOnly
+      tuiScrollable
+      class="viewport tui-zero-scrollbar"
+      [itemSize]="45"
+      [maxBufferPx]="500"
+      [minBufferPx]="400"
+  >
+      <table
+          tuiTable
+          [columns]="columns"
+      >
+          <thead>
+              <tr tuiThGroup>
+                  <th
+                      *tuiHead="''"
+                      tuiTh
+                      [sticky]="true"
+                      [style.top.px]="-(viewport.getOffsetToRenderedContentStart() || 0)"
+                  >
+
+                  </th>
+                  <th
+                      *tuiHead="''"
+                      tuiTh
+                      [sticky]="true"
+                      [style.top.px]="-(viewport.getOffsetToRenderedContentStart() || 0)"
+                  >
+
+                  </th>
+                  <th
+                      *tuiHead="''"
+                      tuiTh
+                      [sorter]="ageSorter"
+                      [sticky]="true"
+                      [style.top.px]="-(viewport.getOffsetToRenderedContentStart() || 0)"
+                  >
+
+                  </th>
+              </tr>
+          </thead>
+          <tbody tuiTbody>
+              <tr
+                  *cdkVirtualFor="let item of data | tuiTableSort"
+                  tuiTr
+              >
+                  <td
+                      *tuiCell="''"
+                      tuiTd
+                  >
+                      {{ item.name }}
+                  </td>
+                  <td
+                      *tuiCell="''"
+                      tuiTd
+                  >
+                      {{ item.dob }}
+                  </td>
+                  <td
+                      *tuiCell="''"
+                      tuiTd
+                  >
+                      {{ getAge(item) }}
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+  </cdk-virtual-scroll-viewport>
+</tui-scrollbar>
+
