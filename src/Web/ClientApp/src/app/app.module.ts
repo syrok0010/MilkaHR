@@ -13,6 +13,7 @@ import { AuthorizeInterceptor } from 'src/api-authorization/authorize.intercepto
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { ApplicantsPageComponent } from './applicants-page/applicants-page.component';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,6 +25,10 @@ import { DashboardComponent } from './dashboard/dashboard.component';
       {
         path: '',
         component: DashboardComponent,
+      },
+      {
+        path: '/applicants',
+        component: ApplicantsPageComponent,
       },
     ]),
     BrowserAnimationsModule,
