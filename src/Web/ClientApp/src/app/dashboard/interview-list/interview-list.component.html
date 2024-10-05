@@ -4,20 +4,20 @@
   </header>
 
   <ul class="m-0 list-disc list-inside">
-    @for (interview of interviews(); track interview.id) {
-      <li>
-        <span class="font-black text-lg italic mr-2"
-          >{{ interview.timing | date: "short" }}.</span
-        >
-        Интервью с
-        <span class="font-black text-lg">
-          {{ interview.candidate.lastName }}
-          {{ interview.candidate.name }} {{ interview.candidate.middleName }}
-        </span>
-        на позицию
-        <span class="font-black text-lg">{{ interview.job.title }}</span>
-      </li>
-    }
+    <div *ngFor="let interview of interviews()" tuiCell="l">
+      <tui-avatar appearance="primary" src="@tui.star" />
+      <div tuiTitle class="ml-2.5">
+        {{ interview.candidate.lastName }}
+        {{ interview.candidate.name }} {{ interview.candidate.middleName }}
+        <div tuiSubtitle>
+          <span class=""
+            >{{ interview.timing | date: "short" }}.<br />{{
+              interview.job.title
+            }}</span
+          >
+        </div>
+      </div>
+    </div>
   </ul>
 
   <div></div>

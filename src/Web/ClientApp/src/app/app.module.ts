@@ -1,7 +1,7 @@
 import { NG_EVENT_PLUGINS } from '@taiga-ui/event-plugins';
 import { TuiRoot } from '@taiga-ui/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -12,6 +12,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ApplicantsPageComponent } from './applicants-page/applicants-page.component';
+import { JobsPageComponent } from './jobs-page/jobs-page.component';
 
 @NgModule({
   declarations: [AppComponent],
@@ -28,6 +29,10 @@ import { ApplicantsPageComponent } from './applicants-page/applicants-page.compo
         path: 'applicants',
         component: ApplicantsPageComponent,
       },
+      {
+        path: 'jobs',
+        component: JobsPageComponent,
+      }
     ]),
     BrowserAnimationsModule,
     TuiRoot,

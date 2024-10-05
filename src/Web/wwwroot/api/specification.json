@@ -121,19 +121,6 @@
         }
       }
     },
-    "/api/Candidates/candidates-by-status-by-job": {
-      "get": {
-        "tags": [
-          "Candidates"
-        ],
-        "operationId": "GetAllCandidatesByStatusByJob",
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        }
-      }
-    },
     "/api/Candidates/get-candidates-count-by-jobs": {
       "get": {
         "tags": [
@@ -143,6 +130,33 @@
         "responses": {
           "200": {
             "description": ""
+          }
+        }
+      }
+    },
+    "/api/Candidates/candidates-by-status-by-job": {
+      "get": {
+        "tags": [
+          "Candidates"
+        ],
+        "operationId": "GetApiCandidatesCandidatesByStatusByJob",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "format": "int32"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -539,6 +553,54 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Note"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Recruiter/complete-note": {
+      "put": {
+        "tags": [
+          "Recruiter"
+        ],
+        "operationId": "CompleteNote",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/Recruiter/get-notes": {
+      "get": {
+        "tags": [
+          "Recruiter"
+        ],
+        "operationId": "GetAllNotes",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Note"
+                  }
                 }
               }
             }
@@ -1161,6 +1223,9 @@
             "properties": {
               "text": {
                 "type": "string"
+              },
+              "completed": {
+                "type": "boolean"
               }
             }
           }

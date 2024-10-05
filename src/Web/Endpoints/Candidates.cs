@@ -12,8 +12,8 @@ public class Candidates : EndpointGroupBase
             .MapPut(UpdateCandidate, "{id}")
             .MapDelete(RemoveCandidate, "{id}")
             .MapGet(GetCandidate, "{id}")
-            .MapGet(GetAllCandidatesByStatusByJob, "candidates-by-status-by-job")
-            .MapGet(GetCandidatesCountsByJobs, "get-candidates-count-by-jobs");
+            .MapGet(GetCandidatesCountsByJobs, "get-candidates-count-by-jobs")
+            .MapGet("candidates-by-status-by-job", GetAllCandidatesByStatusByJob).Produces<Dictionary<string, List<int>>>();
     }
 
     private Task<Domain.Entities.Candidate> AddCandidate(ISender sender, AddCandidateCommand command)
