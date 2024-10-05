@@ -1,0 +1,10 @@
+<tui-axes
+    class="axes"
+    [axisXLabels]="xLabels$ | async"
+    [axisYLabels]="labelsY"
+>
+    <tui-bar-chart
+        [max]="100"
+        [value]="[[1,2,3,4,5]]"
+    />
+</tui-axes>
