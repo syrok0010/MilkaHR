@@ -28,7 +28,7 @@ public class UpdateCandidateByIdCommandHandler(IApplicationDbContext db) : IRequ
         candidate.Phone = request.Phone;
         candidate.Address = request.Address;
         candidate.SalaryPreference = request.SalaryPreference;
-        candidate.Status = request.Status;
+        //candidate.Status = request.Status;
         await db.SaveChangesAsync(cancellationToken);
     }
 }

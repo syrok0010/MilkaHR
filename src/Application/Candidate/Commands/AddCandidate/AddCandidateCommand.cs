@@ -1,4 +1,5 @@
 using MilkaHR.Application.Common.Interfaces;
+using MilkaHR.Domain.Entities;
 using MilkaHR.Domain.Enums;
 
 namespace MilkaHR.Application.Candidate.Commands.AddCandidate;
@@ -11,8 +12,8 @@ public record AddCandidateCommand
         string Email,
         string Phone,
         string Address,
-        int SalaryPreference
-    ) : IRequest<MilkaHR.Domain.Entities.Candidate>;
+        int SalaryPreference,
+        List<Job> Jobs) : IRequest<MilkaHR.Domain.Entities.Candidate>;
 
 public class AddCandidateCommandHandler(IApplicationDbContext db) : IRequestHandler<AddCandidateCommand, Domain.Entities.Candidate>
 {
@@ -27,9 +28,18 @@ public class AddCandidateCommandHandler(IApplicationDbContext db) : IRequestHand
             Phone = request.Phone,
             Address = request.Address,
             SalaryPreference = request.SalaryPreference,
-            Status = CandidateStatus.CvCreated,
+            JobStatuses = [],
             Cvs = []
         };
+        foreach (var job in request.Jobs)
+        {
+            var newCandidateJobProcessing = new Domain.Entities.CandidateJobProcessing
+            {
+                ProcessingStatus = CandidateStatus.CvCreated, Candidate = candidate, Job = job
+            };
+            //await db.CandidateJobProcessing.AddAsync(newCandidateJobProcessing, cancellationToken);
+            candidate.JobStatuses.Add(newCandidateJobProcessing);
+        }
         await db.Candidates.AddAsync(candidate, cancellationToken);
         await db.SaveChangesAsync(cancellationToken);
         var cvs = db.Cvs.Where(x => x.Candidate.Id == candidate.Id);

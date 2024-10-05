@@ -668,7 +668,7 @@ export class Job extends BaseAuditableEntity implements IJob {
     publicationDate?: Date;
     closingDate?: Date | undefined;
     recruiter?: Recruiter;
-    candidates?: Candidate[];
+    candidateStatuses?: CandidateJobProcessing[];
 
     constructor(data?: IJob) {
         super(data);
@@ -683,10 +683,10 @@ export class Job extends BaseAuditableEntity implements IJob {
             this.publicationDate = _data["publicationDate"] ? new Date(_data["publicationDate"].toString()) : <any>undefined;
             this.closingDate = _data["closingDate"] ? new Date(_data["closingDate"].toString()) : <any>undefined;
             this.recruiter = _data["recruiter"] ? Recruiter.fromJS(_data["recruiter"]) : <any>undefined;
-            if (Array.isArray(_data["candidates"])) {
-                this.candidates = [] as any;
-                for (let item of _data["candidates"])
-                    this.candidates!.push(Candidate.fromJS(item));
+            if (Array.isArray(_data["candidateStatuses"])) {
+                this.candidateStatuses = [] as any;
+                for (let item of _data["candidateStatuses"])
+                    this.candidateStatuses!.push(CandidateJobProcessing.fromJS(item));
             }
         }
     }
@@ -706,10 +706,10 @@ export class Job extends BaseAuditableEntity implements IJob {
         data["publicationDate"] = this.publicationDate ? this.publicationDate.toISOString() : <any>undefined;
         data["closingDate"] = this.closingDate ? this.closingDate.toISOString() : <any>undefined;
         data["recruiter"] = this.recruiter ? this.recruiter.toJSON() : <any>undefined;
-        if (Array.isArray(this.candidates)) {
-            data["candidates"] = [];
-            for (let item of this.candidates)
-                data["candidates"].push(item.toJSON());
+        if (Array.isArray(this.candidateStatuses)) {
+            data["candidateStatuses"] = [];
+            for (let item of this.candidateStatuses)
+                data["candidateStatuses"].push(item.toJSON());
         }
         super.toJSON(data);
         return data;
@@ -723,7 +723,7 @@ export interface IJob extends IBaseAuditableEntity {
     publicationDate?: Date;
     closingDate?: Date | undefined;
     recruiter?: Recruiter;
-    candidates?: Candidate[];
+    candidateStatuses?: CandidateJobProcessing[];
 }
 
 export enum PriorityLevel {
@@ -740,6 +740,56 @@ export enum JobStatus {
     Opened = 2,
 }
 
+export class CandidateJobProcessing extends BaseAuditableEntity implements ICandidateJobProcessing {
+    processingStatus?: CandidateStatus;
+    candidate?: Candidate;
+    job?: Job;
+
+    constructor(data?: ICandidateJobProcessing) {
+        super(data);
+    }
+
+    override init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.processingStatus = _data["processingStatus"];
+            this.candidate = _data["candidate"] ? Candidate.fromJS(_data["candidate"]) : <any>undefined;
+            this.job = _data["job"] ? Job.fromJS(_data["job"]) : <any>undefined;
+        }
+    }
+
+    static override fromJS(data: any): CandidateJobProcessing {
+        data = typeof data === 'object' ? data : {};
+        let result = new CandidateJobProcessing();
+        result.init(data);
+        return result;
+    }
+
+    override toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["processingStatus"] = this.processingStatus;
+        data["candidate"] = this.candidate ? this.candidate.toJSON() : <any>undefined;
+        data["job"] = this.job ? this.job.toJSON() : <any>undefined;
+        super.toJSON(data);
+        return data;
+    }
+}
+
+export interface ICandidateJobProcessing extends IBaseAuditableEntity {
+    processingStatus?: CandidateStatus;
+    candidate?: Candidate;
+    job?: Job;
+}
+
+export enum CandidateStatus {
+    CvCreated = 0,
+    CvApproved = 1,
+    InterviewScheduled = 2,
+    InterviewCompleted = 3,
+    Hired = 4,
+    Denied = 5,
+}
+
 export class Candidate extends BaseAuditableEntity implements ICandidate {
     name?: string;
     lastName?: string;
@@ -748,8 +798,8 @@ export class Candidate extends BaseAuditableEntity implements ICandidate {
     phone?: string;
     address?: string;
     salaryPreference?: number;
-    status?: CandidateStatus;
     cvs?: Cv[];
+    jobStatuses?: CandidateJobProcessing[];
 
     constructor(data?: ICandidate) {
         super(data);
@@ -765,11 +815,15 @@ export class Candidate extends BaseAuditableEntity implements ICandidate {
             this.phone = _data["phone"];
             this.address = _data["address"];
             this.salaryPreference = _data["salaryPreference"];
-            this.status = _data["status"];
             if (Array.isArray(_data["cvs"])) {
                 this.cvs = [] as any;
                 for (let item of _data["cvs"])
                     this.cvs!.push(Cv.fromJS(item));
+            }
+            if (Array.isArray(_data["jobStatuses"])) {
+                this.jobStatuses = [] as any;
+                for (let item of _data["jobStatuses"])
+                    this.jobStatuses!.push(CandidateJobProcessing.fromJS(item));
             }
         }
     }
@@ -790,11 +844,15 @@ export class Candidate extends BaseAuditableEntity implements ICandidate {
         data["phone"] = this.phone;
         data["address"] = this.address;
         data["salaryPreference"] = this.salaryPreference;
-        data["status"] = this.status;
         if (Array.isArray(this.cvs)) {
             data["cvs"] = [];
             for (let item of this.cvs)
                 data["cvs"].push(item.toJSON());
+        }
+        if (Array.isArray(this.jobStatuses)) {
+            data["jobStatuses"] = [];
+            for (let item of this.jobStatuses)
+                data["jobStatuses"].push(item.toJSON());
         }
         super.toJSON(data);
         return data;
@@ -809,17 +867,8 @@ export interface ICandidate extends IBaseAuditableEntity {
     phone?: string;
     address?: string;
     salaryPreference?: number;
-    status?: CandidateStatus;
     cvs?: Cv[];
-}
-
-export enum CandidateStatus {
-    CvCreated = 0,
-    CvApproved = 1,
-    InterviewScheduled = 2,
-    InterviewCompleted = 3,
-    Hired = 4,
-    Denied = 5,
+    jobStatuses?: CandidateJobProcessing[];
 }
 
 export class Cv extends BaseAuditableEntity implements ICv {
@@ -1043,6 +1092,7 @@ export class AddCandidateCommand implements IAddCandidateCommand {
     phone?: string;
     address?: string;
     salaryPreference?: number;
+    jobs?: Job[];
 
     constructor(data?: IAddCandidateCommand) {
         if (data) {
@@ -1062,6 +1112,11 @@ export class AddCandidateCommand implements IAddCandidateCommand {
             this.phone = _data["phone"];
             this.address = _data["address"];
             this.salaryPreference = _data["salaryPreference"];
+            if (Array.isArray(_data["jobs"])) {
+                this.jobs = [] as any;
+                for (let item of _data["jobs"])
+                    this.jobs!.push(Job.fromJS(item));
+            }
         }
     }
 
@@ -1081,6 +1136,11 @@ export class AddCandidateCommand implements IAddCandidateCommand {
         data["phone"] = this.phone;
         data["address"] = this.address;
         data["salaryPreference"] = this.salaryPreference;
+        if (Array.isArray(this.jobs)) {
+            data["jobs"] = [];
+            for (let item of this.jobs)
+                data["jobs"].push(item.toJSON());
+        }
         return data;
     }
 }
@@ -1093,6 +1153,7 @@ export interface IAddCandidateCommand {
     phone?: string;
     address?: string;
     salaryPreference?: number;
+    jobs?: Job[];
 }
 
 export class UpdateCandidateByIdCommand implements IUpdateCandidateByIdCommand {

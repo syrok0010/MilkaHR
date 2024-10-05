@@ -328,10 +328,10 @@
               "recruiter": {
                 "$ref": "#/components/schemas/Recruiter"
               },
-              "candidates": {
+              "candidateStatuses": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/Candidate"
+                  "$ref": "#/components/schemas/CandidateJobProcessing"
                 }
               }
             }
@@ -370,6 +370,48 @@
           2
         ]
       },
+      "CandidateJobProcessing": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseAuditableEntity"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "processingStatus": {
+                "$ref": "#/components/schemas/CandidateStatus"
+              },
+              "candidate": {
+                "$ref": "#/components/schemas/Candidate"
+              },
+              "job": {
+                "$ref": "#/components/schemas/Job"
+              }
+            }
+          }
+        ]
+      },
+      "CandidateStatus": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "CvCreated",
+          "CvApproved",
+          "InterviewScheduled",
+          "InterviewCompleted",
+          "Hired",
+          "Denied"
+        ],
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
       "Candidate": {
         "allOf": [
           {
@@ -401,37 +443,20 @@
                 "type": "integer",
                 "format": "int32"
               },
-              "status": {
-                "$ref": "#/components/schemas/CandidateStatus"
-              },
               "cvs": {
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/Cv"
                 }
+              },
+              "jobStatuses": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/CandidateJobProcessing"
+                }
               }
             }
           }
-        ]
-      },
-      "CandidateStatus": {
-        "type": "integer",
-        "description": "",
-        "x-enumNames": [
-          "CvCreated",
-          "CvApproved",
-          "InterviewScheduled",
-          "InterviewCompleted",
-          "Hired",
-          "Denied"
-        ],
-        "enum": [
-          0,
-          1,
-          2,
-          3,
-          4,
-          5
         ]
       },
       "Cv": {
@@ -599,6 +624,12 @@
           "salaryPreference": {
             "type": "integer",
             "format": "int32"
+          },
+          "jobs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Job"
+            }
           }
         }
       },
