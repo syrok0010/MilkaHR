@@ -425,10 +425,20 @@
         "tags": [
           "Recruiter"
         ],
-        "operationId": "GetRecruiterInterviews",
+        "operationId": "GetApiRecruiterInterviews",
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Interview"
+                  }
+                }
+              }
+            }
           }
         }
       }

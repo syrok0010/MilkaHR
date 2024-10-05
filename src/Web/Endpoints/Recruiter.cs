@@ -1,5 +1,4 @@
-﻿using MilkaHR.Application.Common.Models;
-using MilkaHR.Application.Recruiter.Commands;
+﻿using MilkaHR.Application.Recruiter.Commands;
 using MilkaHR.Application.Recruiter.Queries;
 using MilkaHR.Domain.Entities;
 
@@ -18,7 +17,7 @@ public class Recruiter : EndpointGroupBase
             .MapGet(GetRecruiterById, "{id}")
             .MapPost(SetInterview)
             .MapPut(SetCandidateStatus, "set-status/{processingId}")
-            .MapGet(GetRecruiterInterviews, "interviews");
+            .MapGet("interviews", GetRecruiterInterviews).Produces<List<Interview>>();
     }
 
     private Task<Domain.Entities.Recruiter> CreateRecruiter(ISender sender, CreateRecruiterCommand command)

@@ -512,7 +512,7 @@ export interface IRecruiterClient {
     getAllRecruiters(): Observable<Recruiter[]>;
     setInterview(command: SetInterviewCommand): Observable<Interview>;
     setCandidateStatus(processingId: number, command: SetCandidateStatusCommand): Observable<void>;
-    getRecruiterInterviews(): Observable<void>;
+    getApiRecruiterInterviews(): Observable<Interview[]>;
 }
 
 @Injectable({
@@ -883,7 +883,7 @@ export class RecruiterClient implements IRecruiterClient {
         return _observableOf(null as any);
     }
 
-    getRecruiterInterviews(): Observable<void> {
+    getApiRecruiterInterviews(): Observable<Interview[]> {
         let url_ = this.baseUrl + "/api/Recruiter/interviews";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -891,24 +891,25 @@ export class RecruiterClient implements IRecruiterClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
+                "Accept": "application/json"
             })
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetRecruiterInterviews(response_);
+            return this.processGetApiRecruiterInterviews(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetRecruiterInterviews(response_ as any);
+                    return this.processGetApiRecruiterInterviews(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
+                    return _observableThrow(e) as any as Observable<Interview[]>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<void>;
+                return _observableThrow(response_) as any as Observable<Interview[]>;
         }));
     }
 
-    protected processGetRecruiterInterviews(response: HttpResponseBase): Observable<void> {
+    protected processGetApiRecruiterInterviews(response: HttpResponseBase): Observable<Interview[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -917,7 +918,17 @@ export class RecruiterClient implements IRecruiterClient {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(Interview.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
