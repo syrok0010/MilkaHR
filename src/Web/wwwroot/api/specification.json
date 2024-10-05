@@ -502,6 +502,29 @@
         }
       }
     },
+    "/api/Recruiter/get-notes": {
+      "get": {
+        "tags": [
+          "Recruiter"
+        ],
+        "operationId": "GetAllNotes",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Note"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Recruiter/interviews": {
       "get": {
         "tags": [

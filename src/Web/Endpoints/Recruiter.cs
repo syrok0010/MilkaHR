@@ -1,4 +1,5 @@
 ﻿using MilkaHR.Application.Note;
+using MilkaHR.Application.Note.Queries;
 using MilkaHR.Application.Recruiter.Commands;
 using MilkaHR.Application.Recruiter.Queries;
 using MilkaHR.Domain.Entities;
@@ -21,6 +22,7 @@ public class Recruiter : EndpointGroupBase
             .MapDelete(DeleteNote, "note/{id}")
             .MapPost(CreateNote, "create-note")
             .MapPut(CompleteNote, "complete-note")
+            .MapGet(GetAllNotes, "get-notes")
             .MapGet("interviews", GetRecruiterInterviews).Produces<List<Interview>>();
     }
 
@@ -87,5 +89,11 @@ public class Recruiter : EndpointGroupBase
         var note = await sender.Send(new CompleteNoteCommand(id));
         return note is false ? Results.NotFound() : Results.NoContent();
     }
+    
+    private Task<IEnumerable<Note>> GetAllNotes(ISender sender, [AsParameters] GetAllNotesQuery query)
+    {
+        return sender.Send(query);
+    }
+
 }
 
