@@ -1,15 +1,18 @@
+import { TuiSurface } from '@taiga-ui/core';
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
 import { TuiRingChart } from '@taiga-ui/addon-charts';
 import { tuiSum } from '@taiga-ui/cdk';
 import { Observable } from 'rxjs';
+import {TuiCardLarge, TuiHeader} from "@taiga-ui/layout";
 import { JobsClient, PriorityLevel, StatisticByPriority } from '../web-api-client';
 import { toSignal } from '@angular/core/rxjs-interop';
+
 
 @Component({
   selector: 'app-relevant-jobs-ring-chart',
   standalone: true,
-  imports: [AsyncPipe, TuiRingChart],
+  imports: [AsyncPipe, TuiRingChart, TuiHeader, TuiCardLarge, TuiSurface],
   templateUrl: './relevant-jobs-ring-chart.component.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
