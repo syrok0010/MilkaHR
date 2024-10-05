@@ -396,6 +396,12 @@
                 "items": {
                   "$ref": "#/components/schemas/CandidateJobProcessing"
                 }
+              },
+              "interviews": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Interview"
+                }
               }
             }
           }
@@ -528,6 +534,35 @@
                 "items": {
                   "$ref": "#/components/schemas/Job"
                 }
+              },
+              "interviews": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Interview"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "Interview": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseAuditableEntity"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "timing": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "job": {
+                "$ref": "#/components/schemas/Job"
+              },
+              "candidate": {
+                "$ref": "#/components/schemas/Candidate"
               }
             }
           }

@@ -13,6 +13,8 @@ public interface IApplicationDbContext
     DbSet<Domain.Entities.Recruiter> Recruiters { get; }
     
     DbSet<CandidateJobProcessing> CandidateJobProcessings { get; }
+    
+    DbSet<Interview> Interviews { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

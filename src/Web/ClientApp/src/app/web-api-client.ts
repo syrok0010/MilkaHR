@@ -877,6 +877,7 @@ export class Candidate extends BaseAuditableEntity implements ICandidate {
     salaryPreference?: number;
     cvs?: Cv[];
     jobStatuses?: CandidateJobProcessing[];
+    interviews?: Interview[];
 
     constructor(data?: ICandidate) {
         super(data);
@@ -901,6 +902,11 @@ export class Candidate extends BaseAuditableEntity implements ICandidate {
                 this.jobStatuses = [] as any;
                 for (let item of _data["jobStatuses"])
                     this.jobStatuses!.push(CandidateJobProcessing.fromJS(item));
+            }
+            if (Array.isArray(_data["interviews"])) {
+                this.interviews = [] as any;
+                for (let item of _data["interviews"])
+                    this.interviews!.push(Interview.fromJS(item));
             }
         }
     }
@@ -931,6 +937,11 @@ export class Candidate extends BaseAuditableEntity implements ICandidate {
             for (let item of this.jobStatuses)
                 data["jobStatuses"].push(item.toJSON());
         }
+        if (Array.isArray(this.interviews)) {
+            data["interviews"] = [];
+            for (let item of this.interviews)
+                data["interviews"].push(item.toJSON());
+        }
         super.toJSON(data);
         return data;
     }
@@ -946,6 +957,7 @@ export interface ICandidate extends IBaseAuditableEntity {
     salaryPreference?: number;
     cvs?: Cv[];
     jobStatuses?: CandidateJobProcessing[];
+    interviews?: Interview[];
 }
 
 export class Cv extends BaseAuditableEntity implements ICv {
@@ -1080,6 +1092,7 @@ export class Recruiter extends BaseAuditableEntity implements IRecruiter {
     phone?: string;
     workExperience?: number;
     jobs?: Job[];
+    interviews?: Interview[];
 
     constructor(data?: IRecruiter) {
         super(data);
@@ -1098,6 +1111,11 @@ export class Recruiter extends BaseAuditableEntity implements IRecruiter {
                 this.jobs = [] as any;
                 for (let item of _data["jobs"])
                     this.jobs!.push(Job.fromJS(item));
+            }
+            if (Array.isArray(_data["interviews"])) {
+                this.interviews = [] as any;
+                for (let item of _data["interviews"])
+                    this.interviews!.push(Interview.fromJS(item));
             }
         }
     }
@@ -1122,6 +1140,11 @@ export class Recruiter extends BaseAuditableEntity implements IRecruiter {
             for (let item of this.jobs)
                 data["jobs"].push(item.toJSON());
         }
+        if (Array.isArray(this.interviews)) {
+            data["interviews"] = [];
+            for (let item of this.interviews)
+                data["interviews"].push(item.toJSON());
+        }
         super.toJSON(data);
         return data;
     }
@@ -1135,6 +1158,48 @@ export interface IRecruiter extends IBaseAuditableEntity {
     phone?: string;
     workExperience?: number;
     jobs?: Job[];
+    interviews?: Interview[];
+}
+
+export class Interview extends BaseAuditableEntity implements IInterview {
+    timing?: Date;
+    job?: Job;
+    candidate?: Candidate;
+
+    constructor(data?: IInterview) {
+        super(data);
+    }
+
+    override init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.timing = _data["timing"] ? new Date(_data["timing"].toString()) : <any>undefined;
+            this.job = _data["job"] ? Job.fromJS(_data["job"]) : <any>undefined;
+            this.candidate = _data["candidate"] ? Candidate.fromJS(_data["candidate"]) : <any>undefined;
+        }
+    }
+
+    static override fromJS(data: any): Interview {
+        data = typeof data === 'object' ? data : {};
+        let result = new Interview();
+        result.init(data);
+        return result;
+    }
+
+    override toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["timing"] = this.timing ? this.timing.toISOString() : <any>undefined;
+        data["job"] = this.job ? this.job.toJSON() : <any>undefined;
+        data["candidate"] = this.candidate ? this.candidate.toJSON() : <any>undefined;
+        super.toJSON(data);
+        return data;
+    }
+}
+
+export interface IInterview extends IBaseAuditableEntity {
+    timing?: Date;
+    job?: Job;
+    candidate?: Candidate;
 }
 
 export abstract class BaseEvent implements IBaseEvent {
