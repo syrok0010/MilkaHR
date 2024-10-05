@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { TuiCardLarge, TuiHeader } from '@taiga-ui/layout';
+import { TuiCardLarge, TuiCell, TuiHeader } from '@taiga-ui/layout';
 import { TuiRingChart } from '@taiga-ui/addon-charts';
 import { TuiSurface, TuiTitle } from '@taiga-ui/core';
 import {
@@ -8,8 +8,9 @@ import {
   Job,
   RecruiterClient,
 } from '../../web-api-client';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgForOf } from '@angular/common';
+import { TuiRepeatTimes } from '@taiga-ui/cdk';
+import { TuiAvatar } from '@taiga-ui/kit';
 
 @Component({
   selector: 'app-interview-list',
@@ -21,6 +22,10 @@ import { DatePipe } from '@angular/common';
     TuiSurface,
     TuiTitle,
     DatePipe,
+    TuiRepeatTimes,
+    TuiCell,
+    TuiAvatar,
+    NgForOf,
   ],
   templateUrl: './interview-list.component.html',
 })
