@@ -1,36 +1,52 @@
 <div tuiCardLarge tuiSurface="elevated">
   <header tuiHeader>
-    <h2 tuiTitle>Запланированные на сегодня и завтра собеседования</h2>
+    <h2 tuiTitle>Заметки и напоминания</h2>
   </header>
 
   <div class="p-4">
-    <div class="mb-4">
-      <input type="text" class="border rounded px-2 py-1 mr-2 focus:ring-2 focus:ring-blacj-500" (input)="onInputChange($event)" (keyup.enter)="addTask()" [value]="newTask">
-      <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-2 rounded" (click)="addTask()">Add</button>
-    </div>
-
-    <div class="mb-4">
-      <label class="mr-2">
-        <input type="checkbox" (change)="toggleAllTaskCompletion()" [checked]="allTasksCompleted" class="mr-1 focus:ring-2 focus:ring-black-500">
-        Все выполнено
-      </label>
+    <div class="mb-4 flex w-1/2 gap-8 items-center">
+      <tui-input [formControl]="addTaskControl" (keyup.enter)="addTask()"
+        >Текст напоминания</tui-input
+      >
+      <button class="py-1 px-2" tuiButton size="m" (click)="addTask()">
+        Add
+      </button>
     </div>
 
     <ul class="space-y-2">
-      <li *ngFor="let task of tasks; let i = index" class="flex items-center justify-between bg-white p-4 rounded shadow-sm hover:bg-gray-200 transition-colors duration-200">
-        <div class="flex items-center">
-          <input type="checkbox" (change)="toggleTaskCompletion(i)" [checked]="task.completed" class="mr-2 focus:ring-2 focus:ring-red-500">
+      <div
+        class="flex items-center p-2 rounded shadow-sm hover:bg-gray-200 transition-colors duration-200 gap-4"
+      >
+        <input
+          tuiCheckbox
+          type="checkbox"
+          (change)="toggleAllTaskCompletion()"
+          [checked]="allTasksCompleted$ | async"
+          class="focus:ring-2 focus:ring-black-500"
+        />
+        Все выполнено
+      </div>
+      <li
+        *ngFor="let task of tasks | async; let i = index"
+        class="flex items-center justify-between p-2 rounded shadow-sm hover:bg-gray-200 transition-colors duration-200"
+      >
+        <div class="flex items-center gap-4" (click)="toggleTaskCompletion(i)">
+          <input
+            tuiCheckbox
+            type="checkbox"
+            [checked]="task.completed"
+            class="focus:ring-2 focus:ring-red-500"
+          />
           <span [class.line-through]="task.completed">{{ task.title }}</span>
         </div>
         <div class="flex items-center">
-          <input type="text" class="border rounded px-2 py-1 mr-2" (input)="onTaskTitleChange(i, $event)" [value]="task.title">
-          <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded" (click)="removeTask(i)">Удалить</button>
+          <button tuiButton size="s" (click)="removeTask(i)">Удалить</button>
         </div>
       </li>
     </ul>
 
     <div class="mt-4">
-      <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-2 rounded" (click)="clearCompletedTasks()">
+      <button class="py-1 px-2" tuiButton (click)="clearCompletedTasks()">
         Очистить
       </button>
     </div>
