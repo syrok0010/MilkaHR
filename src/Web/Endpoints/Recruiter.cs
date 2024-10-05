@@ -9,7 +9,7 @@ public class Recruiter : EndpointGroupBase
     public override void Map(WebApplication app)
     {
         app.MapGroup(this)
-            .RequireAuthorization()
+            //.RequireAuthorization()
             .MapPost(CreateRecruiter, "create-recruiter")
             .MapPut(UpdateRecruiter, "{id}")
             .MapDelete(DeleteRecruiter, "{id}")
