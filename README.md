@@ -1,4 +1,4 @@
-﻿# MilkaHR
+# MilkaHR
 
 The project was generated using the [Clean.Architecture.Solution.Template](https://github.com/jasontaylordev/MilkaHR) version 8.0.6.
 
@@ -19,11 +19,11 @@ Navigate to https://localhost:5001. The application will automatically reload if
 
 ## Code Styles & Formatting
 
-The template includes [EditorConfig](https://editorconfig.org/) support to help maintain consistent coding styles for multiple developers working on the same project across various editors and IDEs. The **.editorconfig** file defines the coding styles applicable to this solution.
+The project includes [EditorConfig](https://editorconfig.org/) support to help maintain consistent coding styles for multiple developers working on the same project across various editors and IDEs. The **.editorconfig** file defines the coding styles applicable to this solution.
 
 ## Code Scaffolding
 
-The template includes support to scaffold new commands and queries.
+The project includes support to scaffold new commands and queries.
 
 Start in the `.\src\Application\` folder.
 
@@ -39,7 +39,7 @@ Create a new query:
 dotnet new ca-usecase -n GetTodos -fn TodoLists -ut query -rt TodosVm
 ```
 
-If you encounter the error *"No templates or subcommands found matching: 'ca-usecase'."*, install the template and try again:
+If you encounter the error *"No templates or subcommands found matching: 'ca-usecase'."*, install the project and try again:
 
 ```bash
 dotnet new install Clean.Architecture.Solution.Template::8.0.6
@@ -68,4 +68,4 @@ dotnet test
 ```
 
 ## Help
-To learn more about the template go to the [project website](https://github.com/jasontaylordev/CleanArchitecture). Here you can find additional guidance, request new features, report a bug, and discuss the template with other users.
+To learn more about the project go to the [project website](https://github.com/jasontaylordev/CleanArchitecture). Here you can find additional guidance, request new features, report a bug.
