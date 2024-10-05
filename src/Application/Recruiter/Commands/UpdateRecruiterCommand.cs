@@ -1,10 +1,9 @@
 ﻿using MilkaHR.Application.Common.Interfaces;
-using MilkaHR.Domain.Entities;
 
 namespace MilkaHR.Application.Recruiter.Commands;
 
 public record UpdateRecruiterCommand(int Id, string Name, string LastName, string MiddleName, string Email,
-    string Phone, byte WorkExperience, List<Job> Jobs) : IRequest<Domain.Entities.Recruiter>;
+    string Phone, byte WorkExperience, List<Domain.Entities.Job> Jobs) : IRequest<Domain.Entities.Recruiter>;
 
 public class UpdateRecruiterCommandHandler(IApplicationDbContext db)
     : IRequestHandler<UpdateRecruiterCommand, Domain.Entities.Recruiter>

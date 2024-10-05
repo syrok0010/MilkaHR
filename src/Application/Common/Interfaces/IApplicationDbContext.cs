@@ -8,7 +8,7 @@ public interface IApplicationDbContext
 
     DbSet<Cv> Cvs { get; }
     
-    DbSet<Job> Jobs { get; }
+    DbSet<Domain.Entities.Job> Jobs { get; }
     
     DbSet<Domain.Entities.Recruiter> Recruiters { get; }
 

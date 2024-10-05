@@ -1,10 +1,9 @@
 using MilkaHR.Application.Common.Interfaces;
-using MilkaHR.Domain.Entities;
 
 namespace MilkaHR.Application.Recruiter.Commands;
 
 public record CreateRecruiterCommand(string Name, string LastName, string MiddleName, string Email,
-    string Phone, byte WorkExperience, List<Job> Jobs) : IRequest<Domain.Entities.Recruiter>;
+    string Phone, byte WorkExperience, List<Domain.Entities.Job> Jobs) : IRequest<Domain.Entities.Recruiter>;
 
 public class CreateRecruiterCommandHandler(IApplicationDbContext db)
     : IRequestHandler<CreateRecruiterCommand, Domain.Entities.Recruiter>
@@ -21,7 +20,7 @@ public class CreateRecruiterCommandHandler(IApplicationDbContext db)
             Email = request.Email,
             Phone = request.Phone,
             WorkExperience = request.WorkExperience,
-            Jobs = new List<Job>()
+            Jobs = []
         };
         foreach (var job in request.Jobs)
         {
