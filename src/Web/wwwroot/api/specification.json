@@ -121,24 +121,25 @@
         }
       }
     },
-    "/api/Candidates/candidates/{jobId}": {
+    "/api/Candidates/candidates": {
       "get": {
         "tags": [
           "Candidates"
         ],
-        "operationId": "AllCandidatesByStatusByJob",
-        "parameters": [
-          {
-            "name": "jobId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 1
+        "operationId": "GetAllCandidatesByStatusByJob",
+        "responses": {
+          "200": {
+            "description": ""
           }
+        }
+      }
+    },
+    "/api/Candidates/get-candidates-count-by-jobs": {
+      "get": {
+        "tags": [
+          "Candidates"
         ],
+        "operationId": "GetCandidatesCountsByJobs",
         "responses": {
           "200": {
             "description": ""

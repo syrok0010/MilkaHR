@@ -20,7 +20,8 @@ export interface ICandidatesClient {
     updateCandidate(id: number, command: UpdateCandidateByIdCommand): Observable<void>;
     removeCandidate(id: number): Observable<void>;
     getCandidate(id: number): Observable<void>;
-    allCandidatesByStatusByJob(jobId: number): Observable<void>;
+    getAllCandidatesByStatusByJob(): Observable<void>;
+    getCandidatesCountsByJobs(): Observable<void>;
 }
 
 @Injectable({
@@ -233,11 +234,8 @@ export class CandidatesClient implements ICandidatesClient {
         return _observableOf(null as any);
     }
 
-    allCandidatesByStatusByJob(jobId: number): Observable<void> {
-        let url_ = this.baseUrl + "/api/Candidates/candidates/{jobId}";
-        if (jobId === undefined || jobId === null)
-            throw new Error("The parameter 'jobId' must be defined.");
-        url_ = url_.replace("{jobId}", encodeURIComponent("" + jobId));
+    getAllCandidatesByStatusByJob(): Observable<void> {
+        let url_ = this.baseUrl + "/api/Candidates/candidates";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -248,11 +246,11 @@ export class CandidatesClient implements ICandidatesClient {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processAllCandidatesByStatusByJob(response_);
+            return this.processGetAllCandidatesByStatusByJob(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processAllCandidatesByStatusByJob(response_ as any);
+                    return this.processGetAllCandidatesByStatusByJob(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<void>;
                 }
@@ -261,7 +259,51 @@ export class CandidatesClient implements ICandidatesClient {
         }));
     }
 
-    protected processAllCandidatesByStatusByJob(response: HttpResponseBase): Observable<void> {
+    protected processGetAllCandidatesByStatusByJob(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    getCandidatesCountsByJobs(): Observable<void> {
+        let url_ = this.baseUrl + "/api/Candidates/get-candidates-count-by-jobs";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetCandidatesCountsByJobs(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetCandidatesCountsByJobs(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processGetCandidatesCountsByJobs(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
