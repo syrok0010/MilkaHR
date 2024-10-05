@@ -1,11 +1,10 @@
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.Extensions.DependencyInjection.Candidate.Commands.GetAllCandidatesByStatusByJob;
-using Microsoft.Extensions.DependencyInjection.Candidate.Queries.GetCandidateById;
 using MilkaHR.Application.Candidate.Commands.AddCandidate;
+using MilkaHR.Application.Candidate.Commands.GetAllCandidatesByStatusByJob;
 using MilkaHR.Application.Candidate.Commands.RemoveCandidate;
 using MilkaHR.Application.Candidate.Commands.UpdateCandidateById;
+using MilkaHR.Application.Candidate.Queries.GetCandidateById;
 
-namespace Microsoft.Extensions.DependencyInjection.Endpoints;
+namespace MilkaHR.Web.Endpoints;
 
 public class Candidates : EndpointGroupBase
 {

@@ -1,7 +1,8 @@
 ﻿using System.Reflection;
+using Microsoft.Extensions.DependencyInjection;
 using MilkaHR.Application.Common.Behaviours;
 
-namespace Microsoft.Extensions.DependencyInjection;
+namespace MilkaHR.Application;
 
 public static class DependencyInjection
 {

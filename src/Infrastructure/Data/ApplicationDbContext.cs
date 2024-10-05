@@ -17,6 +17,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplica
     public DbSet<Cv> Cvs => Set<Cv>();
     public DbSet<Job> Jobs => Set<Job>();
     public DbSet<Recruiter> Recruiters => Set<Recruiter>();
+    public DbSet<CandidateJobProcessing> CandidateJobProcessings => Set<CandidateJobProcessing>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

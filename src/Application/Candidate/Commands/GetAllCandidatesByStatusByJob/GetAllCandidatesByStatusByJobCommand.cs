@@ -1,7 +1,6 @@
 using MilkaHR.Application.Common.Interfaces;
-using MilkaHR.Domain.Enums;
 
-namespace Microsoft.Extensions.DependencyInjection.Candidate.Commands.GetAllCandidatesByStatusByJob;
+namespace MilkaHR.Application.Candidate.Commands.GetAllCandidatesByStatusByJob;
 
 public record GetAllCandidatesByStatusByJob(int JobId) : IRequest<List<Statistics>>;
 

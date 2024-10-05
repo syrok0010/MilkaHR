@@ -1,4 +1,4 @@
-namespace Microsoft.Extensions.DependencyInjection.Candidate.Commands.GetAllCandidatesByStatusByJob;
+namespace MilkaHR.Application.Candidate.Commands.GetAllCandidatesByStatusByJob;
 
 public class Statistics
 {

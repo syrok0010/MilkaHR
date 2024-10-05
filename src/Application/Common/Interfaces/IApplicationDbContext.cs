@@ -11,6 +11,8 @@ public interface IApplicationDbContext
     DbSet<Domain.Entities.Job> Jobs { get; }
     
     DbSet<Domain.Entities.Recruiter> Recruiters { get; }
+    
+    DbSet<CandidateJobProcessing> CandidateJobProcessings { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

@@ -1,6 +1,6 @@
 using MilkaHR.Application.Common.Interfaces;
 
-namespace Microsoft.Extensions.DependencyInjection.Candidate.Queries.GetCandidateById;
+namespace MilkaHR.Application.Candidate.Queries.GetCandidateById;
 
 public record GetCandidateById(int Id) : IRequest<MilkaHR.Domain.Entities.Candidate?>;
 

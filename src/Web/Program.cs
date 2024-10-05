@@ -1,3 +1,4 @@
+using MilkaHR.Application;
 using MilkaHR.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);

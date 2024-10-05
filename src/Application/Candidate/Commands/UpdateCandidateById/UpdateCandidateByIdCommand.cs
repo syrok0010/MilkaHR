@@ -12,8 +12,7 @@ public record UpdateCandidateByIdCommand
     string Email,
     string Phone,
     string Address,
-    int SalaryPreference,
-    CandidateStatus Status
+    int SalaryPreference
 ) : IRequest;
 
 public class UpdateCandidateByIdCommandHandler(IApplicationDbContext db) : IRequestHandler<UpdateCandidateByIdCommand>
@@ -28,7 +27,6 @@ public class UpdateCandidateByIdCommandHandler(IApplicationDbContext db) : IRequ
         candidate.Phone = request.Phone;
         candidate.Address = request.Address;
         candidate.SalaryPreference = request.SalaryPreference;
-        //candidate.Status = request.Status;
         await db.SaveChangesAsync(cancellationToken);
     }
 }
