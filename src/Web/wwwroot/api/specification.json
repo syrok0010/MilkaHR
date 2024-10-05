@@ -420,6 +420,88 @@
         }
       }
     },
+    "/api/Recruiter/note/{id}": {
+      "delete": {
+        "tags": [
+          "Recruiter"
+        ],
+        "operationId": "DeleteNote",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/Recruiter/create-note": {
+      "post": {
+        "tags": [
+          "Recruiter"
+        ],
+        "operationId": "CreateNote",
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateNoteCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Note"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Recruiter/complete-note": {
+      "put": {
+        "tags": [
+          "Recruiter"
+        ],
+        "operationId": "CompleteNote",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/api/Recruiter/interviews": {
       "get": {
         "tags": [
@@ -943,6 +1025,34 @@
           },
           "newStatus": {
             "$ref": "#/components/schemas/CandidateStatus"
+          }
+        }
+      },
+      "Note": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseAuditableEntity"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "completed": {
+                "type": "boolean"
+              }
+            }
+          }
+        ]
+      },
+      "CreateNoteCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "text": {
+            "type": "string"
           }
         }
       }

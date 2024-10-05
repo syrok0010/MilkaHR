@@ -1,0 +1,24 @@
+<div tuiCardLarge tuiSurface="elevated" class="flex h-full">
+  <header tuiHeader>
+    <h2 tuiTitle>Предстоящие мероприятия</h2>
+  </header>
+
+  <ul class="m-0 list-disc list-inside">
+    @for (interview of interviews(); track interview.id) {
+      <li>
+        <span class="font-black text-lg italic mr-2"
+          >{{ interview.timing | date: "short" }}.</span
+        >
+        Интервью с
+        <span class="font-black text-lg">
+          {{ interview.candidate.lastName }}
+          {{ interview.candidate.name }} {{ interview.candidate.middleName }}
+        </span>
+        на позицию
+        <span class="font-black text-lg">{{ interview.job.title }}</span>
+      </li>
+    }
+  </ul>
+
+  <div></div>
+</div>

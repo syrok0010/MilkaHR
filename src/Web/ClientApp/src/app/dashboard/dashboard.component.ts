@@ -5,6 +5,8 @@ import { JobsMonthBarChartComponent } from '../jobs-month-bar-chart/jobs-month-b
 import { ToDoListComponent } from '../to-do-list/to-do-list.component';
 import { RelevantJobsRingChartComponent } from '../relevant-jobs-ring-chart/relevant-jobs-ring-chart.component';
 import { CandidateCountBarChartComponent } from './candidate-count-bar-chart/candidate-count-bar-chart.component';
+import { InterviewListComponent } from './interview-list/interview-list.component';
+import { AverageJobLifetimeComponent } from './average-job-lifetime/average-job-lifetime.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,6 +18,8 @@ import { CandidateCountBarChartComponent } from './candidate-count-bar-chart/can
     ToDoListComponent,
     RelevantJobsRingChartComponent,
     CandidateCountBarChartComponent,
+    InterviewListComponent,
+    AverageJobLifetimeComponent,
   ],
   templateUrl: './dashboard.component.html',
 })
