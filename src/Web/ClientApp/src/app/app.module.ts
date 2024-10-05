@@ -6,8 +6,6 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
-import { ModalModule } from 'ngx-bootstrap/modal';
-
 import { AppComponent } from './app.component';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -27,7 +25,6 @@ import { DashboardComponent } from './dashboard/dashboard.component';
       },
     ]),
     BrowserAnimationsModule,
-    ModalModule.forRoot(),
     TuiRoot,
     SidebarComponent,
   ],
