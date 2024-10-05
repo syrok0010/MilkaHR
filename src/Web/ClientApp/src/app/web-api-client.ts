@@ -514,6 +514,7 @@ export interface IRecruiterClient {
     setCandidateStatus(processingId: number, command: SetCandidateStatusCommand): Observable<void>;
     deleteNote(id: number): Observable<void>;
     createNote(command: CreateNoteCommand): Observable<Note>;
+    completeNote(id: number): Observable<void>;
     getApiRecruiterInterviews(): Observable<Interview[]>;
 }
 
@@ -975,6 +976,54 @@ export class RecruiterClient implements IRecruiterClient {
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result200 = Note.fromJS(resultData200);
             return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    completeNote(id: number): Observable<void> {
+        let url_ = this.baseUrl + "/api/Recruiter/complete-note?";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined and cannot be null.");
+        else
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCompleteNote(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCompleteNote(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processCompleteNote(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -1972,6 +2021,7 @@ export interface ISetCandidateStatusCommand {
 
 export class Note extends BaseAuditableEntity implements INote {
     text?: string;
+    completed?: boolean;
 
     constructor(data?: INote) {
         super(data);
@@ -1981,6 +2031,7 @@ export class Note extends BaseAuditableEntity implements INote {
         super.init(_data);
         if (_data) {
             this.text = _data["text"];
+            this.completed = _data["completed"];
         }
     }
 
@@ -1994,6 +2045,7 @@ export class Note extends BaseAuditableEntity implements INote {
     override toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["text"] = this.text;
+        data["completed"] = this.completed;
         super.toJSON(data);
         return data;
     }
@@ -2001,6 +2053,7 @@ export class Note extends BaseAuditableEntity implements INote {
 
 export interface INote extends IBaseAuditableEntity {
     text?: string;
+    completed?: boolean;
 }
 
 export class CreateNoteCommand implements ICreateNoteCommand {

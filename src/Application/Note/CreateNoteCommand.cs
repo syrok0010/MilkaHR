@@ -9,7 +9,11 @@ public class CreateNoteCommandHandler(IApplicationDbContext db) : IRequestHandle
     private readonly IApplicationDbContext _db = db;
     public async Task<Domain.Entities.Note> Handle(CreateNoteCommand request, CancellationToken cancellationToken)
     {
-        var note = new Domain.Entities.Note { Text = request.text };
+        var note = new Domain.Entities.Note
+        {
+            Text = request.text,
+            Completed = false
+        };
         await _db.Notes.AddAsync(note, cancellationToken);
         await _db.SaveChangesAsync(cancellationToken);
         return note;
