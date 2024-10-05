@@ -1,10 +1,28 @@
-<tui-axes
-    class="axes"
-    [axisXLabels]="xLabels$ | async"
-    [axisYLabels]="labelsY"
+<div
+  tuiCardLarge
+  tuiSurface="elevated"
 >
-    <tui-bar-chart
-        [max]="100"
-        [value]="[[1,2,3,4,5]]"
+  <header tuiHeader>
+    <h2 tuiTitle>Среднее время закрытия вакансии по месяцам</h2>
+  </header>
+
+  <tui-axes
+    class="h-40"
+    size="l"
+    [axisXLabels]="['Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен']"
+    [axisYLabels]="labelsY"
+    [verticalLines]="4"
+  >
+    <tui-line-chart
+      [dots]="false"
+      [filled]="true"
+      [height]="100"
+      [smoothingFactor]="30"
+      [value]="values"
+      [width]="50"
+      [x]="0"
+      [y]="0"
+      size="l"
     />
-</tui-axes>
+  </tui-axes>
+</div>

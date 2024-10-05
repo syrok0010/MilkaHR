@@ -1,5 +1,30 @@
-<app-summary></app-summary>
-<div class="grid grid-cols-2">
-  <app-job-by-status-table></app-job-by-status-table>
-  <app-jobs-month-bar-chart class="h-20"></app-jobs-month-bar-chart>
+<div class="flex flex-col justify-between">
+  <app-summary />
+  <div class="grid grid-cols-2 h-full gap-8 py-8">
+
+    <app-jobs-month-bar-chart />
+    <div tuiCardLarge
+         tuiSurface="elevated">
+        <header tuiHeader>
+          <h2 tuiTitle>Количество поданных заявок на открытые вакансии</h2>
+        </header>
+
+        <tui-axes
+          class="h-60"
+          size="l"
+          [horizontalLines]="2"
+          [horizontalLinesHandler]="horizontalLinesHandler"
+          [verticalLines]="4"
+          [verticalLinesHandler]="verticalLinesHandler"
+          [axisXLabels]="['Разработчик', 'Аналитик', 'Тестировщик', 'PM']"
+          [axisYLabels]="['0', '10', '20', '30', '40', '50']"
+        >
+          <tui-bar-chart
+            [value]="[[23, 37, 7, 45]]"
+            [max]="50"
+            size="l"
+          />
+        </tui-axes>
+    </div>
+  </div>
 </div>
