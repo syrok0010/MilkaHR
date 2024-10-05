@@ -3,11 +3,12 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {TuiTagModule} from '@taiga-ui/legacy';
 import {TuiButton, TuiTitle, TuiSurface, TuiOption} from '@taiga-ui/core';
 import { TuiCardLarge } from '@taiga-ui/layout';
+import { TuiBadge } from '@taiga-ui/kit';
 
 @Component({
   selector: 'app-profile-card',
   standalone: true,
-  imports: [NgForOf, TuiButton, TuiCardLarge, TuiSurface, TuiTitle, TuiOption, TuiTagModule],
+  imports: [NgForOf, TuiButton, TuiCardLarge, TuiSurface, TuiTitle, TuiOption, TuiTagModule, TuiBadge],
   templateUrl: './profile-card.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

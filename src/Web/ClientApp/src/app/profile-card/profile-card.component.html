@@ -4,13 +4,43 @@
       <img class="rounded-full" src="/assets/imges/img.png" alt="avatar" />
     </div>
     <div class="gap-2 content-center">
-      <h1 tuiTitle class="font-sans">
+      <h1 tuiTitle class="font-sans fony-bold">
         Райан Госслинг<span tuiSubtitle>ryan_gossling</span>
       </h1>
     </div>
-    <div class="gap-2 content-center font-sans text-left text-base">
-      Я,Идеал Идеалов, работаю на заводе, но прохожу курсы фронтенд разработчика
-      и тд
+    <div tuiHeader="xs" class="content-center font-sans gap-2">
+      <h6 tuiTitle>
+          Возраст
+          <div tuiSubtitle class="text-center">25</div>
+      </h6>
+    </div>
+    <div tuiHeader="xs" class="content-center font-sans gap-2">
+      <h6 tuiTitle>
+          Последнее место работы
+          <div tuiSubtitle class="text-center">Apple</div>
+      </h6>
+    </div>
+    <div tuiHeader="xs" class="content-center font-sans gap-2">
+      <h6 tuiTitle>
+          Опыт работы
+          <div tuiSubtitle class="text-center">5</div>
+      </h6>
+    </div>
+    <div tuiHeader="xs" class="grid grid-rows-4 place-items-center font-sans gap-2">
+      <h6 tuiTitle>
+          Вакансии
+      </h6>
+      <div tuiSubtitle class="text-center">Разработчик</div>
+      <div tuiSubtitle class="text-center">Бизнес-аналитик</div>
+      <div tuiSubtitle class="text-center">UX-дизайнер</div>
+    </div>
+    <div tuiHeader="xs" class="grid grid-rows-4 place-items-center font-sans gap-2">
+      <h6 tuiTitle>
+          Статус
+      </h6>
+      <tui-badge appearance="success" uiStatus> Success</tui-badge>
+      <tui-badge appearance="success" uiStatus> Success</tui-badge>
+      <tui-badge appearance="success" uiStatus> Success</tui-badge>
     </div>
     <div class="gap-2 content-center">
       <button
@@ -38,13 +68,10 @@
         type="button"
         value="JS"
         class="tag bg-indigo-100 m-1"
-        [hoverable]="true"
+        [hoverable]="false"
       ></button>
     </div>
-    <div class="flex flex-col justify-between content-center gap-2">
-      <button size="s" appearance="primary" tuiButton type="button">
-        Посмотреть резюме
-      </button>
+    <div class="content-center gap-2">
       <button size="s" appearance="primary" tuiButton type="button">
         Связаться
       </button>
