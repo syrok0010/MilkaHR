@@ -1,6 +1,6 @@
 using MilkaHR.Application.Common.Interfaces;
 
-namespace MilkaHR.Application.Candidate.Commands.RemoveCandidate;
+namespace MilkaHR.Application.Candidate.Commands;
 
 public record RemoveCandidateCommand(int Id) : IRequest<bool>;
 

@@ -1,9 +1,5 @@
-using MilkaHR.Application.Candidate.Commands.AddCandidate;
-using MilkaHR.Application.Candidate.Commands.GetAllCandidatesByStatusByJob;
-using MilkaHR.Application.Candidate.Commands.GetAllCandidatesForJob;
-using MilkaHR.Application.Candidate.Commands.RemoveCandidate;
-using MilkaHR.Application.Candidate.Commands.UpdateCandidateById;
-using MilkaHR.Application.Candidate.Queries.GetCandidateById;
+using MilkaHR.Application.Candidate.Commands;
+using MilkaHR.Application.Candidate.Queries;
 
 namespace MilkaHR.Web.Endpoints;
 
@@ -40,7 +36,7 @@ public class Candidates : EndpointGroupBase
 
     private async Task<IResult> GetCandidate(ISender sender, int id)
     {
-        var candidate = await sender.Send(new GetCandidateById(id));
+        var candidate = await sender.Send(new GetCandidateByIdQuery(id));
         return candidate is null ? Results.NotFound() : Results.Ok(candidate);
     }
 
@@ -52,7 +48,7 @@ public class Candidates : EndpointGroupBase
 
     private async Task<IResult> GetCandidatesCountsByJobs(ISender sender)
     {
-        var stats = await sender.Send(new GetCandidatesCountByJobCommand());
+        var stats = await sender.Send(new GetCandidatesCountByJobQuery());
         return Results.Ok(stats);
     }
 }
