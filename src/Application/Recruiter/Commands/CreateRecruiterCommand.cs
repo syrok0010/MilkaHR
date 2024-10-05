@@ -20,7 +20,8 @@ public class CreateRecruiterCommandHandler(IApplicationDbContext db)
             Email = request.Email,
             Phone = request.Phone,
             WorkExperience = request.WorkExperience,
-            Jobs = []
+            Jobs = [],
+            Interviews = []
         };
         foreach (var job in request.Jobs)
         {

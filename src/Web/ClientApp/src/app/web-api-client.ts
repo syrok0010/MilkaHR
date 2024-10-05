@@ -506,10 +506,12 @@ export class JobsClient implements IJobsClient {
 
 export interface IRecruiterClient {
     createRecruiter(command: CreateRecruiterCommand): Observable<Recruiter>;
-    getAllRecruiters(): Observable<Recruiter[]>;
     updateRecruiter(id: number, command: UpdateRecruiterCommand): Observable<void>;
     deleteRecruiter(id: number): Observable<void>;
     getRecruiterById(id: number): Observable<void>;
+    getAllRecruiters(): Observable<Recruiter[]>;
+    setInterview(command: SetInterviewCommand): Observable<Interview>;
+    setCandidateStatus(processingId: number, command: SetCandidateStatusCommand): Observable<void>;
 }
 
 @Injectable({
@@ -526,7 +528,7 @@ export class RecruiterClient implements IRecruiterClient {
     }
 
     createRecruiter(command: CreateRecruiterCommand): Observable<Recruiter> {
-        let url_ = this.baseUrl + "/api/Recruiter";
+        let url_ = this.baseUrl + "/api/Recruiter/create-recruiter";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(command);
@@ -567,61 +569,6 @@ export class RecruiterClient implements IRecruiterClient {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result200 = Recruiter.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    getAllRecruiters(): Observable<Recruiter[]> {
-        let url_ = this.baseUrl + "/api/Recruiter";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetAllRecruiters(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetAllRecruiters(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<Recruiter[]>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<Recruiter[]>;
-        }));
-    }
-
-    protected processGetAllRecruiters(response: HttpResponseBase): Observable<Recruiter[]> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(Recruiter.fromJS(item));
-            }
-            else {
-                result200 = <any>null;
-            }
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -759,6 +706,164 @@ export class RecruiterClient implements IRecruiterClient {
     }
 
     protected processGetRecruiterById(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    getAllRecruiters(): Observable<Recruiter[]> {
+        let url_ = this.baseUrl + "/api/Recruiter";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllRecruiters(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllRecruiters(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<Recruiter[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<Recruiter[]>;
+        }));
+    }
+
+    protected processGetAllRecruiters(response: HttpResponseBase): Observable<Recruiter[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(Recruiter.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    setInterview(command: SetInterviewCommand): Observable<Interview> {
+        let url_ = this.baseUrl + "/api/Recruiter";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSetInterview(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSetInterview(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<Interview>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<Interview>;
+        }));
+    }
+
+    protected processSetInterview(response: HttpResponseBase): Observable<Interview> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = Interview.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    setCandidateStatus(processingId: number, command: SetCandidateStatusCommand): Observable<void> {
+        let url_ = this.baseUrl + "/api/Recruiter/set-status/{processingId}";
+        if (processingId === undefined || processingId === null)
+            throw new Error("The parameter 'processingId' must be defined.");
+        url_ = url_.replace("{processingId}", encodeURIComponent("" + processingId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSetCandidateStatus(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSetCandidateStatus(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processSetCandidateStatus(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1610,6 +1715,90 @@ export interface IUpdateRecruiterCommand {
     phone?: string;
     workExperience?: number;
     jobs?: Job[];
+}
+
+export class SetInterviewCommand implements ISetInterviewCommand {
+    candidateId?: number;
+    jobId?: number;
+    timing?: Date;
+
+    constructor(data?: ISetInterviewCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.candidateId = _data["candidateId"];
+            this.jobId = _data["jobId"];
+            this.timing = _data["timing"] ? new Date(_data["timing"].toString()) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): SetInterviewCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new SetInterviewCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["candidateId"] = this.candidateId;
+        data["jobId"] = this.jobId;
+        data["timing"] = this.timing ? this.timing.toISOString() : <any>undefined;
+        return data;
+    }
+}
+
+export interface ISetInterviewCommand {
+    candidateId?: number;
+    jobId?: number;
+    timing?: Date;
+}
+
+export class SetCandidateStatusCommand implements ISetCandidateStatusCommand {
+    processingId?: number;
+    newStatus?: CandidateStatus;
+
+    constructor(data?: ISetCandidateStatusCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.processingId = _data["processingId"];
+            this.newStatus = _data["newStatus"];
+        }
+    }
+
+    static fromJS(data: any): SetCandidateStatusCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new SetCandidateStatusCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["processingId"] = this.processingId;
+        data["newStatus"] = this.newStatus;
+        return data;
+    }
+}
+
+export interface ISetCandidateStatusCommand {
+    processingId?: number;
+    newStatus?: CandidateStatus;
 }
 
 export class SwaggerException extends Error {

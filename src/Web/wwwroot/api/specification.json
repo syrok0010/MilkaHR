@@ -215,7 +215,7 @@
         }
       }
     },
-    "/api/Recruiter": {
+    "/api/Recruiter/create-recruiter": {
       "post": {
         "tags": [
           "Recruiter"
@@ -240,27 +240,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Recruiter"
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "Recruiter"
-        ],
-        "operationId": "GetAllRecruiters",
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Recruiter"
-                  }
                 }
               }
             }
@@ -344,6 +323,96 @@
             "x-position": 1
           }
         ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/Recruiter": {
+      "get": {
+        "tags": [
+          "Recruiter"
+        ],
+        "operationId": "GetAllRecruiters",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Recruiter"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Recruiter"
+        ],
+        "operationId": "SetInterview",
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetInterviewCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Interview"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Recruiter/set-status/{processingId}": {
+      "put": {
+        "tags": [
+          "Recruiter"
+        ],
+        "operationId": "SetCandidateStatus",
+        "parameters": [
+          {
+            "name": "processingId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetCandidateStatusCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
         "responses": {
           "200": {
             "description": ""
@@ -814,6 +883,37 @@
             "items": {
               "$ref": "#/components/schemas/Job"
             }
+          }
+        }
+      },
+      "SetInterviewCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "candidateId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "jobId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "timing": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "SetCandidateStatusCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "processingId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "newStatus": {
+            "$ref": "#/components/schemas/CandidateStatus"
           }
         }
       }

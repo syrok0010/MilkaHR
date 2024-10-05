@@ -2,7 +2,7 @@ import { AsyncPipe, NgFor } from '@angular/common';
 import { Component } from '@angular/core';
 import { TuiCardLarge, TuiHeader } from '@taiga-ui/layout';
 import { TuiButton, TuiSurface, TuiTitle } from '@taiga-ui/core';
-import { TuiInputModule } from '@taiga-ui/legacy';
+import { TuiInputModule, TuiTextfieldControllerModule } from '@taiga-ui/legacy';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { TuiCheckbox } from '@taiga-ui/kit';
 import { BehaviorSubject } from 'rxjs';
@@ -26,6 +26,7 @@ interface Task {
     ReactiveFormsModule,
     TuiCheckbox,
     AsyncPipe,
+    TuiTextfieldControllerModule,
   ],
   templateUrl: './to-do-list.component.html',
   standalone: true,

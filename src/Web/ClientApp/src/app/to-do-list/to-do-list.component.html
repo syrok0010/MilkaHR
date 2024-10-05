@@ -3,17 +3,19 @@
     <h2 tuiTitle>Заметки и напоминания</h2>
   </header>
 
-  <div class="p-4">
-    <div class="mb-4 flex w-1/2 gap-8 items-center">
-      <tui-input [formControl]="addTaskControl" (keyup.enter)="addTask()"
+  <div class="w-full">
+    <div class="flex w-full gap-8 items-center">
+      <tui-input
+        tuiTextfieldSize="m"
+        [formControl]="addTaskControl"
+        class="grow"
+        (keyup.enter)="addTask()"
         >Текст напоминания</tui-input
       >
-      <button class="py-1 px-2" tuiButton size="m" (click)="addTask()">
-        Add
-      </button>
+      <button tuiButton size="m" (click)="addTask()">Add</button>
     </div>
 
-    <ul class="space-y-2">
+    <ul class="my-2">
       <div
         class="flex items-center p-2 rounded shadow-sm hover:bg-gray-200 transition-colors duration-200 gap-4"
       >
@@ -40,14 +42,24 @@
           <span [class.line-through]="task.completed">{{ task.title }}</span>
         </div>
         <div class="flex items-center">
-          <button tuiButton size="s" (click)="removeTask(i)">Удалить</button>
+          <button
+            tuiIconButton
+            size="s"
+            (click)="removeTask(i)"
+            iconStart="@tui.trash"
+          ></button>
         </div>
       </li>
     </ul>
 
     <div class="mt-4">
-      <button class="py-1 px-2" tuiButton (click)="clearCompletedTasks()">
-        Очистить
+      <button
+        class="py-1 px-2"
+        size="m"
+        tuiButton
+        (click)="clearCompletedTasks()"
+      >
+        Очистить выполненные
       </button>
     </div>
   </div>
