@@ -171,6 +171,29 @@
         }
       }
     },
+    "/api/Jobs/jobs-count-by-priority": {
+      "get": {
+        "tags": [
+          "Jobs"
+        ],
+        "operationId": "GetJobsCountByPriority",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StatisticByPriority"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Recruiter": {
       "post": {
         "tags": [
@@ -644,6 +667,23 @@
             "type": "string"
           },
           "salaryPreference": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "StatisticByPriority": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "level": {
+            "$ref": "#/components/schemas/PriorityLevel"
+          },
+          "closed": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "all": {
             "type": "integer",
             "format": "int32"
           }
