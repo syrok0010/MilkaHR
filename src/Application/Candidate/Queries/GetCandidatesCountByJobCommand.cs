@@ -11,7 +11,7 @@ public class GetCandidatesCountByJobCommandHandler(IApplicationDbContext db) :
     private readonly IApplicationDbContext _db = db;
     public async Task<List<int>> Handle(GetCandidatesCountByJobCommand request, CancellationToken cancellationToken)
     {
-        var jobs = _db.Jobs.Where(x => x.Status == JobStatus.Opened || x.Status == JobStatus.Postponed);
+        var jobs = _db.Jobs.Where(x => x.Status == JobStatus.Opened);
         var counts = new List<int>();
         foreach (var job in jobs)
         {

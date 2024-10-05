@@ -235,7 +235,7 @@ export class CandidatesClient implements ICandidatesClient {
     }
 
     getAllCandidatesByStatusByJob(): Observable<void> {
-        let url_ = this.baseUrl + "/api/Candidates/candidates";
+        let url_ = this.baseUrl + "/api/Candidates/candidates-by-status-by-job";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -325,6 +325,8 @@ export class CandidatesClient implements ICandidatesClient {
 
 export interface IJobsClient {
     getJobsByMonthStats(): Observable<{ [key: string]: number; }>;
+    getJobsCountByPriority(): Observable<StatisticByPriority[]>;
+    getAverageJobLifetime(): Observable<number>;
 }
 
 @Injectable({
@@ -387,6 +389,110 @@ export class JobsClient implements IJobsClient {
             else {
                 result200 = <any>null;
             }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    getJobsCountByPriority(): Observable<StatisticByPriority[]> {
+        let url_ = this.baseUrl + "/api/Jobs/jobs-count-by-priority";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetJobsCountByPriority(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetJobsCountByPriority(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<StatisticByPriority[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<StatisticByPriority[]>;
+        }));
+    }
+
+    protected processGetJobsCountByPriority(response: HttpResponseBase): Observable<StatisticByPriority[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(StatisticByPriority.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    getAverageJobLifetime(): Observable<number> {
+        let url_ = this.baseUrl + "/api/Jobs/average-lifetime";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAverageJobLifetime(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAverageJobLifetime(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<number>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<number>;
+        }));
+    }
+
+    protected processGetAverageJobLifetime(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -771,6 +877,7 @@ export class Candidate extends BaseAuditableEntity implements ICandidate {
     salaryPreference?: number;
     cvs?: Cv[];
     jobStatuses?: CandidateJobProcessing[];
+    interviews?: Interview[];
 
     constructor(data?: ICandidate) {
         super(data);
@@ -795,6 +902,11 @@ export class Candidate extends BaseAuditableEntity implements ICandidate {
                 this.jobStatuses = [] as any;
                 for (let item of _data["jobStatuses"])
                     this.jobStatuses!.push(CandidateJobProcessing.fromJS(item));
+            }
+            if (Array.isArray(_data["interviews"])) {
+                this.interviews = [] as any;
+                for (let item of _data["interviews"])
+                    this.interviews!.push(Interview.fromJS(item));
             }
         }
     }
@@ -825,6 +937,11 @@ export class Candidate extends BaseAuditableEntity implements ICandidate {
             for (let item of this.jobStatuses)
                 data["jobStatuses"].push(item.toJSON());
         }
+        if (Array.isArray(this.interviews)) {
+            data["interviews"] = [];
+            for (let item of this.interviews)
+                data["interviews"].push(item.toJSON());
+        }
         super.toJSON(data);
         return data;
     }
@@ -840,6 +957,7 @@ export interface ICandidate extends IBaseAuditableEntity {
     salaryPreference?: number;
     cvs?: Cv[];
     jobStatuses?: CandidateJobProcessing[];
+    interviews?: Interview[];
 }
 
 export class Cv extends BaseAuditableEntity implements ICv {
@@ -974,6 +1092,7 @@ export class Recruiter extends BaseAuditableEntity implements IRecruiter {
     phone?: string;
     workExperience?: number;
     jobs?: Job[];
+    interviews?: Interview[];
 
     constructor(data?: IRecruiter) {
         super(data);
@@ -992,6 +1111,11 @@ export class Recruiter extends BaseAuditableEntity implements IRecruiter {
                 this.jobs = [] as any;
                 for (let item of _data["jobs"])
                     this.jobs!.push(Job.fromJS(item));
+            }
+            if (Array.isArray(_data["interviews"])) {
+                this.interviews = [] as any;
+                for (let item of _data["interviews"])
+                    this.interviews!.push(Interview.fromJS(item));
             }
         }
     }
@@ -1016,6 +1140,11 @@ export class Recruiter extends BaseAuditableEntity implements IRecruiter {
             for (let item of this.jobs)
                 data["jobs"].push(item.toJSON());
         }
+        if (Array.isArray(this.interviews)) {
+            data["interviews"] = [];
+            for (let item of this.interviews)
+                data["interviews"].push(item.toJSON());
+        }
         super.toJSON(data);
         return data;
     }
@@ -1029,6 +1158,48 @@ export interface IRecruiter extends IBaseAuditableEntity {
     phone?: string;
     workExperience?: number;
     jobs?: Job[];
+    interviews?: Interview[];
+}
+
+export class Interview extends BaseAuditableEntity implements IInterview {
+    timing?: Date;
+    job?: Job;
+    candidate?: Candidate;
+
+    constructor(data?: IInterview) {
+        super(data);
+    }
+
+    override init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.timing = _data["timing"] ? new Date(_data["timing"].toString()) : <any>undefined;
+            this.job = _data["job"] ? Job.fromJS(_data["job"]) : <any>undefined;
+            this.candidate = _data["candidate"] ? Candidate.fromJS(_data["candidate"]) : <any>undefined;
+        }
+    }
+
+    static override fromJS(data: any): Interview {
+        data = typeof data === 'object' ? data : {};
+        let result = new Interview();
+        result.init(data);
+        return result;
+    }
+
+    override toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["timing"] = this.timing ? this.timing.toISOString() : <any>undefined;
+        data["job"] = this.job ? this.job.toJSON() : <any>undefined;
+        data["candidate"] = this.candidate ? this.candidate.toJSON() : <any>undefined;
+        super.toJSON(data);
+        return data;
+    }
+}
+
+export interface IInterview extends IBaseAuditableEntity {
+    timing?: Date;
+    job?: Job;
+    candidate?: Candidate;
 }
 
 export abstract class BaseEvent implements IBaseEvent {
@@ -1243,6 +1414,50 @@ export interface IUpdateCandidateByIdCommand {
     phone?: string;
     address?: string;
     salaryPreference?: number;
+}
+
+export class StatisticByPriority implements IStatisticByPriority {
+    level?: PriorityLevel;
+    opened?: number;
+    all?: number;
+
+    constructor(data?: IStatisticByPriority) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.level = _data["level"];
+            this.opened = _data["opened"];
+            this.all = _data["all"];
+        }
+    }
+
+    static fromJS(data: any): StatisticByPriority {
+        data = typeof data === 'object' ? data : {};
+        let result = new StatisticByPriority();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["level"] = this.level;
+        data["opened"] = this.opened;
+        data["all"] = this.all;
+        return data;
+    }
+}
+
+export interface IStatisticByPriority {
+    level?: PriorityLevel;
+    opened?: number;
+    all?: number;
 }
 
 export class CreateRecruiterCommand implements ICreateRecruiterCommand {
