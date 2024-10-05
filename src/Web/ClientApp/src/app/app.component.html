@@ -1,8 +1,8 @@
 <tui-root>
-  <body class="flex bg-indigo-200 min-h-screen items-stretch p-5 gap-4">
-    <app-sidebar
-      class="basis-1/6 sticky top-5 h-[calc(100vh-2.5rem)] shrink-0"
-    />
+  <body
+    class="flex bg-indigo-200 min-h-screen items-stretch p-5 gap-4 *:min-h-[calc(100vh-2.5rem)]"
+  >
+    <app-sidebar class="basis-1/6 sticky top-5 shrink-0" />
     <main class="grow">
       <router-outlet></router-outlet>
     </main>

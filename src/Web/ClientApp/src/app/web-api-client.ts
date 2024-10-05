@@ -20,8 +20,8 @@ export interface ICandidatesClient {
     updateCandidate(id: number, command: UpdateCandidateByIdCommand): Observable<void>;
     removeCandidate(id: number): Observable<void>;
     getCandidate(id: number): Observable<void>;
-    getAllCandidatesByStatusByJob(): Observable<void>;
     getCandidatesCountsByJobs(): Observable<void>;
+    getApiCandidatesCandidatesByStatusByJob(): Observable<{ [key: string]: number[]; }>;
 }
 
 @Injectable({
@@ -234,50 +234,6 @@ export class CandidatesClient implements ICandidatesClient {
         return _observableOf(null as any);
     }
 
-    getAllCandidatesByStatusByJob(): Observable<void> {
-        let url_ = this.baseUrl + "/api/Candidates/candidates-by-status-by-job";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetAllCandidatesByStatusByJob(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetAllCandidatesByStatusByJob(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<void>;
-        }));
-    }
-
-    protected processGetAllCandidatesByStatusByJob(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
     getCandidatesCountsByJobs(): Observable<void> {
         let url_ = this.baseUrl + "/api/Candidates/get-candidates-count-by-jobs";
         url_ = url_.replace(/[?&]$/, "");
@@ -321,12 +277,71 @@ export class CandidatesClient implements ICandidatesClient {
         }
         return _observableOf(null as any);
     }
+
+    getApiCandidatesCandidatesByStatusByJob(): Observable<{ [key: string]: number[]; }> {
+        let url_ = this.baseUrl + "/api/Candidates/candidates-by-status-by-job";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetApiCandidatesCandidatesByStatusByJob(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetApiCandidatesCandidatesByStatusByJob(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<{ [key: string]: number[]; }>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<{ [key: string]: number[]; }>;
+        }));
+    }
+
+    protected processGetApiCandidatesCandidatesByStatusByJob(response: HttpResponseBase): Observable<{ [key: string]: number[]; }> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (resultData200) {
+                result200 = {} as any;
+                for (let key in resultData200) {
+                    if (resultData200.hasOwnProperty(key))
+                        (<any>result200)![key] = resultData200[key] !== undefined ? resultData200[key] : [];
+                }
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
 }
 
 export interface IJobsClient {
     getJobsByMonthStats(): Observable<{ [key: string]: number; }>;
     getJobsCountByPriority(): Observable<StatisticByPriority[]>;
     getAverageJobLifetime(): Observable<number>;
+    createJob(command: CreateJobCommand): Observable<Job>;
+    updateJob(id: number, command: UpdateJobCommand): Observable<void>;
 }
 
 @Injectable({
@@ -494,6 +509,110 @@ export class JobsClient implements IJobsClient {
                 result200 = resultData200 !== undefined ? resultData200 : <any>null;
     
             return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    createJob(command: CreateJobCommand): Observable<Job> {
+        let url_ = this.baseUrl + "/api/Jobs/create-job";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateJob(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateJob(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<Job>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<Job>;
+        }));
+    }
+
+    protected processCreateJob(response: HttpResponseBase): Observable<Job> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = Job.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    updateJob(id: number, command: UpdateJobCommand): Observable<void> {
+        let url_ = this.baseUrl + "/api/Jobs/update-job?";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined and cannot be null.");
+        else
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdateJob(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateJob(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processUpdateJob(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -1379,6 +1498,7 @@ export class Job extends BaseAuditableEntity implements IJob {
     publicationDate?: Date;
     closingDate?: Date | undefined;
     recruiter?: Recruiter;
+    category?: JobCategory;
     candidateStatuses?: CandidateJobProcessing[];
 
     constructor(data?: IJob) {
@@ -1394,6 +1514,7 @@ export class Job extends BaseAuditableEntity implements IJob {
             this.publicationDate = _data["publicationDate"] ? new Date(_data["publicationDate"].toString()) : <any>undefined;
             this.closingDate = _data["closingDate"] ? new Date(_data["closingDate"].toString()) : <any>undefined;
             this.recruiter = _data["recruiter"] ? Recruiter.fromJS(_data["recruiter"]) : <any>undefined;
+            this.category = _data["category"];
             if (Array.isArray(_data["candidateStatuses"])) {
                 this.candidateStatuses = [] as any;
                 for (let item of _data["candidateStatuses"])
@@ -1417,6 +1538,7 @@ export class Job extends BaseAuditableEntity implements IJob {
         data["publicationDate"] = this.publicationDate ? this.publicationDate.toISOString() : <any>undefined;
         data["closingDate"] = this.closingDate ? this.closingDate.toISOString() : <any>undefined;
         data["recruiter"] = this.recruiter ? this.recruiter.toJSON() : <any>undefined;
+        data["category"] = this.category;
         if (Array.isArray(this.candidateStatuses)) {
             data["candidateStatuses"] = [];
             for (let item of this.candidateStatuses)
@@ -1434,6 +1556,7 @@ export interface IJob extends IBaseAuditableEntity {
     publicationDate?: Date;
     closingDate?: Date | undefined;
     recruiter?: Recruiter;
+    category?: JobCategory;
     candidateStatuses?: CandidateJobProcessing[];
 }
 
@@ -1595,6 +1718,14 @@ export abstract class BaseEvent implements IBaseEvent {
 }
 
 export interface IBaseEvent {
+}
+
+export enum JobCategory {
+    It = 0,
+    Jurisprudence = 1,
+    Management = 2,
+    Economy = 3,
+    Marketing = 4,
 }
 
 export class CandidateJobProcessing extends BaseAuditableEntity implements ICandidateJobProcessing {
@@ -1837,6 +1968,122 @@ export interface IStatisticByPriority {
     level?: PriorityLevel;
     opened?: number;
     all?: number;
+}
+
+export class CreateJobCommand implements ICreateJobCommand {
+    title?: string;
+    priorityLevel?: PriorityLevel;
+    status?: JobStatus;
+    publicationDate?: Date;
+    category?: JobCategory;
+    recruiterId?: number;
+
+    constructor(data?: ICreateJobCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.title = _data["title"];
+            this.priorityLevel = _data["priorityLevel"];
+            this.status = _data["status"];
+            this.publicationDate = _data["publicationDate"] ? new Date(_data["publicationDate"].toString()) : <any>undefined;
+            this.category = _data["category"];
+            this.recruiterId = _data["recruiterId"];
+        }
+    }
+
+    static fromJS(data: any): CreateJobCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateJobCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["title"] = this.title;
+        data["priorityLevel"] = this.priorityLevel;
+        data["status"] = this.status;
+        data["publicationDate"] = this.publicationDate ? this.publicationDate.toISOString() : <any>undefined;
+        data["category"] = this.category;
+        data["recruiterId"] = this.recruiterId;
+        return data;
+    }
+}
+
+export interface ICreateJobCommand {
+    title?: string;
+    priorityLevel?: PriorityLevel;
+    status?: JobStatus;
+    publicationDate?: Date;
+    category?: JobCategory;
+    recruiterId?: number;
+}
+
+export class UpdateJobCommand implements IUpdateJobCommand {
+    id?: number;
+    title?: string;
+    priorityLevel?: PriorityLevel;
+    status?: JobStatus;
+    recruiterId?: number;
+    category?: JobCategory;
+    closingDate?: Date | undefined;
+
+    constructor(data?: IUpdateJobCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.title = _data["title"];
+            this.priorityLevel = _data["priorityLevel"];
+            this.status = _data["status"];
+            this.recruiterId = _data["recruiterId"];
+            this.category = _data["category"];
+            this.closingDate = _data["closingDate"] ? new Date(_data["closingDate"].toString()) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): UpdateJobCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateJobCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["title"] = this.title;
+        data["priorityLevel"] = this.priorityLevel;
+        data["status"] = this.status;
+        data["recruiterId"] = this.recruiterId;
+        data["category"] = this.category;
+        data["closingDate"] = this.closingDate ? this.closingDate.toISOString() : <any>undefined;
+        return data;
+    }
+}
+
+export interface IUpdateJobCommand {
+    id?: number;
+    title?: string;
+    priorityLevel?: PriorityLevel;
+    status?: JobStatus;
+    recruiterId?: number;
+    category?: JobCategory;
+    closingDate?: Date | undefined;
 }
 
 export class CreateRecruiterCommand implements ICreateRecruiterCommand {

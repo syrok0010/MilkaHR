@@ -121,19 +121,6 @@
         }
       }
     },
-    "/api/Candidates/candidates-by-status-by-job": {
-      "get": {
-        "tags": [
-          "Candidates"
-        ],
-        "operationId": "GetAllCandidatesByStatusByJob",
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        }
-      }
-    },
     "/api/Candidates/get-candidates-count-by-jobs": {
       "get": {
         "tags": [
@@ -143,6 +130,33 @@
         "responses": {
           "200": {
             "description": ""
+          }
+        }
+      }
+    },
+    "/api/Candidates/candidates-by-status-by-job": {
+      "get": {
+        "tags": [
+          "Candidates"
+        ],
+        "operationId": "GetApiCandidatesCandidatesByStatusByJob",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "format": "int32"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -211,6 +225,75 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/Jobs/create-job": {
+      "post": {
+        "tags": [
+          "Jobs"
+        ],
+        "operationId": "CreateJob",
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateJobCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Job"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Jobs/update-job": {
+      "put": {
+        "tags": [
+          "Jobs"
+        ],
+        "operationId": "UpdateJob",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateJobCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": ""
           }
         }
       }
@@ -656,6 +739,9 @@
               "recruiter": {
                 "$ref": "#/components/schemas/Recruiter"
               },
+              "category": {
+                "$ref": "#/components/schemas/JobCategory"
+              },
               "candidateStatuses": {
                 "type": "array",
                 "items": {
@@ -817,6 +903,24 @@
         "x-abstract": true,
         "additionalProperties": false
       },
+      "JobCategory": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "It",
+          "Jurisprudence",
+          "Management",
+          "Economy",
+          "Marketing"
+        ],
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
       "CandidateJobProcessing": {
         "allOf": [
           {
@@ -945,6 +1049,63 @@
           "all": {
             "type": "integer",
             "format": "int32"
+          }
+        }
+      },
+      "CreateJobCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "priorityLevel": {
+            "$ref": "#/components/schemas/PriorityLevel"
+          },
+          "status": {
+            "$ref": "#/components/schemas/JobStatus"
+          },
+          "publicationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "category": {
+            "$ref": "#/components/schemas/JobCategory"
+          },
+          "recruiterId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "UpdateJobCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string"
+          },
+          "priorityLevel": {
+            "$ref": "#/components/schemas/PriorityLevel"
+          },
+          "status": {
+            "$ref": "#/components/schemas/JobStatus"
+          },
+          "recruiterId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "category": {
+            "$ref": "#/components/schemas/JobCategory"
+          },
+          "closingDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
           }
         }
       },

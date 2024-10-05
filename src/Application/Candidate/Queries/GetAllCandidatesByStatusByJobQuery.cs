@@ -25,7 +25,7 @@ public class GetAllCandidatesByStatusByJobQueryHandler(IApplicationDbContext db)
                 .ToListAsync(cancellationToken);
             if (processingStatuses.Count == 0)
                 continue;
-            foreach (var status in processingStatuses)
+            foreach (var status in processingStatuses.OrderBy(x => x.ProcessingStatus))
             {
                 numberOfCandidatesInEachOpenedJob[job.Title].Add(status.Count);
             }

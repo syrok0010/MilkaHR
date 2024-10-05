@@ -8,5 +8,8 @@ public class Job : BaseAuditableEntity
     public required DateTime PublicationDate { get; set; }
     public DateTime? ClosingDate { get; set; }
     public required Recruiter Recruiter { get; set; }
+    
+    public required JobCategory Category { get; set; }
+    
     public HashSet<CandidateJobProcessing> CandidateStatuses { get; set; } = [];
 }
