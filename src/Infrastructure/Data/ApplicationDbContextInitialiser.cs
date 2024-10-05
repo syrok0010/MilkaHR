@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using MilkaHR.Domain.Enums;
 
 namespace MilkaHR.Infrastructure.Data;
 
@@ -57,6 +58,93 @@ public class ApplicationDbContextInitialiser
         try
         {
             await TrySeedAsync();
+            var recruiter = await _context.AddAsync(new Recruiter
+        {
+            Name = "Иван",
+            LastName = "Иванов",
+            MiddleName = "Иванович",
+            Email = "administrator@localhost.ru",
+            Phone = "81234567890",
+            WorkExperience = 5,
+            Jobs = [],
+            Interviews = []
+        });
+        
+        await _context.AddRangeAsync(new Job
+        {
+            Title = "Разработчик",
+            Priority = PriorityLevel.Medium,
+            Status = JobStatus.Opened,
+            PublicationDate = DateTime.UtcNow,
+            Recruiter = recruiter.Entity,
+            CandidateStatuses = []
+        }, new Job
+        {
+            Title = "Тестировщик",
+            Priority = PriorityLevel.VeryLow,
+            Status = JobStatus.Opened,
+            PublicationDate = DateTime.UtcNow,
+            Recruiter = recruiter.Entity,
+            CandidateStatuses = []
+        }, new Job
+        {
+            Title = "Кофе-носитель",
+            Priority = PriorityLevel.VeryHigh,
+            Status = JobStatus.Opened,
+            PublicationDate = DateTime.UtcNow,
+            Recruiter = recruiter.Entity,
+            CandidateStatuses = []
+        }, new Job
+        {
+            Title = "Тимлид",
+            Priority = PriorityLevel.High,
+            Status = JobStatus.Opened,
+            PublicationDate = DateTime.UtcNow,
+            Recruiter = recruiter.Entity,
+            CandidateStatuses = []
+        }, new Job
+        {
+            Title = "Аналитик",
+            Priority = PriorityLevel.Low,
+            Status = JobStatus.Opened,
+            PublicationDate = DateTime.UtcNow,
+            Recruiter = recruiter.Entity,
+            CandidateStatuses = []
+        }, new Job
+        {
+            Title = "UI-дизайнер",
+            Priority = PriorityLevel.High,
+            Status = JobStatus.Opened,
+            PublicationDate = DateTime.UtcNow,
+            Recruiter = recruiter.Entity,
+            CandidateStatuses = []
+        }, new Job
+        {
+            Title = "DevOps",
+            Priority = PriorityLevel.Medium,
+            Status = JobStatus.Opened,
+            PublicationDate = DateTime.UtcNow,
+            Recruiter = recruiter.Entity,
+            CandidateStatuses = []
+        }, new Job
+        {
+            Title = "Техлид",
+            Priority = PriorityLevel.Medium,
+            Status = JobStatus.Opened,
+            PublicationDate = DateTime.UtcNow,
+            Recruiter = recruiter.Entity,
+            CandidateStatuses = []
+        }, new Job
+        {
+            Title = "UX-дизайнер",
+            Priority = PriorityLevel.VeryLow,
+            Status = JobStatus.Opened,
+            PublicationDate = DateTime.UtcNow,
+            Recruiter = recruiter.Entity,
+            CandidateStatuses = []
+        });
+        
+        await _context.SaveChangesAsync();
         }
         catch (Exception ex)
         {
@@ -86,5 +174,7 @@ public class ApplicationDbContextInitialiser
                 await _userManager.AddToRolesAsync(administrator, new [] { administratorRole.Name });
             }
         }
+
+        
     }
 }
