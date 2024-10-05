@@ -6,6 +6,30 @@
     "version": "1.0.0"
   },
   "paths": {
+    "/api/Jobs/monthly-stats": {
+      "get": {
+        "tags": [
+          "Jobs"
+        ],
+        "operationId": "GetJobsByMonthStats",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "number",
+                    "format": "double"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Recruiter": {
       "post": {
         "tags": [
