@@ -1,9 +1,14 @@
-<div tuiCardLarge tuiSurface="elevated" class="w-60 flex">
+<div tuiCardLarge tuiSurface="elevated" class="flex">
   <header tuiHeader>
     <h2 tuiTitle>Открытые вакансии по приоритетам</h2>
   </header>
-  <tui-ring-chart [value]="values()" [(activeItemIndex)]="index" class="self-center justify-self-center">
-    <span>{{ label() }}</span>
-    <div>{{ count() }}</div>
+  <tui-ring-chart
+    size="xl"
+    [value]="values()"
+    [(activeItemIndex)]="index"
+    class="self-center justify-self-center"
+  >
+    <h3 class="text-3xl">{{ label() }}</h3>
+    <div class="text-2xl">{{ count() }}</div>
   </tui-ring-chart>
 </div>
