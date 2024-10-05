@@ -1,12 +1,12 @@
 using MilkaHR.Application.Common.Interfaces;
 
-namespace MilkaHR.Application.Candidate.Queries.GetCandidateById;
+namespace MilkaHR.Application.Candidate.Queries;
 
-public record GetCandidateById(int Id) : IRequest<MilkaHR.Domain.Entities.Candidate?>;
+public record GetCandidateByIdQuery(int Id) : IRequest<MilkaHR.Domain.Entities.Candidate?>;
 
-public class GetCandidateByIdQueryHandler(IApplicationDbContext db) : IRequestHandler<GetCandidateById, MilkaHR.Domain.Entities.Candidate?>
+public class GetCandidateByIdQueryHandler(IApplicationDbContext db) : IRequestHandler<GetCandidateByIdQuery, MilkaHR.Domain.Entities.Candidate?>
 {
-    public async Task<MilkaHR.Domain.Entities.Candidate?> Handle(GetCandidateById request, CancellationToken cancellationToken)
+    public async Task<MilkaHR.Domain.Entities.Candidate?> Handle(GetCandidateByIdQuery request, CancellationToken cancellationToken)
     {
         return await db
             .Candidates

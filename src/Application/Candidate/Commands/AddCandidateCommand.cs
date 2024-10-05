@@ -1,7 +1,7 @@
 using MilkaHR.Application.Common.Interfaces;
 using MilkaHR.Domain.Enums;
 
-namespace MilkaHR.Application.Candidate.Commands.AddCandidate;
+namespace MilkaHR.Application.Candidate.Commands;
 
 public record AddCandidateCommand
     (
@@ -28,7 +28,8 @@ public class AddCandidateCommandHandler(IApplicationDbContext db) : IRequestHand
             Address = request.Address,
             SalaryPreference = request.SalaryPreference,
             JobStatuses = [],
-            Cvs = []
+            Cvs = [],
+            Interviews = []
         };
         foreach (var job in request.Jobs)
         {
@@ -39,10 +40,12 @@ public class AddCandidateCommandHandler(IApplicationDbContext db) : IRequestHand
             await db.CandidateJobProcessings.AddAsync(newCandidateJobProcessing, cancellationToken);
             candidate.JobStatuses.Add(newCandidateJobProcessing);
         }
+        var cvs = await db.Cvs.Where(x => x.Candidate.Id == candidate.Id).ToListAsync(cancellationToken);
+        foreach (var cv in cvs)
+        {
+            candidate.Cvs.Add(cv);
+        }
         await db.Candidates.AddAsync(candidate, cancellationToken);
-        await db.SaveChangesAsync(cancellationToken);
-        var cvs = db.Cvs.Where(x => x.Candidate.Id == candidate.Id);
-        candidate.Cvs.AddRange(cvs);
         await db.SaveChangesAsync(cancellationToken);
         return candidate;
     }

@@ -1,7 +1,7 @@
 using MilkaHR.Application.Common.Interfaces;
-using MilkaHR.Domain.Enums;
+using MilkaHR.Domain.Entities;
 
-namespace MilkaHR.Application.Candidate.Commands.UpdateCandidateById;
+namespace MilkaHR.Application.Candidate.Commands;
 
 public record UpdateCandidateByIdCommand
 (
@@ -12,8 +12,8 @@ public record UpdateCandidateByIdCommand
     string Email,
     string Phone,
     string Address,
-    int SalaryPreference
-) : IRequest;
+    int SalaryPreference,
+    List<Cv> Cvs) : IRequest;
 
 public class UpdateCandidateByIdCommandHandler(IApplicationDbContext db) : IRequestHandler<UpdateCandidateByIdCommand>
 {
@@ -27,6 +27,11 @@ public class UpdateCandidateByIdCommandHandler(IApplicationDbContext db) : IRequ
         candidate.Phone = request.Phone;
         candidate.Address = request.Address;
         candidate.SalaryPreference = request.SalaryPreference;
+        foreach (var cv in request.Cvs)
+        {
+            if (cv.Candidate.Id == request.Id)
+                candidate.Cvs.Add(cv);
+        }
         await db.SaveChangesAsync(cancellationToken);
     }
 }

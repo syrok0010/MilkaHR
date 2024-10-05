@@ -1,11 +1,11 @@
 using MilkaHR.Application.Common.Interfaces;
 using MilkaHR.Domain.Enums;
 
-namespace MilkaHR.Application.Candidate.Commands.GetAllCandidatesByStatusByJob;
+namespace MilkaHR.Application.Candidate.Queries;
 
 public record GetAllCandidatesByStatusByJobQuery : IRequest<Dictionary<string, List<int>>?>;
 
-public class GetAllCandidatesByStatusByJobCommand(IApplicationDbContext db) : IRequestHandler<GetAllCandidatesByStatusByJobQuery, Dictionary<string, List<int>>?>
+public class GetAllCandidatesByStatusByJobQueryHandler(IApplicationDbContext db) : IRequestHandler<GetAllCandidatesByStatusByJobQuery, Dictionary<string, List<int>>?>
 {
     private readonly IApplicationDbContext _db = db;
     

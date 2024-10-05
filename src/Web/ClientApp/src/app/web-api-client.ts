@@ -1361,6 +1361,7 @@ export class UpdateCandidateByIdCommand implements IUpdateCandidateByIdCommand {
     phone?: string;
     address?: string;
     salaryPreference?: number;
+    cvs?: Cv[];
 
     constructor(data?: IUpdateCandidateByIdCommand) {
         if (data) {
@@ -1381,6 +1382,11 @@ export class UpdateCandidateByIdCommand implements IUpdateCandidateByIdCommand {
             this.phone = _data["phone"];
             this.address = _data["address"];
             this.salaryPreference = _data["salaryPreference"];
+            if (Array.isArray(_data["cvs"])) {
+                this.cvs = [] as any;
+                for (let item of _data["cvs"])
+                    this.cvs!.push(Cv.fromJS(item));
+            }
         }
     }
 
@@ -1401,6 +1407,11 @@ export class UpdateCandidateByIdCommand implements IUpdateCandidateByIdCommand {
         data["phone"] = this.phone;
         data["address"] = this.address;
         data["salaryPreference"] = this.salaryPreference;
+        if (Array.isArray(this.cvs)) {
+            data["cvs"] = [];
+            for (let item of this.cvs)
+                data["cvs"].push(item.toJSON());
+        }
         return data;
     }
 }
@@ -1414,6 +1425,7 @@ export interface IUpdateCandidateByIdCommand {
     phone?: string;
     address?: string;
     salaryPreference?: number;
+    cvs?: Cv[];
 }
 
 export class StatisticByPriority implements IStatisticByPriority {
