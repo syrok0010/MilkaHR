@@ -11,7 +11,6 @@ public record AddCandidateCommand
         string Email,
         string Phone,
         string Address,
-        int SalaryPreference,
         List<Domain.Entities.Job> Jobs) : IRequest<MilkaHR.Domain.Entities.Candidate>;
 
 public class AddCandidateCommandHandler(IApplicationDbContext db) : IRequestHandler<AddCandidateCommand, Domain.Entities.Candidate>
@@ -26,7 +25,6 @@ public class AddCandidateCommandHandler(IApplicationDbContext db) : IRequestHand
             Email = request.Email,
             Phone = request.Phone,
             Address = request.Address,
-            SalaryPreference = request.SalaryPreference,
             JobStatuses = [],
             Cvs = [],
             Interviews = []

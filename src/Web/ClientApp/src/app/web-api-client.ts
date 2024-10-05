@@ -1360,7 +1360,6 @@ export class Candidate extends BaseAuditableEntity implements ICandidate {
     email?: string;
     phone?: string;
     address?: string;
-    salaryPreference?: number;
     cvs?: Cv[];
     jobStatuses?: CandidateJobProcessing[];
     interviews?: Interview[];
@@ -1378,7 +1377,6 @@ export class Candidate extends BaseAuditableEntity implements ICandidate {
             this.email = _data["email"];
             this.phone = _data["phone"];
             this.address = _data["address"];
-            this.salaryPreference = _data["salaryPreference"];
             if (Array.isArray(_data["cvs"])) {
                 this.cvs = [] as any;
                 for (let item of _data["cvs"])
@@ -1412,7 +1410,6 @@ export class Candidate extends BaseAuditableEntity implements ICandidate {
         data["email"] = this.email;
         data["phone"] = this.phone;
         data["address"] = this.address;
-        data["salaryPreference"] = this.salaryPreference;
         if (Array.isArray(this.cvs)) {
             data["cvs"] = [];
             for (let item of this.cvs)
@@ -1440,7 +1437,6 @@ export interface ICandidate extends IBaseAuditableEntity {
     email?: string;
     phone?: string;
     address?: string;
-    salaryPreference?: number;
     cvs?: Cv[];
     jobStatuses?: CandidateJobProcessing[];
     interviews?: Interview[];
@@ -1655,6 +1651,7 @@ export class Interview extends BaseAuditableEntity implements IInterview {
     timing?: Date;
     job?: Job;
     candidate?: Candidate;
+    type?: EventType;
 
     constructor(data?: IInterview) {
         super(data);
@@ -1666,6 +1663,7 @@ export class Interview extends BaseAuditableEntity implements IInterview {
             this.timing = _data["timing"] ? new Date(_data["timing"].toString()) : <any>undefined;
             this.job = _data["job"] ? Job.fromJS(_data["job"]) : <any>undefined;
             this.candidate = _data["candidate"] ? Candidate.fromJS(_data["candidate"]) : <any>undefined;
+            this.type = _data["type"];
         }
     }
 
@@ -1681,6 +1679,7 @@ export class Interview extends BaseAuditableEntity implements IInterview {
         data["timing"] = this.timing ? this.timing.toISOString() : <any>undefined;
         data["job"] = this.job ? this.job.toJSON() : <any>undefined;
         data["candidate"] = this.candidate ? this.candidate.toJSON() : <any>undefined;
+        data["type"] = this.type;
         super.toJSON(data);
         return data;
     }
@@ -1690,6 +1689,14 @@ export interface IInterview extends IBaseAuditableEntity {
     timing?: Date;
     job?: Job;
     candidate?: Candidate;
+    type?: EventType;
+}
+
+export enum EventType {
+    Interview = 0,
+    VideoConference = 1,
+    Meeting = 2,
+    Ride = 3,
 }
 
 export abstract class BaseEvent implements IBaseEvent {
@@ -1785,7 +1792,6 @@ export class AddCandidateCommand implements IAddCandidateCommand {
     email?: string;
     phone?: string;
     address?: string;
-    salaryPreference?: number;
     jobs?: Job[];
 
     constructor(data?: IAddCandidateCommand) {
@@ -1805,7 +1811,6 @@ export class AddCandidateCommand implements IAddCandidateCommand {
             this.email = _data["email"];
             this.phone = _data["phone"];
             this.address = _data["address"];
-            this.salaryPreference = _data["salaryPreference"];
             if (Array.isArray(_data["jobs"])) {
                 this.jobs = [] as any;
                 for (let item of _data["jobs"])
@@ -1829,7 +1834,6 @@ export class AddCandidateCommand implements IAddCandidateCommand {
         data["email"] = this.email;
         data["phone"] = this.phone;
         data["address"] = this.address;
-        data["salaryPreference"] = this.salaryPreference;
         if (Array.isArray(this.jobs)) {
             data["jobs"] = [];
             for (let item of this.jobs)
@@ -1846,7 +1850,6 @@ export interface IAddCandidateCommand {
     email?: string;
     phone?: string;
     address?: string;
-    salaryPreference?: number;
     jobs?: Job[];
 }
 
@@ -1858,7 +1861,6 @@ export class UpdateCandidateByIdCommand implements IUpdateCandidateByIdCommand {
     email?: string;
     phone?: string;
     address?: string;
-    salaryPreference?: number;
     cvs?: Cv[];
 
     constructor(data?: IUpdateCandidateByIdCommand) {
@@ -1879,7 +1881,6 @@ export class UpdateCandidateByIdCommand implements IUpdateCandidateByIdCommand {
             this.email = _data["email"];
             this.phone = _data["phone"];
             this.address = _data["address"];
-            this.salaryPreference = _data["salaryPreference"];
             if (Array.isArray(_data["cvs"])) {
                 this.cvs = [] as any;
                 for (let item of _data["cvs"])
@@ -1904,7 +1905,6 @@ export class UpdateCandidateByIdCommand implements IUpdateCandidateByIdCommand {
         data["email"] = this.email;
         data["phone"] = this.phone;
         data["address"] = this.address;
-        data["salaryPreference"] = this.salaryPreference;
         if (Array.isArray(this.cvs)) {
             data["cvs"] = [];
             for (let item of this.cvs)
@@ -1922,7 +1922,6 @@ export interface IUpdateCandidateByIdCommand {
     email?: string;
     phone?: string;
     address?: string;
-    salaryPreference?: number;
     cvs?: Cv[];
 }
 
@@ -2242,6 +2241,7 @@ export class SetInterviewCommand implements ISetInterviewCommand {
     candidateId?: number;
     jobId?: number;
     timing?: Date;
+    type?: EventType;
 
     constructor(data?: ISetInterviewCommand) {
         if (data) {
@@ -2257,6 +2257,7 @@ export class SetInterviewCommand implements ISetInterviewCommand {
             this.candidateId = _data["candidateId"];
             this.jobId = _data["jobId"];
             this.timing = _data["timing"] ? new Date(_data["timing"].toString()) : <any>undefined;
+            this.type = _data["type"];
         }
     }
 
@@ -2272,6 +2273,7 @@ export class SetInterviewCommand implements ISetInterviewCommand {
         data["candidateId"] = this.candidateId;
         data["jobId"] = this.jobId;
         data["timing"] = this.timing ? this.timing.toISOString() : <any>undefined;
+        data["type"] = this.type;
         return data;
     }
 }
@@ -2280,6 +2282,7 @@ export interface ISetInterviewCommand {
     candidateId?: number;
     jobId?: number;
     timing?: Date;
+    type?: EventType;
 }
 
 export class SetCandidateStatusCommand implements ISetCandidateStatusCommand {

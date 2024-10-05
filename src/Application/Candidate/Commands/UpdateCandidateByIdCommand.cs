@@ -12,7 +12,6 @@ public record UpdateCandidateByIdCommand
     string Email,
     string Phone,
     string Address,
-    int SalaryPreference,
     List<Cv> Cvs) : IRequest;
 
 public class UpdateCandidateByIdCommandHandler(IApplicationDbContext db) : IRequestHandler<UpdateCandidateByIdCommand>
@@ -26,7 +25,6 @@ public class UpdateCandidateByIdCommandHandler(IApplicationDbContext db) : IRequ
         candidate.Email = request.Email;
         candidate.Phone = request.Phone;
         candidate.Address = request.Address;
-        candidate.SalaryPreference = request.SalaryPreference;
         foreach (var cv in request.Cvs)
         {
             if (cv.Candidate.Id == request.Id)
