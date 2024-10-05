@@ -1,4 +1,5 @@
-﻿using MilkaHR.Application.Recruiter.Commands;
+﻿using MilkaHR.Application.Note;
+using MilkaHR.Application.Recruiter.Commands;
 using MilkaHR.Application.Recruiter.Queries;
 using MilkaHR.Domain.Entities;
 
@@ -17,6 +18,7 @@ public class Recruiter : EndpointGroupBase
             .MapGet(GetRecruiterById, "{id}")
             .MapPost(SetInterview)
             .MapPut(SetCandidateStatus, "set-status/{processingId}")
+            .MapDelete(DeleteNote, "note/{id}")
             .MapGet("interviews", GetRecruiterInterviews).Produces<List<Interview>>();
     }
 
@@ -35,8 +37,7 @@ public class Recruiter : EndpointGroupBase
     private async Task<IResult> DeleteRecruiter(ISender sender, int id)
     {
         var recruiter = await sender.Send(new DeleteRecruiterCommand(id));
-        if (recruiter is false) return Results.NotFound();
-        return Results.NoContent();
+        return recruiter is false ? Results.NotFound() : Results.NoContent();
     }
 
     private Task<IEnumerable<Domain.Entities.Recruiter>> GetAllRecruiters(ISender sender, [AsParameters] GetAllRecruitersQuery query)
@@ -66,6 +67,12 @@ public class Recruiter : EndpointGroupBase
     {
         var interviews = await sender.Send(new GetRecruiterInterviewsQuery());
         return interviews is null ? Results.NotFound() : Results.Ok(interviews);
+    }
+    
+    private async Task<IResult> DeleteNote(ISender sender, int id)
+    {
+        var note = await sender.Send(new DeleteNoteCommand(id));
+        return note is false ? Results.NotFound() : Results.NoContent();
     }
 }
 
