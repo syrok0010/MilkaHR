@@ -18,7 +18,7 @@ public class Recruiter : EndpointGroupBase
             .MapGet(GetRecruiterById, "{id}")
             .MapPost(SetInterview)
             .MapPut(SetCandidateStatus, "set-status/{processingId}")
-            .MapGet(GetRecruiterInterviews);
+            .MapGet(GetRecruiterInterviews, "interviews");
     }
 
     private Task<Domain.Entities.Recruiter> CreateRecruiter(ISender sender, CreateRecruiterCommand command)
