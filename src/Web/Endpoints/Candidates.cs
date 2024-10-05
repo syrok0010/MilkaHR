@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.Extensions.DependencyInjection.Candidate.Commands.GetAllCandidatesByStatusByJob;
 using Microsoft.Extensions.DependencyInjection.Candidate.Queries.GetCandidateById;
 using MilkaHR.Application.Candidate.Commands.AddCandidate;
 using MilkaHR.Application.Candidate.Commands.RemoveCandidate;
@@ -14,7 +15,8 @@ public class Candidates : EndpointGroupBase
             .MapPost(AddCandidate)
             .MapPut(UpdateCandidate, "{id}")
             .MapDelete(RemoveCandidate, "{id}")
-            .MapGet(GetCandidate, "{id}");
+            .MapGet(GetCandidate, "{id}")
+            .MapGet(AllCandidatesByStatusByJob, "candidates/{jobId}");
     }
 
     public Task<MilkaHR.Domain.Entities.Candidate> AddCandidate(ISender sender, AddCandidateCommand command)
@@ -39,5 +41,11 @@ public class Candidates : EndpointGroupBase
     {
         var candidate = await sender.Send(new GetCandidateById(id));
         return candidate is null ? Results.NotFound() : Results.Ok(candidate);
+    }
+
+    public async Task<IResult> AllCandidatesByStatusByJob(ISender sender, int jobId)
+    {
+        var stats = await sender.Send(new GetAllCandidatesByStatusByJob(jobId));
+        return Results.Ok(stats);
     }
 }

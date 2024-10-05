@@ -280,6 +280,31 @@
           }
         }
       }
+    },
+    "/api/Candidates/candidates/{jobId}": {
+      "get": {
+        "tags": [
+          "Candidates"
+        ],
+        "operationId": "AllCandidatesByStatusByJob",
+        "parameters": [
+          {
+            "name": "jobId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
     }
   },
   "components": {
