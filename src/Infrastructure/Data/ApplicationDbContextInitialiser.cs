@@ -110,7 +110,8 @@ public class ApplicationDbContextInitialiser
             Status = JobStatus.Opened,
             PublicationDate = DateTime.UtcNow,
             Recruiter = recruiter.Entity,
-            CandidateStatuses = []
+            CandidateStatuses = [],
+            Category = 0
         }, new Job
         {
             Title = "Тестировщик",
@@ -118,7 +119,8 @@ public class ApplicationDbContextInitialiser
             Status = JobStatus.Opened,
             PublicationDate = DateTime.UtcNow,
             Recruiter = recruiter.Entity,
-            CandidateStatuses = []
+            CandidateStatuses = [],
+            Category = 0
         }, new Job
         {
             Title = "Кофе-носитель",
@@ -126,7 +128,8 @@ public class ApplicationDbContextInitialiser
             Status = JobStatus.Opened,
             PublicationDate = DateTime.UtcNow,
             Recruiter = recruiter.Entity,
-            CandidateStatuses = []
+            CandidateStatuses = [],
+            Category = 0
         }, new Job
         {
             Title = "Тимлид",
@@ -134,7 +137,8 @@ public class ApplicationDbContextInitialiser
             Status = JobStatus.Opened,
             PublicationDate = DateTime.UtcNow,
             Recruiter = recruiter.Entity,
-            CandidateStatuses = []
+            CandidateStatuses = [],
+            Category = 0
         }, new Job
         {
             Title = "Аналитик",
@@ -142,7 +146,8 @@ public class ApplicationDbContextInitialiser
             Status = JobStatus.Opened,
             PublicationDate = DateTime.UtcNow,
             Recruiter = recruiter.Entity,
-            CandidateStatuses = []
+            CandidateStatuses = [],
+            Category = 0
         }, new Job
         {
             Title = "UI-дизайнер",
@@ -150,7 +155,8 @@ public class ApplicationDbContextInitialiser
             Status = JobStatus.Opened,
             PublicationDate = DateTime.UtcNow,
             Recruiter = recruiter.Entity,
-            CandidateStatuses = []
+            CandidateStatuses = [],
+            Category = 0
         }, new Job
         {
             Title = "DevOps",
@@ -158,7 +164,8 @@ public class ApplicationDbContextInitialiser
             Status = JobStatus.Opened,
             PublicationDate = DateTime.UtcNow,
             Recruiter = recruiter.Entity,
-            CandidateStatuses = []
+            CandidateStatuses = [],
+            Category = 0
         }, new Job
         {
             Title = "Техлид",
@@ -166,7 +173,8 @@ public class ApplicationDbContextInitialiser
             Status = JobStatus.Opened,
             PublicationDate = DateTime.UtcNow,
             Recruiter = recruiter.Entity,
-            CandidateStatuses = []
+            CandidateStatuses = [],
+            Category = 0
         }, new Job
         {
             Title = "UX-дизайнер",
@@ -174,7 +182,8 @@ public class ApplicationDbContextInitialiser
             Status = JobStatus.Opened,
             PublicationDate = DateTime.UtcNow,
             Recruiter = recruiter.Entity,
-            CandidateStatuses = []
+            CandidateStatuses = [],
+            Category = 0
         });
         
         await _context.SaveChangesAsync();

@@ -661,10 +661,6 @@
               "address": {
                 "type": "string"
               },
-              "salaryPreference": {
-                "type": "integer",
-                "format": "int32"
-              },
               "cvs": {
                 "type": "array",
                 "items": {
@@ -846,9 +842,28 @@
               },
               "candidate": {
                 "$ref": "#/components/schemas/Candidate"
+              },
+              "type": {
+                "$ref": "#/components/schemas/EventType"
               }
             }
           }
+        ]
+      },
+      "EventType": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "Interview",
+          "VideoConference",
+          "Meeting",
+          "Ride"
+        ],
+        "enum": [
+          0,
+          1,
+          2,
+          3
         ]
       },
       "BaseAuditableEntity": {
@@ -985,10 +1000,6 @@
           "address": {
             "type": "string"
           },
-          "salaryPreference": {
-            "type": "integer",
-            "format": "int32"
-          },
           "jobs": {
             "type": "array",
             "items": {
@@ -1022,10 +1033,6 @@
           },
           "address": {
             "type": "string"
-          },
-          "salaryPreference": {
-            "type": "integer",
-            "format": "int32"
           },
           "cvs": {
             "type": "array",
@@ -1196,6 +1203,9 @@
           "timing": {
             "type": "string",
             "format": "date-time"
+          },
+          "type": {
+            "$ref": "#/components/schemas/EventType"
           }
         }
       },

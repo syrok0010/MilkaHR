@@ -8,7 +8,6 @@ public class Candidate : BaseAuditableEntity
     public required string Email { get; set; }
     public required string Phone { get; set; }
     public required string Address { get; set; }
-    public required int SalaryPreference { get; set; } 
     public required HashSet<Cv> Cvs { get; set; } = [];
     public required HashSet<CandidateJobProcessing> JobStatuses { get; set; } = [];
     public HashSet<Interview> Interviews { get; set; } = [];
