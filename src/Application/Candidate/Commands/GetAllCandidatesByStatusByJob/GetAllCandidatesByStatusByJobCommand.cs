@@ -3,7 +3,7 @@ using MilkaHR.Domain.Enums;
 
 namespace MilkaHR.Application.Candidate.Commands.GetAllCandidatesByStatusByJob;
 
-public record GetAllCandidatesByStatusByJobQuery() : IRequest<Dictionary<string, List<int>>?>;
+public record GetAllCandidatesByStatusByJobQuery : IRequest<Dictionary<string, List<int>>?>;
 
 public class GetAllCandidatesByStatusByJobCommand(IApplicationDbContext db) : IRequestHandler<GetAllCandidatesByStatusByJobQuery, Dictionary<string, List<int>>?>
 {
