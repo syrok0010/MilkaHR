@@ -1,5 +1,6 @@
 using MilkaHR.Application.Candidate.Commands.AddCandidate;
 using MilkaHR.Application.Candidate.Commands.GetAllCandidatesByStatusByJob;
+using MilkaHR.Application.Candidate.Commands.GetAllCandidatesForJob;
 using MilkaHR.Application.Candidate.Commands.RemoveCandidate;
 using MilkaHR.Application.Candidate.Commands.UpdateCandidateById;
 using MilkaHR.Application.Candidate.Queries.GetCandidateById;
@@ -15,7 +16,8 @@ public class Candidates : EndpointGroupBase
             .MapPut(UpdateCandidate, "{id}")
             .MapDelete(RemoveCandidate, "{id}")
             .MapGet(GetCandidate, "{id}")
-            .MapGet(AllCandidatesByStatusByJob, "candidates/{jobId}");
+            .MapGet(AllCandidatesByStatusByJob, "candidates/{jobId}")
+            .MapGet(GetCandidatesCountsByJobs, "get-candidates-count-by-jobs");
     }
 
     public Task<MilkaHR.Domain.Entities.Candidate> AddCandidate(ISender sender, AddCandidateCommand command)
@@ -45,6 +47,12 @@ public class Candidates : EndpointGroupBase
     public async Task<IResult> AllCandidatesByStatusByJob(ISender sender, int jobId)
     {
         var stats = await sender.Send(new GetAllCandidatesByStatusByJob(jobId));
+        return Results.Ok(stats);
+    }
+
+    public async Task<IResult> GetCandidatesCountsByJobs(ISender sender)
+    {
+        var stats = await sender.Send(new GetCandidatesCountByJobCommand());
         return Results.Ok(stats);
     }
 }
