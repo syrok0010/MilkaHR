@@ -1,9 +1,18 @@
-<div class="flex flex-col justify-between">
+<div class="flex flex-col justify-between h-full gap-4">
   <app-summary />
-  <div class="grid grid-cols-2 h-full gap-8 py-8">
-
-    <app-jobs-month-bar-chart />
-    <div tuiCardLarge
+  <div class="flex flex-row justify-between h-full gap-4">
+    <div class="flex flex-col justify-between basis-1/3 h-full gap-4">
+      <!--to-do-list-->
+      <app-to-do-list></app-to-do-list>
+      <!--Расписание собеседований-->
+    </div>
+    <div class="flex flex-col justify-between basis-2/3 h-full gap-4">
+      <!--Таблица вакансия и этапы-->
+      <div class="flex flex-row justify-between gap-4">
+        <app-relevant-jobs-ring-chart></app-relevant-jobs-ring-chart>
+        <!--Сколько в среднем закрывает вакансию-->
+      </div>
+      <div tuiCardLarge
          tuiSurface="elevated">
         <header tuiHeader>
           <h2 tuiTitle>Количество поданных заявок на открытые вакансии</h2>
@@ -25,8 +34,7 @@
             size="l"
           />
         </tui-axes>
+      </div>
     </div>
-    <app-to-do-list></app-to-do-list>
-  <app-relevant-jobs-ring-chart></app-relevant-jobs-ring-chart>
   </div>
 </div>
