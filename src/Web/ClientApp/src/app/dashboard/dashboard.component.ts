@@ -11,11 +11,13 @@ import {
 } from "@taiga-ui/addon-charts";
 import {TuiCardLarge, TuiHeader} from "@taiga-ui/layout";
 import {TuiSurface, TuiTitle} from "@taiga-ui/core";
+import { ToDoListComponent } from '../to-do-list/to-do-list.component';
+
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [DashboardSummaryComponent, JobByStatusTableComponent, JobsMonthBarChartComponent, TuiAxes, TuiCardLarge, TuiHeader, TuiLineChart, TuiSurface, TuiTitle, TuiBarChart],
+  imports: [DashboardSummaryComponent, JobByStatusTableComponent, JobsMonthBarChartComponent, TuiAxes, TuiCardLarge, TuiHeader, TuiLineChart, TuiSurface, TuiTitle, TuiBarChart,ToDoListComponent],
   templateUrl: './dashboard.component.html',
   styles: ``,
 })
