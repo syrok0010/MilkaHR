@@ -27,7 +27,7 @@ import { ApplicantsPageComponent } from './applicants-page/applicants-page.compo
         component: DashboardComponent,
       },
       {
-        path: '/applicants',
+        path: 'applicants',
         component: ApplicantsPageComponent,
       },
     ]),
