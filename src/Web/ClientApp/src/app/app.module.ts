@@ -14,18 +14,17 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
-
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
-    RouterModule.forRoot([{
-      path: '', component: DashboardComponent
-    }
+    RouterModule.forRoot([
+      {
+        path: '',/
+        component: DashboardComponent,
+      },
     ]),
     BrowserAnimationsModule,
     ModalModule.forRoot(),
