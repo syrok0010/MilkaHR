@@ -42,9 +42,9 @@ public class Candidates : EndpointGroupBase
         return candidate is null ? Results.NotFound() : Results.Ok(candidate);
     }
 
-    public async Task<IResult> AllCandidatesByStatusByJob(ISender sender, int jobId)
+    public async Task<IResult> AllCandidatesByStatusByJob(ISender sender, GetAllCandidatesByStatusByJobQuery query)
     {
-        var stats = await sender.Send(new GetAllCandidatesByStatusByJob(jobId));
-        return Results.Ok(stats);
+        var statistics = await sender.Send(query);
+        return statistics is null ? Results.NotFound() : Results.Ok(statistics);
     }
 }
