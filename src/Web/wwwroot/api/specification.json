@@ -121,7 +121,7 @@
         }
       }
     },
-    "/api/Candidates/candidates": {
+    "/api/Candidates/candidates-by-status-by-job": {
       "get": {
         "tags": [
           "Candidates"
@@ -187,6 +187,27 @@
                   "items": {
                     "$ref": "#/components/schemas/StatisticByPriority"
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Jobs/average-lifetime": {
+      "get": {
+        "tags": [
+          "Jobs"
+        ],
+        "operationId": "GetAverageJobLifetime",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "number",
+                  "format": "double"
                 }
               }
             }
@@ -679,7 +700,7 @@
           "level": {
             "$ref": "#/components/schemas/PriorityLevel"
           },
-          "closed": {
+          "opened": {
             "type": "integer",
             "format": "int32"
           },
