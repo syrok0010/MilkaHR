@@ -17,7 +17,8 @@ public class Recruiter : EndpointGroupBase
             .MapGet(GetAllRecruiters)
             .MapGet(GetRecruiterById, "{id}")
             .MapPost(SetInterview)
-            .MapPut(SetCandidateStatus, "set-status/{processingId}");
+            .MapPut(SetCandidateStatus, "set-status/{processingId}")
+            .MapGet(GetRecruiterInterviews);
     }
 
     private Task<Domain.Entities.Recruiter> CreateRecruiter(ISender sender, CreateRecruiterCommand command)
@@ -60,6 +61,12 @@ public class Recruiter : EndpointGroupBase
         if (processingId != command.ProcessingId) return Results.BadRequest();
         var processing = await sender.Send(command);
         return processing is null ? Results.NotFound() : Results.Ok(processing);
+    }
+    
+    private async Task<IResult> GetRecruiterInterviews(ISender sender)
+    {
+        var interviews = await sender.Send(new GetRecruiterInterviewsQuery());
+        return interviews is null ? Results.NotFound() : Results.Ok(interviews);
     }
 }
 
