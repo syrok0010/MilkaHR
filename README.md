@@ -66,6 +66,3 @@ Then, in a new console, run the tests:
 cd .\src\Web\
 dotnet test
 ```
-
-## Help
-To learn more about the project go to the [project website](https://github.com/jasontaylordev/CleanArchitecture). Here you can find additional guidance, request new features, report a bug.
