@@ -16,7 +16,7 @@ public class Candidates : EndpointGroupBase
             .MapPut(UpdateCandidate, "{id}")
             .MapDelete(RemoveCandidate, "{id}")
             .MapGet(GetCandidate, "{id}")
-            .MapGet(AllCandidatesByStatusByJob, "candidates/{jobId}")
+            .MapGet(GetAllCandidatesByStatusByJob, "candidates/{jobId}")
             .MapGet(GetCandidatesCountsByJobs, "get-candidates-count-by-jobs");
     }
 
@@ -44,7 +44,7 @@ public class Candidates : EndpointGroupBase
         return candidate is null ? Results.NotFound() : Results.Ok(candidate);
     }
 
-    public async Task<IResult> AllCandidatesByStatusByJob(ISender sender, GetAllCandidatesByStatusByJobQuery query)
+    public async Task<IResult> GetAllCandidatesByStatusByJob(ISender sender, GetAllCandidatesByStatusByJobQuery query)
     {
         var statistics = await sender.Send(query);
         return statistics is null ? Results.NotFound() : Results.Ok(statistics);
