@@ -6,7 +6,6 @@ import {Component} from '@angular/core';
   imports: [
   ],
   templateUrl: './job-by-status-table.component.html',
-  styles: ``
 })
 export class JobByStatusTableComponent {
   data = null;
