@@ -21,6 +21,7 @@ public class GetRecruiterInterviewsByIdQueryHandler(IApplicationDbContext db)
             .SelectMany(r => r.Interviews
                 .Where(i => i.Timing.Date == Today.Date ||
                             i.Timing.Date == Today.Date.AddDays(1)))
+            .OrderBy(i => i.Timing)
             .ToListAsync(cancellationToken);
         return interviews.Count == 0 ? null : interviews;
     }
