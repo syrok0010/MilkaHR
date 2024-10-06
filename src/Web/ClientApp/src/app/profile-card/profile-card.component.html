@@ -1,7 +1,7 @@
 <div tuiCardLarge tuiSurface="elevated">
   <div class="flex flex-row justify-between gap-2 content-center">
     <div class="gap 2 align-middle content-center">
-      <img class="rounded-full" src={{candidate().photo}} alt="avatar" />
+      <img class="rounded-full" src="{{ candidate().photo }}" alt="avatar" />
     </div>
     <div class="gap-2 content-center">
       <h1 tuiTitle class="font-sans fony-bold">
@@ -18,13 +18,15 @@
     <div tuiHeader="xs" class="content-center font-sans gap-2">
       <h6 tuiTitle>
         Последнее место работы
-        <div tuiSubtitle class="text-center">{{ candidate().lastJob}}</div>
+        <div tuiSubtitle class="text-center">{{ candidate().lastJob }}</div>
       </h6>
     </div>
     <div tuiHeader="xs" class="content-center font-sans gap-2">
       <h6 tuiTitle>
         Опыт работы
-        <div tuiSubtitle class="text-center">{{candidate().workExperience}}</div>
+        <div tuiSubtitle class="text-center">
+          {{ candidate().workExperience }}
+        </div>
       </h6>
     </div>
     <div
@@ -32,14 +34,25 @@
       class="grid grid-rows-4 place-items-center font-sans gap-2"
     >
       <h6 tuiTitle>Вакансии</h6>
-      <div tuiSubtitle class="text-center" *ngFor="let v of candidate().jobStatuses">{{v.job.title}}</div>
+      <div
+        tuiSubtitle
+        class="text-center"
+        *ngFor="let v of candidate().jobStatuses"
+      >
+        {{ v.job.title }}
+      </div>
     </div>
     <div
       tuiHeader="xs"
       class="grid grid-rows-4 place-items-center font-sans gap-2"
     >
       <h6 tuiTitle>Статус</h6>
-      <tui-badge appearance="success" *ngFor="let v of candidate().jobStatuses" uiStatus>{{v.processingStatus.toString()}}</tui-badge>
+      <tui-badge
+        appearance="success"
+        *ngFor="let v of candidate().jobStatuses"
+        uiStatus
+        >{{ v.processingStatus.toString() }}</tui-badge
+      >
     </div>
     <div class="gap-2 content-center">
       <button
