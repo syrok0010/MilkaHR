@@ -667,6 +667,30 @@
                   "$ref": "#/components/schemas/Cv"
                 }
               },
+              "photo": {
+                "type": "string",
+                "nullable": true
+              },
+              "birthDate": {
+                "type": "string",
+                "format": "date"
+              },
+              "workExperience": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "lastJob": {
+                "type": "string"
+              },
+              "tags": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "education": {
+                "type": "string"
+              },
               "jobStatuses": {
                 "type": "array",
                 "items": {
@@ -1000,6 +1024,24 @@
           "address": {
             "type": "string"
           },
+          "birthDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "workExperience": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "lastJob": {
+            "type": "string"
+          },
+          "education": {
+            "type": "string"
+          },
+          "photo": {
+            "type": "string",
+            "nullable": true
+          },
           "jobs": {
             "type": "array",
             "items": {
@@ -1033,6 +1075,20 @@
           },
           "address": {
             "type": "string"
+          },
+          "workExperience": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "lastJob": {
+            "type": "string"
+          },
+          "education": {
+            "type": "string"
+          },
+          "photo": {
+            "type": "string",
+            "nullable": true
           },
           "cvs": {
             "type": "array",

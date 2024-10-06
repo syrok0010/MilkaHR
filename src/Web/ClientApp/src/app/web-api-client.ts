@@ -1361,6 +1361,12 @@ export class Candidate extends BaseAuditableEntity implements ICandidate {
     phone?: string;
     address?: string;
     cvs?: Cv[];
+    photo?: string | undefined;
+    birthDate?: Date;
+    workExperience?: number;
+    lastJob?: string;
+    tags?: string[];
+    education?: string;
     jobStatuses?: CandidateJobProcessing[];
     interviews?: Interview[];
 
@@ -1382,6 +1388,16 @@ export class Candidate extends BaseAuditableEntity implements ICandidate {
                 for (let item of _data["cvs"])
                     this.cvs!.push(Cv.fromJS(item));
             }
+            this.photo = _data["photo"];
+            this.birthDate = _data["birthDate"] ? new Date(_data["birthDate"].toString()) : <any>undefined;
+            this.workExperience = _data["workExperience"];
+            this.lastJob = _data["lastJob"];
+            if (Array.isArray(_data["tags"])) {
+                this.tags = [] as any;
+                for (let item of _data["tags"])
+                    this.tags!.push(item);
+            }
+            this.education = _data["education"];
             if (Array.isArray(_data["jobStatuses"])) {
                 this.jobStatuses = [] as any;
                 for (let item of _data["jobStatuses"])
@@ -1415,6 +1431,16 @@ export class Candidate extends BaseAuditableEntity implements ICandidate {
             for (let item of this.cvs)
                 data["cvs"].push(item.toJSON());
         }
+        data["photo"] = this.photo;
+        data["birthDate"] = this.birthDate ? formatDate(this.birthDate) : <any>undefined;
+        data["workExperience"] = this.workExperience;
+        data["lastJob"] = this.lastJob;
+        if (Array.isArray(this.tags)) {
+            data["tags"] = [];
+            for (let item of this.tags)
+                data["tags"].push(item);
+        }
+        data["education"] = this.education;
         if (Array.isArray(this.jobStatuses)) {
             data["jobStatuses"] = [];
             for (let item of this.jobStatuses)
@@ -1438,6 +1464,12 @@ export interface ICandidate extends IBaseAuditableEntity {
     phone?: string;
     address?: string;
     cvs?: Cv[];
+    photo?: string | undefined;
+    birthDate?: Date;
+    workExperience?: number;
+    lastJob?: string;
+    tags?: string[];
+    education?: string;
     jobStatuses?: CandidateJobProcessing[];
     interviews?: Interview[];
 }
@@ -1792,6 +1824,11 @@ export class AddCandidateCommand implements IAddCandidateCommand {
     email?: string;
     phone?: string;
     address?: string;
+    birthDate?: Date;
+    workExperience?: number;
+    lastJob?: string;
+    education?: string;
+    photo?: string | undefined;
     jobs?: Job[];
 
     constructor(data?: IAddCandidateCommand) {
@@ -1811,6 +1848,11 @@ export class AddCandidateCommand implements IAddCandidateCommand {
             this.email = _data["email"];
             this.phone = _data["phone"];
             this.address = _data["address"];
+            this.birthDate = _data["birthDate"] ? new Date(_data["birthDate"].toString()) : <any>undefined;
+            this.workExperience = _data["workExperience"];
+            this.lastJob = _data["lastJob"];
+            this.education = _data["education"];
+            this.photo = _data["photo"];
             if (Array.isArray(_data["jobs"])) {
                 this.jobs = [] as any;
                 for (let item of _data["jobs"])
@@ -1834,6 +1876,11 @@ export class AddCandidateCommand implements IAddCandidateCommand {
         data["email"] = this.email;
         data["phone"] = this.phone;
         data["address"] = this.address;
+        data["birthDate"] = this.birthDate ? formatDate(this.birthDate) : <any>undefined;
+        data["workExperience"] = this.workExperience;
+        data["lastJob"] = this.lastJob;
+        data["education"] = this.education;
+        data["photo"] = this.photo;
         if (Array.isArray(this.jobs)) {
             data["jobs"] = [];
             for (let item of this.jobs)
@@ -1850,6 +1897,11 @@ export interface IAddCandidateCommand {
     email?: string;
     phone?: string;
     address?: string;
+    birthDate?: Date;
+    workExperience?: number;
+    lastJob?: string;
+    education?: string;
+    photo?: string | undefined;
     jobs?: Job[];
 }
 
@@ -1861,6 +1913,10 @@ export class UpdateCandidateByIdCommand implements IUpdateCandidateByIdCommand {
     email?: string;
     phone?: string;
     address?: string;
+    workExperience?: number;
+    lastJob?: string;
+    education?: string;
+    photo?: string | undefined;
     cvs?: Cv[];
 
     constructor(data?: IUpdateCandidateByIdCommand) {
@@ -1881,6 +1937,10 @@ export class UpdateCandidateByIdCommand implements IUpdateCandidateByIdCommand {
             this.email = _data["email"];
             this.phone = _data["phone"];
             this.address = _data["address"];
+            this.workExperience = _data["workExperience"];
+            this.lastJob = _data["lastJob"];
+            this.education = _data["education"];
+            this.photo = _data["photo"];
             if (Array.isArray(_data["cvs"])) {
                 this.cvs = [] as any;
                 for (let item of _data["cvs"])
@@ -1905,6 +1965,10 @@ export class UpdateCandidateByIdCommand implements IUpdateCandidateByIdCommand {
         data["email"] = this.email;
         data["phone"] = this.phone;
         data["address"] = this.address;
+        data["workExperience"] = this.workExperience;
+        data["lastJob"] = this.lastJob;
+        data["education"] = this.education;
+        data["photo"] = this.photo;
         if (Array.isArray(this.cvs)) {
             data["cvs"] = [];
             for (let item of this.cvs)
@@ -1922,6 +1986,10 @@ export interface IUpdateCandidateByIdCommand {
     email?: string;
     phone?: string;
     address?: string;
+    workExperience?: number;
+    lastJob?: string;
+    education?: string;
+    photo?: string | undefined;
     cvs?: Cv[];
 }
 
@@ -2396,6 +2464,12 @@ export class CreateNoteCommand implements ICreateNoteCommand {
 
 export interface ICreateNoteCommand {
     text?: string;
+}
+
+function formatDate(d: Date) {
+    return d.getFullYear() + '-' + 
+        (d.getMonth() < 9 ? ('0' + (d.getMonth()+1)) : (d.getMonth()+1)) + '-' +
+        (d.getDate() < 10 ? ('0' + d.getDate()) : d.getDate());
 }
 
 export class SwaggerException extends Error {
