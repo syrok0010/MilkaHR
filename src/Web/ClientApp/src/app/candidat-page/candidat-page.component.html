@@ -1,11 +1,11 @@
 <div class="flex flex-col justify-start gap-3 min-h-[calc(100vh-2.5rem)] w-full">
-  <app-candidate-info class="w-full" />
+  <app-candidate-info class="w-full" [candidateId]="getCandidateId()" />
   <div class="flex flex-row justify-start gap-3 w-full">
     <div class="w-1/2">
       <app-candidate-vacancy class="w-full" />
     </div>
     <div class="w-1/2">
-      <app-jobs-plans />
+      <app-jobs-plans [candidateId]="getCandidateId()" />
     </div>
   </div>
   <div class="flex flex-row justify-start gap-3 w-full">

@@ -1,5 +1,5 @@
 import { DatePipe, NgForOf } from '@angular/common';
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { TuiRingChart } from '@taiga-ui/addon-charts';
 import { TuiRepeatTimes } from '@taiga-ui/cdk';
 import { TuiSurface, TuiTitle } from '@taiga-ui/core';
@@ -7,7 +7,6 @@ import { TuiAvatar } from '@taiga-ui/kit';
 import { TuiCardLarge, TuiCell, TuiHeader } from '@taiga-ui/layout';
 import { EventType, RecruiterClient } from '../web-api-client';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-jobs-plans',
@@ -28,17 +27,13 @@ import { ActivatedRoute } from '@angular/router';
   styles: ``,
 })
 export class JobsPlansComponent {
+  candidateId = input.required<number>();
   apiClient = inject(RecruiterClient);
   interviews = toSignal(this.apiClient.getApiRecruiterInterviews());
-  route = inject(ActivatedRoute);
 
   candidateInterviews = computed(() =>
-    this.interviews().filter((i) => i.candidate.id == this.getCandidateId()),
+    this.interviews().filter((i) => i.candidate.id === this.candidateId()),
   );
-
-  getCandidateId(): number {
-    return Number(this.route.snapshot.paramMap.get('id'));
-  }
 
   getIcon(type: EventType): string {
     switch (type) {

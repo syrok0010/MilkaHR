@@ -4,7 +4,7 @@
   </header>
 
   <ul class="m-0 list-disc list-inside">
-    <div *ngFor="let interview of interviews()" tuiCell="l">
+    <div *ngFor="let interview of candidateInterviews()" tuiCell="l">
       <tui-avatar
         appearance="primary"
         src="@tui.{{ getIcon(interview.type) }}"
@@ -12,11 +12,7 @@
       <div tuiTitle class="ml-2.5">
         {{ interview.timing | date: "short" }}.<br />
         <div tuiSubtitle>
-          <span class=""
-            >{{
-              interview.job.title
-            }}</span
-          >
+          <span class="">{{ interview.job.title }}</span>
         </div>
       </div>
     </div>
@@ -24,4 +20,3 @@
 
   <div></div>
 </div>
-

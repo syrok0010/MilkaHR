@@ -4,17 +4,40 @@
       Информация о кандидате
     </h5>
   </div>
-  <form class="grid grid-cols-2 grid-rows-5 grid-flow-col gap-y-4 gap-x-8">
-    <tui-input>Фамилия<input tuiTextfieldLegacy /> </tui-input>
-    <tui-input>Имя<input tuiTextfieldLegacy /> </tui-input>
-    <tui-input>Отчество<input tuiTextfieldLegacy /> </tui-input>
-    <tui-input>E-mail<input tuiTextfieldLegacy /> </tui-input>
-    <tui-input>Номер телефона<input tuiTextfieldLegacy /> </tui-input>
+  <form
+    class="grid grid-cols-2 grid-rows-5 grid-flow-col gap-y-4 gap-x-8"
+    [formGroup]="form"
+  >
+    <tui-input formControlName="lastName"
+      >Фамилия<input tuiTextfieldLegacy />
+    </tui-input>
+    <tui-input formControlName="name"
+      >Имя<input tuiTextfieldLegacy />
+    </tui-input>
+    <tui-input formControlName="middleName"
+      >Отчество<input tuiTextfieldLegacy />
+    </tui-input>
+    <tui-input formControlName="email"
+      >E-mail<input tuiTextfieldLegacy />
+    </tui-input>
+    <tui-input formControlName="phone"
+      >Номер телефона<input tuiTextfieldLegacy />
+    </tui-input>
 
-    <tui-input>Дата рождения<input tuiTextfieldLegacy /> </tui-input>
-    <tui-input>Адрес<input tuiTextfieldLegacy /> </tui-input>
-    <tui-input>Образование<input tuiTextfieldLegacy /> </tui-input>
-    <tui-input>Навыки<input tuiTextfieldLegacy /> </tui-input>
-    <tui-input>Последнее место работы<input tuiTextfieldLegacy /> </tui-input>
+    <tui-input-date formControlName="birthDate"
+      >Дата рождения
+    </tui-input-date>
+    <tui-input formControlName="address"
+      >Адрес<input tuiTextfieldLegacy />
+    </tui-input>
+    <tui-input formControlName="education"
+      >Образование<input tuiTextfieldLegacy />
+    </tui-input>
+    <tui-input formControlName="tags"
+      >Навыки<input tuiTextfieldLegacy />
+    </tui-input>
+    <tui-input formControlName="lastJob"
+      >Последнее место работы<input tuiTextfieldLegacy />
+    </tui-input>
   </form>
 </div>
