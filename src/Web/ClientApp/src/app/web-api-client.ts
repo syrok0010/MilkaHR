@@ -17,7 +17,7 @@ export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
 export interface ICandidatesClient {
     addCandidate(command: AddCandidateCommand): Observable<Candidate>;
-    getAllCandidates(): Observable<Candidate[]>;
+    getAllCandidates(ageFrom: number | null | undefined, ageTo: number | null | undefined, workExperience: number | null | undefined, tags: string[] | null | undefined, jobTitles: string[] | null | undefined, statuses: CandidateStatus[] | null | undefined): Observable<Candidate[]>;
     updateCandidate(id: number, command: UpdateCandidateByIdCommand): Observable<void>;
     removeCandidate(id: number): Observable<void>;
     getCandidate(id: number): Observable<void>;
@@ -90,8 +90,20 @@ export class CandidatesClient implements ICandidatesClient {
         return _observableOf(null as any);
     }
 
-    getAllCandidates(): Observable<Candidate[]> {
-        let url_ = this.baseUrl + "/api/Candidates";
+    getAllCandidates(ageFrom: number | null | undefined, ageTo: number | null | undefined, workExperience: number | null | undefined, tags: string[] | null | undefined, jobTitles: string[] | null | undefined, statuses: CandidateStatus[] | null | undefined): Observable<Candidate[]> {
+        let url_ = this.baseUrl + "/api/Candidates?";
+        if (ageFrom !== undefined && ageFrom !== null)
+            url_ += "AgeFrom=" + encodeURIComponent("" + ageFrom) + "&";
+        if (ageTo !== undefined && ageTo !== null)
+            url_ += "AgeTo=" + encodeURIComponent("" + ageTo) + "&";
+        if (workExperience !== undefined && workExperience !== null)
+            url_ += "WorkExperience=" + encodeURIComponent("" + workExperience) + "&";
+        if (tags !== undefined && tags !== null)
+            tags && tags.forEach(item => { url_ += "Tags=" + encodeURIComponent("" + item) + "&"; });
+        if (jobTitles !== undefined && jobTitles !== null)
+            jobTitles && jobTitles.forEach(item => { url_ += "JobTitles=" + encodeURIComponent("" + item) + "&"; });
+        if (statuses !== undefined && statuses !== null)
+            statuses && statuses.forEach(item => { url_ += "Statuses=" + encodeURIComponent("" + item) + "&"; });
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -395,7 +407,7 @@ export class CandidatesClient implements ICandidatesClient {
 export interface IJobsClient {
     getJobsByMonthStats(): Observable<{ [key: string]: number; }>;
     getJobsCountByPriority(): Observable<StatisticByPriority[]>;
-    getAverageJobLifetime(): Observable<number>;
+    getAverageJobLifetime(): Observable<{ [key: string]: number; }>;
     createJob(command: CreateJobCommand): Observable<Job>;
     updateJob(id: number, command: UpdateJobCommand): Observable<void>;
 }
@@ -525,7 +537,7 @@ export class JobsClient implements IJobsClient {
         return _observableOf(null as any);
     }
 
-    getAverageJobLifetime(): Observable<number> {
+    getAverageJobLifetime(): Observable<{ [key: string]: number; }> {
         let url_ = this.baseUrl + "/api/Jobs/average-lifetime";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -544,14 +556,14 @@ export class JobsClient implements IJobsClient {
                 try {
                     return this.processGetAverageJobLifetime(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<number>;
+                    return _observableThrow(e) as any as Observable<{ [key: string]: number; }>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<number>;
+                return _observableThrow(response_) as any as Observable<{ [key: string]: number; }>;
         }));
     }
 
-    protected processGetAverageJobLifetime(response: HttpResponseBase): Observable<number> {
+    protected processGetAverageJobLifetime(response: HttpResponseBase): Observable<{ [key: string]: number; }> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -562,8 +574,16 @@ export class JobsClient implements IJobsClient {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = resultData200 !== undefined ? resultData200 : <any>null;
-    
+            if (resultData200) {
+                result200 = {} as any;
+                for (let key in resultData200) {
+                    if (resultData200.hasOwnProperty(key))
+                        (<any>result200)![key] = resultData200[key] !== undefined ? resultData200[key] : <any>null;
+                }
+            }
+            else {
+                result200 = <any>null;
+            }
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1417,6 +1437,12 @@ export class Candidate extends BaseAuditableEntity implements ICandidate {
     phone?: string;
     address?: string;
     cvs?: Cv[];
+    photo?: string | undefined;
+    birthDate?: Date;
+    workExperience?: number;
+    lastJob?: string;
+    tags?: string[];
+    education?: string;
     jobStatuses?: CandidateJobProcessing[];
     interviews?: Interview[];
 
@@ -1438,6 +1464,16 @@ export class Candidate extends BaseAuditableEntity implements ICandidate {
                 for (let item of _data["cvs"])
                     this.cvs!.push(Cv.fromJS(item));
             }
+            this.photo = _data["photo"];
+            this.birthDate = _data["birthDate"] ? new Date(_data["birthDate"].toString()) : <any>undefined;
+            this.workExperience = _data["workExperience"];
+            this.lastJob = _data["lastJob"];
+            if (Array.isArray(_data["tags"])) {
+                this.tags = [] as any;
+                for (let item of _data["tags"])
+                    this.tags!.push(item);
+            }
+            this.education = _data["education"];
             if (Array.isArray(_data["jobStatuses"])) {
                 this.jobStatuses = [] as any;
                 for (let item of _data["jobStatuses"])
@@ -1471,6 +1507,16 @@ export class Candidate extends BaseAuditableEntity implements ICandidate {
             for (let item of this.cvs)
                 data["cvs"].push(item.toJSON());
         }
+        data["photo"] = this.photo;
+        data["birthDate"] = this.birthDate ? this.birthDate.toISOString() : <any>undefined;
+        data["workExperience"] = this.workExperience;
+        data["lastJob"] = this.lastJob;
+        if (Array.isArray(this.tags)) {
+            data["tags"] = [];
+            for (let item of this.tags)
+                data["tags"].push(item);
+        }
+        data["education"] = this.education;
         if (Array.isArray(this.jobStatuses)) {
             data["jobStatuses"] = [];
             for (let item of this.jobStatuses)
@@ -1494,6 +1540,12 @@ export interface ICandidate extends IBaseAuditableEntity {
     phone?: string;
     address?: string;
     cvs?: Cv[];
+    photo?: string | undefined;
+    birthDate?: Date;
+    workExperience?: number;
+    lastJob?: string;
+    tags?: string[];
+    education?: string;
     jobStatuses?: CandidateJobProcessing[];
     interviews?: Interview[];
 }
@@ -1848,6 +1900,11 @@ export class AddCandidateCommand implements IAddCandidateCommand {
     email?: string;
     phone?: string;
     address?: string;
+    birthDate?: Date;
+    workExperience?: number;
+    lastJob?: string;
+    education?: string;
+    photo?: string | undefined;
     jobs?: Job[];
 
     constructor(data?: IAddCandidateCommand) {
@@ -1867,6 +1924,11 @@ export class AddCandidateCommand implements IAddCandidateCommand {
             this.email = _data["email"];
             this.phone = _data["phone"];
             this.address = _data["address"];
+            this.birthDate = _data["birthDate"] ? new Date(_data["birthDate"].toString()) : <any>undefined;
+            this.workExperience = _data["workExperience"];
+            this.lastJob = _data["lastJob"];
+            this.education = _data["education"];
+            this.photo = _data["photo"];
             if (Array.isArray(_data["jobs"])) {
                 this.jobs = [] as any;
                 for (let item of _data["jobs"])
@@ -1890,6 +1952,11 @@ export class AddCandidateCommand implements IAddCandidateCommand {
         data["email"] = this.email;
         data["phone"] = this.phone;
         data["address"] = this.address;
+        data["birthDate"] = this.birthDate ? this.birthDate.toISOString() : <any>undefined;
+        data["workExperience"] = this.workExperience;
+        data["lastJob"] = this.lastJob;
+        data["education"] = this.education;
+        data["photo"] = this.photo;
         if (Array.isArray(this.jobs)) {
             data["jobs"] = [];
             for (let item of this.jobs)
@@ -1906,6 +1973,11 @@ export interface IAddCandidateCommand {
     email?: string;
     phone?: string;
     address?: string;
+    birthDate?: Date;
+    workExperience?: number;
+    lastJob?: string;
+    education?: string;
+    photo?: string | undefined;
     jobs?: Job[];
 }
 
@@ -1917,6 +1989,10 @@ export class UpdateCandidateByIdCommand implements IUpdateCandidateByIdCommand {
     email?: string;
     phone?: string;
     address?: string;
+    workExperience?: number;
+    lastJob?: string;
+    education?: string;
+    photo?: string | undefined;
     cvs?: Cv[];
 
     constructor(data?: IUpdateCandidateByIdCommand) {
@@ -1937,6 +2013,10 @@ export class UpdateCandidateByIdCommand implements IUpdateCandidateByIdCommand {
             this.email = _data["email"];
             this.phone = _data["phone"];
             this.address = _data["address"];
+            this.workExperience = _data["workExperience"];
+            this.lastJob = _data["lastJob"];
+            this.education = _data["education"];
+            this.photo = _data["photo"];
             if (Array.isArray(_data["cvs"])) {
                 this.cvs = [] as any;
                 for (let item of _data["cvs"])
@@ -1961,6 +2041,10 @@ export class UpdateCandidateByIdCommand implements IUpdateCandidateByIdCommand {
         data["email"] = this.email;
         data["phone"] = this.phone;
         data["address"] = this.address;
+        data["workExperience"] = this.workExperience;
+        data["lastJob"] = this.lastJob;
+        data["education"] = this.education;
+        data["photo"] = this.photo;
         if (Array.isArray(this.cvs)) {
             data["cvs"] = [];
             for (let item of this.cvs)
@@ -1978,6 +2062,10 @@ export interface IUpdateCandidateByIdCommand {
     email?: string;
     phone?: string;
     address?: string;
+    workExperience?: number;
+    lastJob?: string;
+    education?: string;
+    photo?: string | undefined;
     cvs?: Cv[];
 }
 

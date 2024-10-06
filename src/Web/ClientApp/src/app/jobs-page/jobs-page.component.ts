@@ -6,7 +6,6 @@ import { JobCardComponent } from '../job-card/job-card.component';
   standalone: true,
   imports: [JobCardComponent],
   templateUrl: './jobs-page.component.html',
-  styles: ``
 })
 export class JobsPageComponent {
 

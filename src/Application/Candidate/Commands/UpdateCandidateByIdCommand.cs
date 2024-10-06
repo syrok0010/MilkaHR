@@ -12,6 +12,10 @@ public record UpdateCandidateByIdCommand
     string Email,
     string Phone,
     string Address,
+    int WorkExperience,
+    string LastJob,
+    string Education,
+    string? Photo,
     List<Cv> Cvs) : IRequest;
 
 public class UpdateCandidateByIdCommandHandler(IApplicationDbContext db) : IRequestHandler<UpdateCandidateByIdCommand>
@@ -25,6 +29,10 @@ public class UpdateCandidateByIdCommandHandler(IApplicationDbContext db) : IRequ
         candidate.Email = request.Email;
         candidate.Phone = request.Phone;
         candidate.Address = request.Address;
+        candidate.WorkExperience = request.WorkExperience;
+        candidate.LastJob = request.LastJob;
+        candidate.Education = request.Education;
+        candidate.Photo = request.Photo;
         foreach (var cv in request.Cvs)
         {
             if (cv.Candidate.Id == request.Id)

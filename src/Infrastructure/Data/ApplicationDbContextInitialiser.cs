@@ -97,89 +97,170 @@ public class ApplicationDbContextInitialiser(
             Jobs = [],
             Interviews = []
         });
-        
-        await _context.AddRangeAsync(new Job
+
+        var jobs = new List<Job>
         {
-            Title = "Разработчик",
-            Priority = PriorityLevel.Medium,
-            Status = JobStatus.Opened,
-            PublicationDate = DateTime.UtcNow,
-            Recruiter = recruiter.Entity,
-            CandidateStatuses = [],
-            Category = 0
-        }, new Job
+            new()
+            {
+                Title = "Разработчик",
+                Priority = PriorityLevel.Medium,
+                Status = JobStatus.Opened,
+                PublicationDate = DateTime.UtcNow,
+                Recruiter = recruiter.Entity,
+                CandidateStatuses = [],
+                Category = 0
+            },
+            new Job
+            {
+                Title = "Тестировщик",
+                Priority = PriorityLevel.VeryLow,
+                Status = JobStatus.Opened,
+                PublicationDate = DateTime.UtcNow,
+                Recruiter = recruiter.Entity,
+                CandidateStatuses = [],
+                Category = 0
+            },
+            new Job
+            {
+                Title = "Кофе-носитель",
+                Priority = PriorityLevel.VeryHigh,
+                Status = JobStatus.Opened,
+                PublicationDate = DateTime.UtcNow,
+                Recruiter = recruiter.Entity,
+                CandidateStatuses = [],
+                Category = 0
+            },
+            new Job
+            {
+                Title = "Тимлид",
+                Priority = PriorityLevel.High,
+                Status = JobStatus.Opened,
+                PublicationDate = DateTime.UtcNow,
+                Recruiter = recruiter.Entity,
+                CandidateStatuses = [],
+                Category = 0
+            },
+            new Job
+            {
+                Title = "Аналитик",
+                Priority = PriorityLevel.Low,
+                Status = JobStatus.Opened,
+                PublicationDate = DateTime.UtcNow,
+                Recruiter = recruiter.Entity,
+                CandidateStatuses = [],
+                Category = 0
+            },
+            new Job
+            {
+                Title = "UI-дизайнер",
+                Priority = PriorityLevel.High,
+                Status = JobStatus.Opened,
+                PublicationDate = DateTime.UtcNow,
+                Recruiter = recruiter.Entity,
+                CandidateStatuses = [],
+                Category = 0
+            },
+            new Job
+            {
+                Title = "DevOps",
+                Priority = PriorityLevel.Medium,
+                Status = JobStatus.Opened,
+                PublicationDate = DateTime.UtcNow,
+                Recruiter = recruiter.Entity,
+                CandidateStatuses = [],
+                Category = 0
+            },
+            new Job
+            {
+                Title = "Техлид",
+                Priority = PriorityLevel.Medium,
+                Status = JobStatus.Opened,
+                PublicationDate = DateTime.UtcNow,
+                Recruiter = recruiter.Entity,
+                CandidateStatuses = [],
+                Category = 0
+            },
+            new Job
+            {
+                Title = "UX-дизайнер",
+                Priority = PriorityLevel.VeryLow,
+                Status = JobStatus.Opened,
+                PublicationDate = DateTime.UtcNow,
+                Recruiter = recruiter.Entity,
+                CandidateStatuses = [],
+                Category = 0
+            }
+        };
+        await _context.AddRangeAsync(jobs);
+
+        var c1 = new Candidate
         {
-            Title = "Тестировщик",
-            Priority = PriorityLevel.VeryLow,
-            Status = JobStatus.Opened,
-            PublicationDate = DateTime.UtcNow,
-            Recruiter = recruiter.Entity,
-            CandidateStatuses = [],
-            Category = 0
-        }, new Job
+            Name = "Сергей",
+            MiddleName = "Иванович",
+            LastName = "Петров",
+            Address = "Улица Минина д.13",
+            BirthDate = DateTime.UtcNow.AddYears(-20).AddMonths(-3).AddDays(-20),
+            Education = "Высшее",
+            Email = "zanoza@mail.ru",
+            Phone = "89913342873",
+            WorkExperience = 5,
+            LastJob = "Tinkoff",
+            Cvs = [],
+            Tags = ["OOP", "C++", "DataBase"],
+            JobStatuses = []
+        };
+        c1.JobStatuses.Add(new CandidateJobProcessing
         {
-            Title = "Кофе-носитель",
-            Priority = PriorityLevel.VeryHigh,
-            Status = JobStatus.Opened,
-            PublicationDate = DateTime.UtcNow,
-            Recruiter = recruiter.Entity,
-            CandidateStatuses = [],
-            Category = 0
-        }, new Job
-        {
-            Title = "Тимлид",
-            Priority = PriorityLevel.High,
-            Status = JobStatus.Opened,
-            PublicationDate = DateTime.UtcNow,
-            Recruiter = recruiter.Entity,
-            CandidateStatuses = [],
-            Category = 0
-        }, new Job
-        {
-            Title = "Аналитик",
-            Priority = PriorityLevel.Low,
-            Status = JobStatus.Opened,
-            PublicationDate = DateTime.UtcNow,
-            Recruiter = recruiter.Entity,
-            CandidateStatuses = [],
-            Category = 0
-        }, new Job
-        {
-            Title = "UI-дизайнер",
-            Priority = PriorityLevel.High,
-            Status = JobStatus.Opened,
-            PublicationDate = DateTime.UtcNow,
-            Recruiter = recruiter.Entity,
-            CandidateStatuses = [],
-            Category = 0
-        }, new Job
-        {
-            Title = "DevOps",
-            Priority = PriorityLevel.Medium,
-            Status = JobStatus.Opened,
-            PublicationDate = DateTime.UtcNow,
-            Recruiter = recruiter.Entity,
-            CandidateStatuses = [],
-            Category = 0
-        }, new Job
-        {
-            Title = "Техлид",
-            Priority = PriorityLevel.Medium,
-            Status = JobStatus.Opened,
-            PublicationDate = DateTime.UtcNow,
-            Recruiter = recruiter.Entity,
-            CandidateStatuses = [],
-            Category = 0
-        }, new Job
-        {
-            Title = "UX-дизайнер",
-            Priority = PriorityLevel.VeryLow,
-            Status = JobStatus.Opened,
-            PublicationDate = DateTime.UtcNow,
-            Recruiter = recruiter.Entity,
-            CandidateStatuses = [],
-            Category = 0
+            Candidate = c1, Job = jobs[0], ProcessingStatus = CandidateStatus.InterviewScheduled
         });
+
+        var birthDate2 = DateTime.Parse("1967.08.12");
+        DateTime.SpecifyKind(birthDate2, DateTimeKind.Utc);
+        var c2 = new Candidate
+        {
+            Name = "Виталий",
+            MiddleName = "Ибрагимович",
+            LastName = "Солдатов",
+            Address = "Проспект Серьезного д. 12/3",
+            BirthDate = DateTime.UtcNow.AddYears(-30).AddMonths(-8).AddDays(-12),
+            Education = "Высшее",
+            Email = "megasoldat@gmail.com",
+            Phone = "89126691002",
+            WorkExperience = 23,
+            LastJob = "STM-labs",
+            Cvs = [],
+            Tags = ["Go", "Angular", "DevOps"],
+            JobStatuses = []
+        };
+        c2.JobStatuses.Add(new CandidateJobProcessing
+        {
+            Candidate = c2, Job = jobs[2], ProcessingStatus = CandidateStatus.CvApproved
+        });
+
+        var birthDate3 = DateTime.Parse("2002.11.02");
+        DateTime.SpecifyKind(birthDate3, DateTimeKind.Utc);
+        var c3 = new Candidate
+        {
+            Name = "Анатолий",
+            MiddleName = "Маратович",
+            LastName = "Зайцев",
+            Address = "Бульвар мира д. 1",
+            BirthDate = DateTime.UtcNow.AddYears(-40).AddMonths(-5).AddDays(-29),
+            Education = "Высшее",
+            Email = "tolyanzzzaaay@gmail.com",
+            Phone = "89192394744",
+            WorkExperience = 8,
+            LastJob = "Yandex",
+            Cvs = [],
+            Tags = ["UX/UI", "Web", "Java"],
+            JobStatuses = [],
+        };
+        c3.JobStatuses.Add(new CandidateJobProcessing()
+        {
+            Candidate = c3, Job = jobs[5], ProcessingStatus = CandidateStatus.InterviewCompleted
+        });
+
+        await _context.AddRangeAsync(c1, c2, c3);
         
         await _context.SaveChangesAsync();
     }

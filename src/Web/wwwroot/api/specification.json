@@ -42,6 +42,80 @@
           "Candidates"
         ],
         "operationId": "GetAllCandidates",
+        "parameters": [
+          {
+            "name": "AgeFrom",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 1
+          },
+          {
+            "name": "AgeTo",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 2
+          },
+          {
+            "name": "WorkExperience",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 3
+          },
+          {
+            "name": "Tags",
+            "in": "query",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "nullable": true,
+              "items": {
+                "type": "string"
+              }
+            },
+            "x-position": 4
+          },
+          {
+            "name": "JobTitles",
+            "in": "query",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "nullable": true,
+              "items": {
+                "type": "string"
+              }
+            },
+            "x-position": 5
+          },
+          {
+            "name": "Statuses",
+            "in": "query",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "nullable": true,
+              "items": {
+                "$ref": "#/components/schemas/CandidateStatus"
+              }
+            },
+            "x-position": 6
+          }
+        ],
         "responses": {
           "200": {
             "description": "",
@@ -241,8 +315,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "number",
-                  "format": "double"
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "number",
+                    "format": "double"
+                  }
                 }
               }
             }
@@ -688,6 +765,30 @@
                   "$ref": "#/components/schemas/Cv"
                 }
               },
+              "photo": {
+                "type": "string",
+                "nullable": true
+              },
+              "birthDate": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "workExperience": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "lastJob": {
+                "type": "string"
+              },
+              "tags": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "education": {
+                "type": "string"
+              },
               "jobStatuses": {
                 "type": "array",
                 "items": {
@@ -1021,6 +1122,24 @@
           "address": {
             "type": "string"
           },
+          "birthDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "workExperience": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "lastJob": {
+            "type": "string"
+          },
+          "education": {
+            "type": "string"
+          },
+          "photo": {
+            "type": "string",
+            "nullable": true
+          },
           "jobs": {
             "type": "array",
             "items": {
@@ -1054,6 +1173,20 @@
           },
           "address": {
             "type": "string"
+          },
+          "workExperience": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "lastJob": {
+            "type": "string"
+          },
+          "education": {
+            "type": "string"
+          },
+          "photo": {
+            "type": "string",
+            "nullable": true
           },
           "cvs": {
             "type": "array",
