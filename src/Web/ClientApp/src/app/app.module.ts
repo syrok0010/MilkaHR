@@ -13,6 +13,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ApplicantsPageComponent } from './applicants-page/applicants-page.component';
 import { JobsPageComponent } from './jobs-page/jobs-page.component';
+import { CandidateInfoComponent } from './candidate-info/candidate-info.component';
 
 @NgModule({
   declarations: [AppComponent],
@@ -32,7 +33,11 @@ import { JobsPageComponent } from './jobs-page/jobs-page.component';
       {
         path: 'jobs',
         component: JobsPageComponent,
-      }
+      },
+      {
+        path: 'candidate',
+        component: CandidateInfoComponent,
+      },
     ]),
     BrowserAnimationsModule,
     TuiRoot,
