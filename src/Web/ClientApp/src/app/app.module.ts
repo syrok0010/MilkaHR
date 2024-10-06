@@ -40,7 +40,7 @@ import { VacancyPageComponent } from './vacancy-page/vacancy-page.component';
         component: CandidatPageComponent,
       },
       {
-        path: 'vacancy',
+        path: 'vacancy/:id',
         component: VacancyPageComponent,
       },
     ]),

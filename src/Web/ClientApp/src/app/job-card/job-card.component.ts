@@ -11,6 +11,7 @@ import { TuiCardLarge, TuiHeader } from '@taiga-ui/layout';
 import { TuiInputModule } from '@taiga-ui/legacy';
 import { Job, JobCategory, JobStatus, PriorityLevel } from '../web-api-client';
 import { DatePipe, NgIf } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-job-card',
@@ -26,6 +27,7 @@ import { DatePipe, NgIf } from '@angular/common';
     TuiHeader,
     NgIf,
     DatePipe,
+    RouterLink
   ],
   templateUrl: './job-card.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
