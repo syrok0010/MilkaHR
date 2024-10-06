@@ -1,4 +1,9 @@
-import { Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+} from '@angular/core';
 import { AsyncPipe, NgForOf } from '@angular/common';
 import { TuiButton, TuiSurface, TuiTitle } from '@taiga-ui/core';
 import { TuiCardLarge, TuiHeader } from '@taiga-ui/layout';
@@ -39,14 +44,14 @@ import {
     TuiTableCell,
   ],
   templateUrl: './job-by-status-table.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class JobByStatusTableComponent {
   apiClient = inject(CandidatesClient);
-  //data = toSignal(this.apiClient.getApiCandidatesCandidatesByStatusByJob(), {
-  //  initialValue: { Разработчик: [1, 2, 3, 4, 5] },
-  //});
-  data = { Разработчик: [1, 2, 3, 4, 5, 6] };
-  dataProcessed = Object.keys(this.data).map((key) => [key, ...this.data[key]]);
+  data = toSignal(this.apiClient.getApiCandidatesCandidatesByStatusByJob());
+  dataProcessed = computed(() =>
+    Object.entries(this.data()).map(([key, value]) => [key, ...value]),
+  );
   columns: ReadonlyArray<string> = [
     'job',
     'cvCreated',
