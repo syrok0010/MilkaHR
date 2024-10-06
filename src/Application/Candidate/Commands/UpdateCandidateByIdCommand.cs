@@ -16,7 +16,8 @@ public record UpdateCandidateByIdCommand
     string LastJob,
     string Education,
     string? Photo,
-    List<Cv> Cvs) : IRequest;
+    List<Cv> Cvs,
+    DateTime BirthDate) : IRequest;
 
 public class UpdateCandidateByIdCommandHandler(IApplicationDbContext db) : IRequestHandler<UpdateCandidateByIdCommand>
 {
@@ -33,6 +34,7 @@ public class UpdateCandidateByIdCommandHandler(IApplicationDbContext db) : IRequ
         candidate.LastJob = request.LastJob;
         candidate.Education = request.Education;
         candidate.Photo = request.Photo;
+        candidate.BirthDate = request.BirthDate;
         foreach (var cv in request.Cvs)
         {
             if (cv.Candidate.Id == request.Id)
