@@ -12,6 +12,7 @@ public class Jobs : EndpointGroupBase
             .MapGet(GetJobsByMonthStats, "monthly-stats")
             .MapGet(GetJobsCountByPriority, "jobs-count-by-priority")
             .MapGet(GetAverageJobLifetime, "average-lifetime")
+            .MapGet(GetAllJobs)
             .MapPost(CreateJob, "create-job")
             .MapPut(UpdateJob, "update-job");
     }
@@ -41,5 +42,10 @@ public class Jobs : EndpointGroupBase
         if (id != command.Id) return Results.BadRequest();
         var job = await sender.Send(command);
         return job is null ? Results.NotFound() : Results.Ok(job);
+    }
+    
+    private Task<IEnumerable<Job>> GetAllJobs(ISender sender, [AsParameters] GetAllJobsQuery query)
+    {
+        return sender.Send(query);
     }
 }

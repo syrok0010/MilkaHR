@@ -408,6 +408,7 @@ export interface IJobsClient {
     getJobsByMonthStats(): Observable<{ [key: string]: number; }>;
     getJobsCountByPriority(): Observable<StatisticByPriority[]>;
     getAverageJobLifetime(): Observable<{ [key: string]: number; }>;
+    getAllJobs(title: string | null | undefined, priority: PriorityLevel | null | undefined, status: JobStatus | null | undefined, category: JobCategory | null | undefined): Observable<Job[]>;
     createJob(command: CreateJobCommand): Observable<Job>;
     updateJob(id: number, command: UpdateJobCommand): Observable<void>;
 }
@@ -580,6 +581,69 @@ export class JobsClient implements IJobsClient {
                     if (resultData200.hasOwnProperty(key))
                         (<any>result200)![key] = resultData200[key] !== undefined ? resultData200[key] : <any>null;
                 }
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    getAllJobs(title: string | null | undefined, priority: PriorityLevel | null | undefined, status: JobStatus | null | undefined, category: JobCategory | null | undefined): Observable<Job[]> {
+        let url_ = this.baseUrl + "/api/Jobs?";
+        if (title !== undefined && title !== null)
+            url_ += "Title=" + encodeURIComponent("" + title) + "&";
+        if (priority !== undefined && priority !== null)
+            url_ += "Priority=" + encodeURIComponent("" + priority) + "&";
+        if (status !== undefined && status !== null)
+            url_ += "Status=" + encodeURIComponent("" + status) + "&";
+        if (category !== undefined && category !== null)
+            url_ += "Category=" + encodeURIComponent("" + category) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllJobs(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllJobs(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<Job[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<Job[]>;
+        }));
+    }
+
+    protected processGetAllJobs(response: HttpResponseBase): Observable<Job[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(Job.fromJS(item));
             }
             else {
                 result200 = <any>null;
