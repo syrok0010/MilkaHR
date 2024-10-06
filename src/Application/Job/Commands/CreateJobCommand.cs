@@ -9,7 +9,8 @@ public record CreateJobCommand(
     JobStatus Status,
     DateTime PublicationDate,
     JobCategory Category,
-    int RecruiterId
+    int RecruiterId,
+    string Description
 ) : IRequest<Domain.Entities.Job>;
 
 public class CreateJobCommandHandler(IApplicationDbContext db) : IRequestHandler<CreateJobCommand, Domain.Entities.Job>
@@ -27,7 +28,8 @@ public class CreateJobCommandHandler(IApplicationDbContext db) : IRequestHandler
             Priority = request.PriorityLevel,
             Status = request.Status,
             PublicationDate = request.PublicationDate,
-            Recruiter = recruiter
+            Recruiter = recruiter,
+            Description = request.Description
         };
         recruiter.Jobs.Add(job);
         await _db.Jobs.AddAsync(job, cancellationToken);

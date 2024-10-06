@@ -108,7 +108,8 @@ public class ApplicationDbContextInitialiser(
                 PublicationDate = DateTime.UtcNow,
                 Recruiter = recruiter.Entity,
                 CandidateStatuses = [],
-                Category = 0
+                Category = 0,
+                Description = "Он разрабатывает хорошие вещи."
             },
             new Job
             {
@@ -118,7 +119,8 @@ public class ApplicationDbContextInitialiser(
                 PublicationDate = DateTime.UtcNow,
                 Recruiter = recruiter.Entity,
                 CandidateStatuses = [],
-                Category = 0
+                Category = 0,
+                Description = "Он тестирует классные новые штучки."
             },
             new Job
             {
@@ -128,7 +130,8 @@ public class ApplicationDbContextInitialiser(
                 PublicationDate = DateTime.UtcNow,
                 Recruiter = recruiter.Entity,
                 CandidateStatuses = [],
-                Category = 0
+                Category = 0,
+                Description = "Самая главная фигура в каждой компании."
             },
             new Job
             {
@@ -138,7 +141,8 @@ public class ApplicationDbContextInitialiser(
                 PublicationDate = DateTime.UtcNow,
                 Recruiter = recruiter.Entity,
                 CandidateStatuses = [],
-                Category = 0
+                Category = 0,
+                Description = "Благодаря ему крупные компании еще живы."
             },
             new Job
             {
@@ -148,7 +152,8 @@ public class ApplicationDbContextInitialiser(
                 PublicationDate = DateTime.UtcNow,
                 Recruiter = recruiter.Entity,
                 CandidateStatuses = [],
-                Category = 0
+                Category = 0,
+                Description = "Он анализирует не очень классные штучки, чтобы сделать классные штучки."
             },
             new Job
             {
@@ -158,7 +163,8 @@ public class ApplicationDbContextInitialiser(
                 PublicationDate = DateTime.UtcNow,
                 Recruiter = recruiter.Entity,
                 CandidateStatuses = [],
-                Category = 0
+                Category = 0,
+                Description = "Он создает красивую картинку, чтобы глазки не болели."
             },
             new Job
             {
@@ -168,7 +174,8 @@ public class ApplicationDbContextInitialiser(
                 PublicationDate = DateTime.UtcNow,
                 Recruiter = recruiter.Entity,
                 CandidateStatuses = [],
-                Category = 0
+                Category = 0,
+                Description = "Умный, по гитхабу дежурный."
             },
             new Job
             {
@@ -178,7 +185,8 @@ public class ApplicationDbContextInitialiser(
                 PublicationDate = DateTime.UtcNow,
                 Recruiter = recruiter.Entity,
                 CandidateStatuses = [],
-                Category = 0
+                Category = 0,
+                Description = "На все руки мастер-фломастер."
             },
             new Job
             {
@@ -188,7 +196,8 @@ public class ApplicationDbContextInitialiser(
                 PublicationDate = DateTime.UtcNow,
                 Recruiter = recruiter.Entity,
                 CandidateStatuses = [],
-                Category = 0
+                Category = 0,
+                Description = "Ему достаются все шишки от пользователей..."
             }
         };
         await _context.AddRangeAsync(jobs);

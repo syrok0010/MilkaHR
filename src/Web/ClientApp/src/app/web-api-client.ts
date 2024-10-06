@@ -1603,6 +1603,7 @@ export class Job extends BaseAuditableEntity implements IJob {
     closingDate?: Date | undefined;
     recruiter?: Recruiter;
     category?: JobCategory;
+    description?: string;
     candidateStatuses?: CandidateJobProcessing[];
 
     constructor(data?: IJob) {
@@ -1619,6 +1620,7 @@ export class Job extends BaseAuditableEntity implements IJob {
             this.closingDate = _data["closingDate"] ? new Date(_data["closingDate"].toString()) : <any>undefined;
             this.recruiter = _data["recruiter"] ? Recruiter.fromJS(_data["recruiter"]) : <any>undefined;
             this.category = _data["category"];
+            this.description = _data["description"];
             if (Array.isArray(_data["candidateStatuses"])) {
                 this.candidateStatuses = [] as any;
                 for (let item of _data["candidateStatuses"])
@@ -1643,6 +1645,7 @@ export class Job extends BaseAuditableEntity implements IJob {
         data["closingDate"] = this.closingDate ? this.closingDate.toISOString() : <any>undefined;
         data["recruiter"] = this.recruiter ? this.recruiter.toJSON() : <any>undefined;
         data["category"] = this.category;
+        data["description"] = this.description;
         if (Array.isArray(this.candidateStatuses)) {
             data["candidateStatuses"] = [];
             for (let item of this.candidateStatuses)
@@ -1661,6 +1664,7 @@ export interface IJob extends IBaseAuditableEntity {
     closingDate?: Date | undefined;
     recruiter?: Recruiter;
     category?: JobCategory;
+    description?: string;
     candidateStatuses?: CandidateJobProcessing[];
 }
 
@@ -2120,6 +2124,7 @@ export class CreateJobCommand implements ICreateJobCommand {
     publicationDate?: Date;
     category?: JobCategory;
     recruiterId?: number;
+    description?: string;
 
     constructor(data?: ICreateJobCommand) {
         if (data) {
@@ -2138,6 +2143,7 @@ export class CreateJobCommand implements ICreateJobCommand {
             this.publicationDate = _data["publicationDate"] ? new Date(_data["publicationDate"].toString()) : <any>undefined;
             this.category = _data["category"];
             this.recruiterId = _data["recruiterId"];
+            this.description = _data["description"];
         }
     }
 
@@ -2156,6 +2162,7 @@ export class CreateJobCommand implements ICreateJobCommand {
         data["publicationDate"] = this.publicationDate ? this.publicationDate.toISOString() : <any>undefined;
         data["category"] = this.category;
         data["recruiterId"] = this.recruiterId;
+        data["description"] = this.description;
         return data;
     }
 }
@@ -2167,6 +2174,7 @@ export interface ICreateJobCommand {
     publicationDate?: Date;
     category?: JobCategory;
     recruiterId?: number;
+    description?: string;
 }
 
 export class UpdateJobCommand implements IUpdateJobCommand {
@@ -2177,6 +2185,7 @@ export class UpdateJobCommand implements IUpdateJobCommand {
     recruiterId?: number;
     category?: JobCategory;
     closingDate?: Date | undefined;
+    description?: string;
 
     constructor(data?: IUpdateJobCommand) {
         if (data) {
@@ -2196,6 +2205,7 @@ export class UpdateJobCommand implements IUpdateJobCommand {
             this.recruiterId = _data["recruiterId"];
             this.category = _data["category"];
             this.closingDate = _data["closingDate"] ? new Date(_data["closingDate"].toString()) : <any>undefined;
+            this.description = _data["description"];
         }
     }
 
@@ -2215,6 +2225,7 @@ export class UpdateJobCommand implements IUpdateJobCommand {
         data["recruiterId"] = this.recruiterId;
         data["category"] = this.category;
         data["closingDate"] = this.closingDate ? this.closingDate.toISOString() : <any>undefined;
+        data["description"] = this.description;
         return data;
     }
 }
@@ -2227,6 +2238,7 @@ export interface IUpdateJobCommand {
     recruiterId?: number;
     category?: JobCategory;
     closingDate?: Date | undefined;
+    description?: string;
 }
 
 export class CreateRecruiterCommand implements ICreateRecruiterCommand {
