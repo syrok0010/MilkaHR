@@ -10,7 +10,8 @@ public record UpdateJobCommand(
     JobStatus Status,
     int RecruiterId,
     JobCategory Category,
-    DateTime? ClosingDate
+    DateTime? ClosingDate,
+    string Description
 ) : IRequest<Domain.Entities.Job?>;
 
 public class UpdateJobCommandHandler(IApplicationDbContext db) :
@@ -32,6 +33,7 @@ public class UpdateJobCommandHandler(IApplicationDbContext db) :
         job.Recruiter = await _db.Recruiters.FirstAsync(x => x.Id == request.RecruiterId, cancellationToken);
         job.Category = request.Category;
         job.ClosingDate = request.ClosingDate;
+        job.Description = request.Description;
 
         await _db.SaveChangesAsync(cancellationToken);
         return job;

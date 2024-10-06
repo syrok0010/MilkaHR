@@ -5,7 +5,10 @@
 
   <ul class="m-0 list-disc list-inside">
     <div *ngFor="let interview of interviews()" tuiCell="l">
-      <tui-avatar appearance="primary" src="@tui.star" />
+      <tui-avatar
+        appearance="primary"
+        src="@tui.{{ getIcon(interview.type) }}"
+      />
       <div tuiTitle class="ml-2.5">
         {{ interview.candidate.lastName }}
         {{ interview.candidate.name }} {{ interview.candidate.middleName }}
