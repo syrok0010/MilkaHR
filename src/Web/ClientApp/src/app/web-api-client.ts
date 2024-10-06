@@ -20,7 +20,7 @@ export interface ICandidatesClient {
     getAllCandidates(fullName: string | null | undefined, ageFrom: number | null | undefined, ageTo: number | null | undefined, workExperienceFrom: number | null | undefined, workExperienceTo: number | null | undefined, tags: string[] | null | undefined, jobTitles: string[] | null | undefined, statuses: CandidateStatus[] | null | undefined): Observable<Candidate[]>;
     updateCandidate(id: number, command: UpdateCandidateByIdCommand): Observable<void>;
     removeCandidate(id: number): Observable<void>;
-    getCandidate(id: number): Observable<void>;
+    getCandidate(id: number): Observable<Candidate>;
     getCandidatesCountsByJobs(): Observable<void>;
     getApiCandidatesCandidatesByStatusByJob(): Observable<{ [key: string]: number[]; }>;
 }
@@ -259,7 +259,7 @@ export class CandidatesClient implements ICandidatesClient {
         return _observableOf(null as any);
     }
 
-    getCandidate(id: number): Observable<void> {
+    getCandidate(id: number): Observable<Candidate> {
         let url_ = this.baseUrl + "/api/Candidates/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -270,6 +270,7 @@ export class CandidatesClient implements ICandidatesClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
+                "Accept": "application/json"
             })
         };
 
@@ -280,14 +281,14 @@ export class CandidatesClient implements ICandidatesClient {
                 try {
                     return this.processGetCandidate(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
+                    return _observableThrow(e) as any as Observable<Candidate>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<void>;
+                return _observableThrow(response_) as any as Observable<Candidate>;
         }));
     }
 
-    protected processGetCandidate(response: HttpResponseBase): Observable<void> {
+    protected processGetCandidate(response: HttpResponseBase): Observable<Candidate> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -296,7 +297,10 @@ export class CandidatesClient implements ICandidatesClient {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = Candidate.fromJS(resultData200);
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
