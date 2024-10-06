@@ -66,7 +66,4 @@ export class JobByStatusTableComponent {
     'hired',
     'denied',
   ];
-
-  protected readonly sorter: TuiComparator<number> = (a, b) =>
-    tuiDefaultSort(a, b);
 }
