@@ -339,10 +339,15 @@ public class ApplicationDbContextInitialiser(
             var count = random.Next(1, 3);
             for (int i = 0; i < count; i++)
             {
+                var job = jobs[random.Next(jobs.Count)];
+                while (candidate.JobStatuses.FirstOrDefault(x => x.Job.Title == job.Title) is not null)
+                {
+                    job = jobs[random.Next(jobs.Count)];
+                }
                 var processing = new CandidateJobProcessing
                 {
                     Candidate = candidate,
-                    Job = jobs[random.Next(jobs.Count)],
+                    Job = job,
                     ProcessingStatus = statuses[random.Next(statuses.Count)]
                 };
                 candidate.JobStatuses.Add(processing);
@@ -363,7 +368,8 @@ public class ApplicationDbContextInitialiser(
             }
         }
         
-        await _context.AddRangeAsync(candidates, interviews);
+        await _context.AddRangeAsync(candidates);
+        await _context.AddRangeAsync(interviews);
         
         // var interview1 = new Interview
         // {

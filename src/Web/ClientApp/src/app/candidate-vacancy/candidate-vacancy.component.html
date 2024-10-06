@@ -3,17 +3,15 @@
     <h5 tuiTitle class="self-center m-1 text-indigo-800">Вакансии</h5>
   </div>
   <div class="grid grid-cols-2 font-sans gap-6 content-start text-l">
-    <span class="content-start text-xl align-middle">Разработчик</span>
-    <tui-badge appearance="success" class="text-xl" uiStatus>
-      Success</tui-badge
-    >
-    <span class="content-start text-xl align-middle">Разработчик</span>
-    <tui-badge appearance="success" class="text-xl" uiStatus>
-      Success</tui-badge
-    >
-    <span class="content-start text-xl align-middle">Разработчик</span>
-    <tui-badge appearance="success" class="text-xl" uiStatus>
-      Success</tui-badge
-    >
+    @for (v of vacancies(); track v[0]) {
+      <span class="content-start text-xl align-middle">{{ v[0] }}</span>
+      <tui-badge
+        appearance="{{ getAppearance(v[1]) }}"
+        class="text-xl"
+        uiStatus
+      >
+        {{ CandidateStatus[v[1]] }}</tui-badge
+      >
+    }
   </div>
 </div>
