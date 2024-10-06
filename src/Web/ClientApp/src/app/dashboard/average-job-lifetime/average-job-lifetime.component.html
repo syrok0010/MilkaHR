@@ -3,9 +3,25 @@
     <h2 tuiTitle>Среднee время закрытия вакансии</h2>
   </header>
 
-  <div class="flex justify-center h-full items-center">
-    <h1 class="font-mono font-black text-9xl leading-2">12</h1>
-    <span class="text-xl">дней</span>
+  <div class="flex justify-evenly h-full items-center">
+    <tui-pie-chart [value]="values()" [(activeItemIndex)]="activeItemIndex">
+      <span>{{ values()[activeItemIndex()] || 0 }}</span>
+      <div>Total</div>
+    </tui-pie-chart>
+
+    <div class="flex flex-col gap-2">
+      <tui-legend-item
+        *ngFor="let label of labels(); let index = index"
+        size="s"
+        class="item"
+        [active]="isItemActive(index)"
+        [color]="'var(--tui-chart-categorical-0' + index + ')'"
+        [text]="label"
+        (tuiHoveredChange)="onHover(index, $event)"
+      >
+        <span>{{ values()[index] || 0 }} дней</span>
+      </tui-legend-item>
+    </div>
   </div>
   <div></div>
 </div>

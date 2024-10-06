@@ -12,7 +12,7 @@ public class Candidate : BaseAuditableEntity
     
     public string? Photo { get; set; }
     
-    public required DateOnly BirthDate { get; set; }
+    public required DateTime BirthDate { get; set; }
     
     public required int WorkExperience { get; set; }
     
