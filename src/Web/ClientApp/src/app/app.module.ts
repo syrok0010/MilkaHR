@@ -14,6 +14,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ApplicantsPageComponent } from './applicants-page/applicants-page.component';
 import { JobsPageComponent } from './jobs-page/jobs-page.component';
 import { CandidatPageComponent } from './candidat-page/candidat-page.component';
+import { VacancyPageComponent } from './vacancy-page/vacancy-page.component';
 
 @NgModule({
   declarations: [AppComponent],
@@ -37,6 +38,10 @@ import { CandidatPageComponent } from './candidat-page/candidat-page.component';
       {
         path: 'candidate/:id',
         component: CandidatPageComponent,
+      },
+      {
+        path: 'vacancy',
+        component: VacancyPageComponent,
       },
     ]),
     BrowserAnimationsModule,
