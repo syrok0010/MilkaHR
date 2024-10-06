@@ -96,9 +96,10 @@ public class Recruiter : EndpointGroupBase
         return sender.Send(query);
     }
 
-    private Task<string> GetCsvData(ISender sender)
+    private async Task<IResult> GetCsvData(ISender sender)
     {
-        return sender.Send(new GetDataInCsvCommand());
+        var path = await sender.Send(new GetDataInCsvCommand());
+        return Results.File(path, "application/zip", "result.zip");
     }
 }
 

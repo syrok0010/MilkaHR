@@ -784,7 +784,7 @@ export interface IRecruiterClient {
     completeNote(id: number): Observable<void>;
     getAllNotes(): Observable<Note[]>;
     getRecruiterInterviews(): Observable<(Interview | undefined)[]>;
-    getCsvData(): Observable<string>;
+    getCsvData(): Observable<void>;
 }
 
 @Injectable({
@@ -1412,7 +1412,7 @@ export class RecruiterClient implements IRecruiterClient {
         return _observableOf(null as any);
     }
 
-    getCsvData(): Observable<string> {
+    getCsvData(): Observable<void> {
         let url_ = this.baseUrl + "/api/Recruiter/get-data-in-csv";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1420,7 +1420,6 @@ export class RecruiterClient implements IRecruiterClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "application/json"
             })
         };
 
@@ -1431,14 +1430,14 @@ export class RecruiterClient implements IRecruiterClient {
                 try {
                     return this.processGetCsvData(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<string>;
+                    return _observableThrow(e) as any as Observable<void>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<string>;
+                return _observableThrow(response_) as any as Observable<void>;
         }));
     }
 
-    protected processGetCsvData(response: HttpResponseBase): Observable<string> {
+    protected processGetCsvData(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1447,11 +1446,7 @@ export class RecruiterClient implements IRecruiterClient {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = resultData200 !== undefined ? resultData200 : <any>null;
-    
-            return _observableOf(result200);
+            return _observableOf(null as any);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
