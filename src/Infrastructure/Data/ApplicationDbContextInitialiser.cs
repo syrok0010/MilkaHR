@@ -332,7 +332,8 @@ public class ApplicationDbContextInitialiser(
             EventType.VideoConference
         ];
 
-        var random = new Random();
+        var random = new Random(Guid.NewGuid().ToByteArray()[0]);
+        List<Interview> interviews = [];
         foreach (var candidate in candidates)
         {
             var count = random.Next(1, 3);
@@ -341,8 +342,8 @@ public class ApplicationDbContextInitialiser(
                 var processing = new CandidateJobProcessing
                 {
                     Candidate = candidate,
-                    Job = jobs[random.Next(jobs.Count - 1)],
-                    ProcessingStatus = statuses[random.Next(statuses.Count - 1)]
+                    Job = jobs[random.Next(jobs.Count)],
+                    ProcessingStatus = statuses[random.Next(statuses.Count)]
                 };
                 candidate.JobStatuses.Add(processing);
                 if (processing.ProcessingStatus != CandidateStatus.InterviewScheduled)
@@ -354,15 +355,15 @@ public class ApplicationDbContextInitialiser(
                     Candidate = candidate,
                     Job = processing.Job,
                     Timing = DateTime.UtcNow.AddHours(random.Next(45)),
-                    Type = types[random.Next(types.Count - 1)]
+                    Type = types[random.Next(types.Count)]
                 };
                 candidate.Interviews.Add(interview);
                 recruiter.Entity.Interviews.Add(interview);
-                await _context.AddRangeAsync(interview);
+                interviews.Add(interview);
             }
         }
         
-        await _context.AddRangeAsync(candidates);
+        await _context.AddRangeAsync(candidates, interviews);
         
         // var interview1 = new Interview
         // {
