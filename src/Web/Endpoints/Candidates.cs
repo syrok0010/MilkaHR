@@ -12,6 +12,7 @@ public class Candidates : EndpointGroupBase
             .MapPut(UpdateCandidate, "{id}")
             .MapDelete(RemoveCandidate, "{id}")
             .MapGet(GetCandidate, "{id}")
+            .MapGet(GetAllCandidates)
             .MapGet(GetCandidatesCountsByJobs, "get-candidates-count-by-jobs")
             .MapGet("candidates-by-status-by-job", GetAllCandidatesByStatusByJob).Produces<Dictionary<string, List<int>>>();
     }
@@ -40,6 +41,11 @@ public class Candidates : EndpointGroupBase
         return candidate is null ? Results.NotFound() : Results.Ok(candidate);
     }
 
+    private Task<IEnumerable<Domain.Entities.Candidate>> GetAllCandidates(ISender sender, [AsParameters] GetAllCandidatesQuery query)
+    {
+        return sender.Send(query);
+    }
+    
     private async Task<IResult> GetAllCandidatesByStatusByJob(ISender sender)
     {
         var statistics = await sender.Send(new GetAllCandidatesByStatusByJobQuery());
