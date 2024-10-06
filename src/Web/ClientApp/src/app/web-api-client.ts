@@ -17,7 +17,7 @@ export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
 export interface ICandidatesClient {
     addCandidate(command: AddCandidateCommand): Observable<Candidate>;
-    getAllCandidates(ageFrom: number | null | undefined, ageTo: number | null | undefined, workExperience: number | null | undefined, tags: string[] | null | undefined, jobTitles: string[] | null | undefined, statuses: CandidateStatus[] | null | undefined): Observable<Candidate[]>;
+    getAllCandidates(fullName: string | null | undefined, ageFrom: number | null | undefined, ageTo: number | null | undefined, workExperienceFrom: number | null | undefined, workExperienceTo: number | null | undefined, tags: string[] | null | undefined, jobTitles: string[] | null | undefined, statuses: CandidateStatus[] | null | undefined): Observable<Candidate[]>;
     updateCandidate(id: number, command: UpdateCandidateByIdCommand): Observable<void>;
     removeCandidate(id: number): Observable<void>;
     getCandidate(id: number): Observable<void>;
@@ -90,14 +90,18 @@ export class CandidatesClient implements ICandidatesClient {
         return _observableOf(null as any);
     }
 
-    getAllCandidates(ageFrom: number | null | undefined, ageTo: number | null | undefined, workExperience: number | null | undefined, tags: string[] | null | undefined, jobTitles: string[] | null | undefined, statuses: CandidateStatus[] | null | undefined): Observable<Candidate[]> {
+    getAllCandidates(fullName: string | null | undefined, ageFrom: number | null | undefined, ageTo: number | null | undefined, workExperienceFrom: number | null | undefined, workExperienceTo: number | null | undefined, tags: string[] | null | undefined, jobTitles: string[] | null | undefined, statuses: CandidateStatus[] | null | undefined): Observable<Candidate[]> {
         let url_ = this.baseUrl + "/api/Candidates?";
+        if (fullName !== undefined && fullName !== null)
+            url_ += "FullName=" + encodeURIComponent("" + fullName) + "&";
         if (ageFrom !== undefined && ageFrom !== null)
             url_ += "AgeFrom=" + encodeURIComponent("" + ageFrom) + "&";
         if (ageTo !== undefined && ageTo !== null)
             url_ += "AgeTo=" + encodeURIComponent("" + ageTo) + "&";
-        if (workExperience !== undefined && workExperience !== null)
-            url_ += "WorkExperience=" + encodeURIComponent("" + workExperience) + "&";
+        if (workExperienceFrom !== undefined && workExperienceFrom !== null)
+            url_ += "WorkExperienceFrom=" + encodeURIComponent("" + workExperienceFrom) + "&";
+        if (workExperienceTo !== undefined && workExperienceTo !== null)
+            url_ += "WorkExperienceTo=" + encodeURIComponent("" + workExperienceTo) + "&";
         if (tags !== undefined && tags !== null)
             tags && tags.forEach(item => { url_ += "Tags=" + encodeURIComponent("" + item) + "&"; });
         if (jobTitles !== undefined && jobTitles !== null)
