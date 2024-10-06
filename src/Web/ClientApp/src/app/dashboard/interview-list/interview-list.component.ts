@@ -27,7 +27,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 })
 export class InterviewListComponent {
   apiClient = inject(RecruiterClient);
-  interviews = toSignal(this.apiClient.getApiRecruiterInterviews());
+  interviews = toSignal(this.apiClient.getRecruiterInterviews());
   getIcon(type: EventType): string {
     switch (type) {
       case EventType.Interview:

@@ -29,10 +29,14 @@ import { toSignal } from '@angular/core/rxjs-interop';
 export class JobsPlansComponent {
   candidateId = input.required<number>();
   apiClient = inject(RecruiterClient);
-  interviews = toSignal(this.apiClient.getApiRecruiterInterviews());
+  interviews = toSignal(this.apiClient.getRecruiterInterviews());
 
   candidateInterviews = computed(() =>
-    this.interviews().filter((i) => i.candidate.id === this.candidateId()),
+    !this.interviews() || this.interviews().length === 0
+      ? []
+      : this.interviews().filter(
+          (i) => !!i && i.candidate.id === this.candidateId(),
+        ),
   );
 
   getIcon(type: EventType): string {

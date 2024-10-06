@@ -45,12 +45,11 @@ export class CandidateInfoComponent implements OnInit {
     const candidate = await firstValueFrom(
       this.apiClient.getCandidate(this.candidateId()),
     );
-    console.log(candidate.birthDate)
     this.form.setValue({
       name: candidate.name,
       lastName: candidate.lastName,
       middleName: candidate.middleName,
-      email: candidate.middleName,
+      email: candidate.email,
       phone: candidate.phone,
       address: candidate.address,
       education: candidate.education,
