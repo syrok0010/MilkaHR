@@ -11,6 +11,11 @@ public record AddCandidateCommand
         string Email,
         string Phone,
         string Address,
+        DateOnly BirthDate,
+        int WorkExperience,
+        string LastJob,
+        string Education,
+        string? Photo,
         List<Domain.Entities.Job> Jobs) : IRequest<MilkaHR.Domain.Entities.Candidate>;
 
 public class AddCandidateCommandHandler(IApplicationDbContext db) : IRequestHandler<AddCandidateCommand, Domain.Entities.Candidate>
@@ -25,9 +30,15 @@ public class AddCandidateCommandHandler(IApplicationDbContext db) : IRequestHand
             Email = request.Email,
             Phone = request.Phone,
             Address = request.Address,
+            BirthDate = request.BirthDate,
+            WorkExperience = request.WorkExperience,
+            LastJob = request.LastJob,
+            Education = request.Education,
+            Photo = request.Photo,
             JobStatuses = [],
             Cvs = [],
-            Interviews = []
+            Interviews = [],
+            Tags = []
         };
         foreach (var job in request.Jobs)
         {

@@ -21,7 +21,7 @@ public class Jobs : EndpointGroupBase
         return sender.Send(new GetMonthlyAverageJobLifeTimeQuery());
     }
     
-    private static Task<double> GetAverageJobLifetime(ISender sender)
+    private static Task<Dictionary<string, double>> GetAverageJobLifetime(ISender sender)
     {
         return sender.Send(new GetAverageJobLifeTimeQuery());
     }
