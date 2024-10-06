@@ -1,18 +1,16 @@
 <div tuiCardLarge tuiSurface="elevated">
-  <div class="flex flex-row justify-between gap-2 content-center">
+  <div class="flex flex-row justify-between gap-2 items-center">
     <div class="gap 2 align-middle content-center">
       <img class="rounded-full" src="{{ candidate().photo }}" alt="avatar" />
     </div>
-    <div class="gap-2 content-center">
-      <h1 tuiTitle class="font-sans fony-bold">
-        {{ candidate().name }} {{ candidate().lastName
-        }}<span tuiSubtitle>{{ candidate().email }}</span>
-      </h1>
-    </div>
+    <h1 tuiTitle class="font-sans font-bold">
+      {{ candidate().name }} {{ candidate().lastName
+      }}<span tuiSubtitle>{{ candidate().email }}</span>
+    </h1>
     <div tuiHeader="xs" class="content-center font-sans gap-2">
       <h6 tuiTitle>
         Возраст
-        <div tuiSubtitle class="text-center">{{ age() }}</div>
+        <div tuiSubtitle class="text-center">{{ age() }} лет</div>
       </h6>
     </div>
     <div tuiHeader="xs" class="content-center font-sans gap-2">
@@ -25,34 +23,32 @@
       <h6 tuiTitle>
         Опыт работы
         <div tuiSubtitle class="text-center">
-          {{ candidate().workExperience }}
+          {{ candidate().workExperience }} лет
         </div>
       </h6>
     </div>
-    <div
-      tuiHeader="xs"
-      class="grid grid-rows-4 place-items-center font-sans gap-2"
-    >
-      <h6 tuiTitle>Вакансии</h6>
+    <div tuiHeader="xs">
       <div
-        tuiSubtitle
-        class="text-center"
-        *ngFor="let v of candidate().jobStatuses"
+        class="grid grid-rows-{{
+          candidate().jobStatuses.length + 1
+        }} grid-cols-2 grid-flow-col place-items-center font-sans gap-2"
       >
-        {{ v.job.title }}
+        <h6 tuiTitle>Вакансии</h6>
+        <div
+          tuiSubtitle
+          class="text-center"
+          *ngFor="let v of candidate().jobStatuses"
+        >
+          {{ v.job.title }}
+        </div>
+        <h6 tuiTitle>Статус</h6>
+        <tui-badge
+          [appearance]="getAppearance(v.processingStatus)"
+          *ngFor="let v of candidate().jobStatuses"
+          uiStatus
+          >{{ CandidateStatus[v.processingStatus] }}</tui-badge
+        >
       </div>
-    </div>
-    <div
-      tuiHeader="xs"
-      class="grid grid-rows-4 place-items-center font-sans gap-2"
-    >
-      <h6 tuiTitle>Статус</h6>
-      <tui-badge
-        appearance="success"
-        *ngFor="let v of candidate().jobStatuses"
-        uiStatus
-        >{{ v.processingStatus.toString() }}</tui-badge
-      >
     </div>
     <div class="gap-2 content-center">
       <button
@@ -66,10 +62,12 @@
         [hoverable]="false"
       ></button>
     </div>
-    <div class="content-center gap-2">
-      <button size="s" appearance="primary" tuiButton type="button">
-        Связаться
-      </button>
-    </div>
+    <button
+      size="l"
+      appearance="primary"
+      tuiIconButton
+      iconStart="@tui.message-circle-more"
+      type="button"
+    ></button>
   </div>
 </div>

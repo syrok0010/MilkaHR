@@ -6,10 +6,10 @@ import {
   input,
 } from '@angular/core';
 import { TuiTagModule } from '@taiga-ui/legacy';
-import { TuiButton, TuiTitle, TuiSurface, TuiOption } from '@taiga-ui/core';
+import { TuiButton, TuiOption, TuiSurface, TuiTitle } from '@taiga-ui/core';
 import { TuiCardLarge, TuiHeader } from '@taiga-ui/layout';
 import { TuiBadge } from '@taiga-ui/kit';
-import { Candidate } from '../web-api-client';
+import { Candidate, CandidateStatus } from '../web-api-client';
 import { TuiDay } from '@taiga-ui/cdk';
 
 @Component({
@@ -44,4 +44,22 @@ export class ProfileCardComponent {
     const daysBetween = TuiDay.lengthBetween(birthDate, today);
     return Math.floor(daysBetween / 365.25);
   });
+  protected readonly CandidateStatus = CandidateStatus;
+
+  getAppearance(processingStatus: CandidateStatus) {
+    switch (processingStatus) {
+      case CandidateStatus.InterviewScheduled:
+        return 'info';
+      case CandidateStatus.Hired:
+        return 'success';
+      case CandidateStatus.Denied:
+        return 'error';
+      case CandidateStatus.CvCreated:
+        return 'warning';
+      case CandidateStatus.CvApproved:
+        return 'accent';
+      case CandidateStatus.InterviewCompleted:
+        return 'primary';
+    }
+  }
 }
