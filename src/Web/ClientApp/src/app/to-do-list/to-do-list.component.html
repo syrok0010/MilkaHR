@@ -14,43 +14,44 @@
     <button tuiButton size="m" (click)="addTask()">Добавить</button>
   </div>
 
-  <ul>
-    <div
-      class="flex items-center p-2 rounded shadow-sm hover:bg-gray-200 transition-colors duration-200 gap-4"
-    >
-      <input
-        tuiCheckbox
-        type="checkbox"
-        (change)="toggleAllTaskCompletion()"
-        [checked]="allTasksCompleted$ | async"
-        class="focus:ring-2 focus:ring-black-500"
-      />
-      Все выполнено
-    </div>
-    <li
-      *ngFor="let task of tasks | async; let i = index"
-      class="flex items-center justify-between p-2 rounded shadow-sm hover:bg-gray-200 transition-colors duration-200"
-    >
-      <div class="flex items-center gap-4" (click)="toggleTaskCompletion(i)">
+  <tui-scrollbar waIntersectionRoot [hidden]="true">
+    <ul>
+      <div
+        class="flex items-center p-2 rounded shadow-sm hover:bg-gray-200 transition-colors duration-200 gap-4"
+      >
         <input
           tuiCheckbox
           type="checkbox"
-          [checked]="task.completed"
-          class="focus:ring-2 focus:ring-red-500"
+          (change)="toggleAllTaskCompletion()"
+          [checked]="allTasksCompleted$ | async"
+          class="focus:ring-2 focus:ring-black-500"
         />
-        <span [class.line-through]="task.completed">{{ task.text }}</span>
+        Все выполнено
       </div>
-      <div class="flex items-center">
-        <button
-          tuiIconButton
-          size="s"
-          (click)="removeTask(i)"
-          iconStart="@tui.trash"
-        ></button>
-      </div>
-    </li>
-  </ul>
-
+      <li
+        *ngFor="let task of tasks | async; let i = index"
+        class="flex items-center justify-between p-2 rounded shadow-sm hover:bg-gray-200 transition-colors duration-200"
+      >
+        <div class="flex items-center gap-4" (click)="toggleTaskCompletion(i)">
+          <input
+            tuiCheckbox
+            type="checkbox"
+            [checked]="task.completed"
+            class="focus:ring-2 focus:ring-red-500"
+          />
+          <span [class.line-through]="task.completed">{{ task.text }}</span>
+        </div>
+        <div class="flex items-center">
+          <button
+            tuiIconButton
+            size="s"
+            (click)="removeTask(i)"
+            iconStart="@tui.trash"
+          ></button>
+        </div>
+      </li>
+    </ul>
+  </tui-scrollbar>
   <button size="m" tuiButton (click)="clearCompletedTasks()">
     Очистить выполненные
   </button>

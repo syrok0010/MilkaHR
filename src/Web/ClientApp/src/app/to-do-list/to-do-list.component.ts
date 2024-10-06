@@ -1,13 +1,14 @@
 import { AsyncPipe, NgFor } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { TuiCardLarge, TuiHeader } from '@taiga-ui/layout';
-import { TuiButton, TuiSurface, TuiTitle } from '@taiga-ui/core';
+import { TuiButton, TuiScrollbar, TuiSurface, TuiTitle } from '@taiga-ui/core';
 import { TuiInputModule, TuiTextfieldControllerModule } from '@taiga-ui/legacy';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { TuiCheckbox } from '@taiga-ui/kit';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { CreateNoteCommand, Note, RecruiterClient } from '../web-api-client';
+import { WaIntersectionRoot } from '@ng-web-apis/intersection-observer';
 
 @Component({
   selector: 'app-to-do-list',
@@ -23,6 +24,8 @@ import { CreateNoteCommand, Note, RecruiterClient } from '../web-api-client';
     TuiCheckbox,
     AsyncPipe,
     TuiTextfieldControllerModule,
+    TuiScrollbar,
+    WaIntersectionRoot,
   ],
   templateUrl: './to-do-list.component.html',
   standalone: true,
