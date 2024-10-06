@@ -27,52 +27,13 @@ public class GetAllCandidatesByStatusByJobQueryHandler(IApplicationDbContext db)
                 continue;
             foreach (var status in processingStatuses.OrderBy(x => x.ProcessingStatus))
             {
-                if (status.ProcessingStatus == CandidateStatus.CvCreated && status.Count != 0)
+                foreach (var statusValue in Enum.GetValues(typeof(CandidateStatus)).Cast<CandidateStatus>())
                 {
-                    numberOfCandidatesInEachOpenedJob[job.Title].Add(status.Count);
-                }
-                else
-                {
-                    numberOfCandidatesInEachOpenedJob[job.Title].Add(0);
-                }
-                if (status.ProcessingStatus == CandidateStatus.CvApproved && status.Count != 0)
-                {
-                    numberOfCandidatesInEachOpenedJob[job.Title].Add(status.Count);
-                }
-                else
-                {
-                    numberOfCandidatesInEachOpenedJob[job.Title].Add(0);
-                }
-                if (status.ProcessingStatus == CandidateStatus.InterviewScheduled && status.Count != 0)
-                {
-                    numberOfCandidatesInEachOpenedJob[job.Title].Add(status.Count);
-                }
-                else
-                {
-                    numberOfCandidatesInEachOpenedJob[job.Title].Add(0);
-                }
-                if (status.ProcessingStatus == CandidateStatus.InterviewCompleted && status.Count != 0)
-                {
-                    numberOfCandidatesInEachOpenedJob[job.Title].Add(status.Count);
-                }
-                else
-                {
-                    numberOfCandidatesInEachOpenedJob[job.Title].Add(0);
-                }
-                if (status.ProcessingStatus == CandidateStatus.Hired && status.Count != 0)
-                {
-                    numberOfCandidatesInEachOpenedJob[job.Title].Add(status.Count);
-                }
-                else
-                {
-                    numberOfCandidatesInEachOpenedJob[job.Title].Add(0);
-                }
-                if (status.ProcessingStatus == CandidateStatus.Denied && status.Count != 0)
-                {
-                    numberOfCandidatesInEachOpenedJob[job.Title].Add(status.Count);
-                }
-                else
-                {
+                    if (status.ProcessingStatus == statusValue && status.Count != 0)
+                    {
+                        numberOfCandidatesInEachOpenedJob[job.Title].Add(status.Count);
+                        continue;
+                    }
                     numberOfCandidatesInEachOpenedJob[job.Title].Add(0);
                 }
             }
