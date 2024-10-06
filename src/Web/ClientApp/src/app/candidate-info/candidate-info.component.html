@@ -1,1 +1,49 @@
-<p>candidate-info works!</p>
+<header tuiHeader class="gap 2">
+  <h2 tuiTitle class="text-center">Информация о кандидате</h2>
+</header>
+
+<div tuiCardLarge tuiSurface="elevated" class="my-4">
+  <form class="grid grid-cols-2 grid-rows-5 grid-flow-col gap-y-4 gap-x-8">
+    <tui-input>Фамилия<input tuiTextfieldLegacy /> </tui-input>
+    <tui-input>Имя<input tuiTextfieldLegacy /> </tui-input>
+    <tui-input>Отчество<input tuiTextfieldLegacy /> </tui-input>
+    <tui-input>email<input tuiTextfieldLegacy /> </tui-input>
+    <tui-input>Номер телефона<input tuiTextfieldLegacy /> </tui-input>
+
+    <tui-input>Дата рождения<input tuiTextfieldLegacy /> </tui-input>
+    <tui-input>Адрес<input tuiTextfieldLegacy /> </tui-input>
+    <tui-input>Образование<input tuiTextfieldLegacy /> </tui-input>
+    <tui-input>Навыки<input tuiTextfieldLegacy /> </tui-input>
+    <tui-input>Последнее место работы<input tuiTextfieldLegacy /> </tui-input>
+  </form>
+</div>
+
+<div
+      tuiHeader="xs"
+      class="grid grid-rows-4 place-items-center font-sans gap-2"
+    >
+      <h6 tuiTitle>Вакансии</h6>
+      <div tuiSubtitle class="text-center">Разработчик</div>
+      <div tuiSubtitle class="text-center">Бизнес-аналитик</div>
+      <div tuiSubtitle class="text-center">UX-дизайнер</div>
+    </div>
+    <div
+      tuiHeader="xs"
+      class="grid grid-rows-4 place-items-center font-sans gap-2"
+    >
+      <h6 tuiTitle>Статус</h6>
+      <tui-badge appearance="success" uiStatus> Success</tui-badge>
+      <tui-badge appearance="success" uiStatus> Success</tui-badge>
+      <tui-badge appearance="success" uiStatus> Success</tui-badge>
+    </div>
+
+<div tuiCardLarge tuiSurface="elevated" class="my-4">
+  <header tuiHeader>
+    <h2 tuiTitle>Резюме</h2>
+  </header>
+</div>
+<div tuiCardLarge tuiSurface="elevated" class="my-4">
+  <header tuiHeader>
+    <h2 tuiTitle>Отзыв рекрутера</h2>
+  </header>
+</div>
