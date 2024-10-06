@@ -11,6 +11,7 @@ import { TuiRingChart } from '@taiga-ui/addon-charts';
 import { TuiCardLarge, TuiHeader } from '@taiga-ui/layout';
 import { JobsClient, PriorityLevel } from '../web-api-client';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-relevant-jobs-ring-chart',
@@ -51,5 +52,7 @@ export class RelevantJobsRingChartComponent {
   labels: string[] = Object.values(PriorityLevel).map(
     (level) => PriorityLevel[level],
   );
-  jobsByPriority = toSignal(this.apiClient.getJobsCountByPriority());
+  jobsByPriority = toSignal(
+    this.apiClient.getJobsCountByPriority().pipe(filter((x) => !!x)),
+  );
 }
