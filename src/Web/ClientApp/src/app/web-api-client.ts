@@ -17,7 +17,7 @@ export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
 export interface ICandidatesClient {
     addCandidate(command: AddCandidateCommand): Observable<Candidate>;
-    getAllCandidates(): Observable<Candidate[]>;
+    getAllCandidates(age: number | null | undefined, workExperience: number | null | undefined, tags: string[] | null | undefined, jobTitles: string[] | null | undefined, statuses: CandidateStatus[] | null | undefined): Observable<Candidate[]>;
     updateCandidate(id: number, command: UpdateCandidateByIdCommand): Observable<void>;
     removeCandidate(id: number): Observable<void>;
     getCandidate(id: number): Observable<void>;
@@ -90,8 +90,18 @@ export class CandidatesClient implements ICandidatesClient {
         return _observableOf(null as any);
     }
 
-    getAllCandidates(): Observable<Candidate[]> {
-        let url_ = this.baseUrl + "/api/Candidates";
+    getAllCandidates(age: number | null | undefined, workExperience: number | null | undefined, tags: string[] | null | undefined, jobTitles: string[] | null | undefined, statuses: CandidateStatus[] | null | undefined): Observable<Candidate[]> {
+        let url_ = this.baseUrl + "/api/Candidates?";
+        if (age !== undefined && age !== null)
+            url_ += "Age=" + encodeURIComponent("" + age) + "&";
+        if (workExperience !== undefined && workExperience !== null)
+            url_ += "WorkExperience=" + encodeURIComponent("" + workExperience) + "&";
+        if (tags !== undefined && tags !== null)
+            tags && tags.forEach(item => { url_ += "Tags=" + encodeURIComponent("" + item) + "&"; });
+        if (jobTitles !== undefined && jobTitles !== null)
+            jobTitles && jobTitles.forEach(item => { url_ += "JobTitles=" + encodeURIComponent("" + item) + "&"; });
+        if (statuses !== undefined && statuses !== null)
+            statuses && statuses.forEach(item => { url_ += "Statuses=" + encodeURIComponent("" + item) + "&"; });
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -1496,7 +1506,7 @@ export class Candidate extends BaseAuditableEntity implements ICandidate {
                 data["cvs"].push(item.toJSON());
         }
         data["photo"] = this.photo;
-        data["birthDate"] = this.birthDate ? formatDate(this.birthDate) : <any>undefined;
+        data["birthDate"] = this.birthDate ? this.birthDate.toISOString() : <any>undefined;
         data["workExperience"] = this.workExperience;
         data["lastJob"] = this.lastJob;
         if (Array.isArray(this.tags)) {
@@ -1940,7 +1950,7 @@ export class AddCandidateCommand implements IAddCandidateCommand {
         data["email"] = this.email;
         data["phone"] = this.phone;
         data["address"] = this.address;
-        data["birthDate"] = this.birthDate ? formatDate(this.birthDate) : <any>undefined;
+        data["birthDate"] = this.birthDate ? this.birthDate.toISOString() : <any>undefined;
         data["workExperience"] = this.workExperience;
         data["lastJob"] = this.lastJob;
         data["education"] = this.education;
@@ -2528,12 +2538,6 @@ export class CreateNoteCommand implements ICreateNoteCommand {
 
 export interface ICreateNoteCommand {
     text?: string;
-}
-
-function formatDate(d: Date) {
-    return d.getFullYear() + '-' + 
-        (d.getMonth() < 9 ? ('0' + (d.getMonth()+1)) : (d.getMonth()+1)) + '-' +
-        (d.getDate() < 10 ? ('0' + d.getDate()) : d.getDate());
 }
 
 export class SwaggerException extends Error {

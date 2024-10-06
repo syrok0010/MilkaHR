@@ -42,6 +42,70 @@
           "Candidates"
         ],
         "operationId": "GetAllCandidates",
+        "parameters": [
+          {
+            "name": "Age",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 1
+          },
+          {
+            "name": "WorkExperience",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 2
+          },
+          {
+            "name": "Tags",
+            "in": "query",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "nullable": true,
+              "items": {
+                "type": "string"
+              }
+            },
+            "x-position": 3
+          },
+          {
+            "name": "JobTitles",
+            "in": "query",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "nullable": true,
+              "items": {
+                "type": "string"
+              }
+            },
+            "x-position": 4
+          },
+          {
+            "name": "Statuses",
+            "in": "query",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "nullable": true,
+              "items": {
+                "$ref": "#/components/schemas/CandidateStatus"
+              }
+            },
+            "x-position": 5
+          }
+        ],
         "responses": {
           "200": {
             "description": "",
@@ -697,7 +761,7 @@
               },
               "birthDate": {
                 "type": "string",
-                "format": "date"
+                "format": "date-time"
               },
               "workExperience": {
                 "type": "integer",
@@ -1050,7 +1114,7 @@
           },
           "birthDate": {
             "type": "string",
-            "format": "date"
+            "format": "date-time"
           },
           "workExperience": {
             "type": "integer",

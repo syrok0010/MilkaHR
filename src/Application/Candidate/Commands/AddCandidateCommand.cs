@@ -3,20 +3,19 @@ using MilkaHR.Domain.Enums;
 
 namespace MilkaHR.Application.Candidate.Commands;
 
-public record AddCandidateCommand
-    (
-        string Name,
-        string LastName,
-        string MiddleName,
-        string Email,
-        string Phone,
-        string Address,
-        DateOnly BirthDate,
-        int WorkExperience,
-        string LastJob,
-        string Education,
-        string? Photo,
-        List<Domain.Entities.Job> Jobs) : IRequest<MilkaHR.Domain.Entities.Candidate>;
+public record AddCandidateCommand(
+    string Name,
+    string LastName,
+    string MiddleName,
+    string Email,
+    string Phone,
+    string Address,
+    DateTime BirthDate,
+    int WorkExperience,
+    string LastJob,
+    string Education,
+    string? Photo,
+    List<Domain.Entities.Job> Jobs) : IRequest<MilkaHR.Domain.Entities.Candidate>;
 
 public class AddCandidateCommandHandler(IApplicationDbContext db) : IRequestHandler<AddCandidateCommand, Domain.Entities.Candidate>
 {
