@@ -2,15 +2,11 @@ import { Component, inject, signal } from '@angular/core';
 import { TuiCardLarge, TuiCell, TuiHeader } from '@taiga-ui/layout';
 import { TuiRingChart } from '@taiga-ui/addon-charts';
 import { TuiSurface, TuiTitle } from '@taiga-ui/core';
-import {
-  Candidate,
-  Interview,
-  Job,
-  RecruiterClient,
-} from '../../web-api-client';
+import { EventType, RecruiterClient } from '../../web-api-client';
 import { DatePipe, NgForOf } from '@angular/common';
 import { TuiRepeatTimes } from '@taiga-ui/cdk';
 import { TuiAvatar } from '@taiga-ui/kit';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-interview-list',
@@ -31,29 +27,17 @@ import { TuiAvatar } from '@taiga-ui/kit';
 })
 export class InterviewListComponent {
   apiClient = inject(RecruiterClient);
-  //interviews = toSignal(this.apiClient.getApiRecruiterInterviews());
-  interviews = signal([
-    new Interview({
-      candidate: new Candidate({
-        name: 'Вадим',
-        lastName: 'Сыров',
-        middleName: 'Александрович',
-      }),
-      job: new Job({
-        title: 'Стажер-разработчик',
-      }),
-      timing: new Date(Date.now()),
-    }),
-    new Interview({
-      candidate: new Candidate({
-        name: 'Валерия',
-        lastName: 'Сырова',
-        middleName: 'Александрович',
-      }),
-      job: new Job({
-        title: 'Стажер-разработчик',
-      }),
-      timing: new Date(Date.now() - 10000000),
-    }),
-  ]);
+  interviews = toSignal(this.apiClient.getApiRecruiterInterviews());
+  getIcon(type: EventType): string {
+    switch (type) {
+      case EventType.Interview:
+        return 'notepad-text';
+      case EventType.Meeting:
+        return 'users';
+      case EventType.Ride:
+        return 'car';
+      case EventType.VideoConference:
+        return 'video';
+    }
+  }
 }
