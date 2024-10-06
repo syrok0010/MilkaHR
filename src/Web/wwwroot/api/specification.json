@@ -44,17 +44,16 @@
         "operationId": "GetAllCandidates",
         "parameters": [
           {
-            "name": "AgeFrom",
+            "name": "FullName",
             "in": "query",
             "schema": {
-              "type": "integer",
-              "format": "int32",
+              "type": "string",
               "nullable": true
             },
             "x-position": 1
           },
           {
-            "name": "AgeTo",
+            "name": "AgeFrom",
             "in": "query",
             "schema": {
               "type": "integer",
@@ -64,7 +63,7 @@
             "x-position": 2
           },
           {
-            "name": "WorkExperience",
+            "name": "AgeTo",
             "in": "query",
             "schema": {
               "type": "integer",
@@ -72,6 +71,26 @@
               "nullable": true
             },
             "x-position": 3
+          },
+          {
+            "name": "WorkExperienceFrom",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 4
+          },
+          {
+            "name": "WorkExperienceTo",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 5
           },
           {
             "name": "Tags",
@@ -85,7 +104,7 @@
                 "type": "string"
               }
             },
-            "x-position": 4
+            "x-position": 6
           },
           {
             "name": "JobTitles",
@@ -99,7 +118,7 @@
                 "type": "string"
               }
             },
-            "x-position": 5
+            "x-position": 7
           },
           {
             "name": "Statuses",
@@ -113,7 +132,7 @@
                 "$ref": "#/components/schemas/CandidateStatus"
               }
             },
-            "x-position": 6
+            "x-position": 8
           }
         ],
         "responses": {
