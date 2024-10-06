@@ -23,7 +23,8 @@ public class Recruiter : EndpointGroupBase
             .MapPost(CreateNote, "create-note")
             .MapPut(CompleteNote, "complete-note")
             .MapGet(GetAllNotes, "get-notes")
-            .MapGet(GetRecruiterInterviews, "interviews");
+            .MapGet(GetRecruiterInterviews, "interviews")
+            .MapGet(GetCsvData, "get-data-in-csv");
     }
 
     private Task<Domain.Entities.Recruiter> CreateRecruiter(ISender sender, CreateRecruiterCommand command)
@@ -95,5 +96,9 @@ public class Recruiter : EndpointGroupBase
         return sender.Send(query);
     }
 
+    private Task<string> GetCsvData(ISender sender)
+    {
+        return sender.Send(new GetDataInCsvCommand());
+    }
 }
 
