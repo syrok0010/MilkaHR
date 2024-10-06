@@ -1,0 +1,27 @@
+<div tuiCardLarge tuiSurface="elevated" class="flex h-full">
+  <header tuiHeader>
+    <h2 tuiTitle>Предстоящие мероприятия</h2>
+  </header>
+
+  <ul class="m-0 list-disc list-inside">
+    <div *ngFor="let interview of interviews()" tuiCell="l">
+      <tui-avatar
+        appearance="primary"
+        src="@tui.{{ getIcon(interview.type) }}"
+      />
+      <div tuiTitle class="ml-2.5">
+
+        <div tuiSubtitle>
+          <span class=""
+            >{{ interview.timing | date: "short" }}.<br />{{
+              interview.job.title
+            }}</span
+          >
+        </div>
+      </div>
+    </div>
+  </ul>
+
+  <div></div>
+</div>
+
