@@ -5,39 +5,42 @@
     </div>
     <div class="gap-2 content-center">
       <h1 tuiTitle class="font-sans fony-bold">
-        Райан Госслинг<span tuiSubtitle>ryan_gossling</span>
+        {{ candidate().name }} {{ candidate().lastName
+        }}<span tuiSubtitle>{{ candidate().email }}</span>
       </h1>
     </div>
     <div tuiHeader="xs" class="content-center font-sans gap-2">
       <h6 tuiTitle>
-          Возраст
-          <div tuiSubtitle class="text-center">25</div>
+        Возраст
+        <div tuiSubtitle class="text-center">23</div>
       </h6>
     </div>
     <div tuiHeader="xs" class="content-center font-sans gap-2">
       <h6 tuiTitle>
-          Последнее место работы
-          <div tuiSubtitle class="text-center">Apple</div>
+        Последнее место работы
+        <div tuiSubtitle class="text-center">Apple</div>
       </h6>
     </div>
     <div tuiHeader="xs" class="content-center font-sans gap-2">
       <h6 tuiTitle>
-          Опыт работы
-          <div tuiSubtitle class="text-center">5</div>
+        Опыт работы
+        <div tuiSubtitle class="text-center">5</div>
       </h6>
     </div>
-    <div tuiHeader="xs" class="grid grid-rows-4 place-items-center font-sans gap-2">
-      <h6 tuiTitle>
-          Вакансии
-      </h6>
+    <div
+      tuiHeader="xs"
+      class="grid grid-rows-4 place-items-center font-sans gap-2"
+    >
+      <h6 tuiTitle>Вакансии</h6>
       <div tuiSubtitle class="text-center">Разработчик</div>
       <div tuiSubtitle class="text-center">Бизнес-аналитик</div>
       <div tuiSubtitle class="text-center">UX-дизайнер</div>
     </div>
-    <div tuiHeader="xs" class="grid grid-rows-4 place-items-center font-sans gap-2">
-      <h6 tuiTitle>
-          Статус
-      </h6>
+    <div
+      tuiHeader="xs"
+      class="grid grid-rows-4 place-items-center font-sans gap-2"
+    >
+      <h6 tuiTitle>Статус</h6>
       <tui-badge appearance="success" uiStatus> Success</tui-badge>
       <tui-badge appearance="success" uiStatus> Success</tui-badge>
       <tui-badge appearance="success" uiStatus> Success</tui-badge>
