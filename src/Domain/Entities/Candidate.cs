@@ -17,8 +17,8 @@ public class Candidate : BaseAuditableEntity
     public required int WorkExperience { get; set; }
     
     public required string LastJob { get; set; }
-    
-    public required List<string> Tags { get; set; }
+
+    public required List<string> Tags { get; set; } = [];
     
     public required string Education { get; set; }
     public required HashSet<CandidateJobProcessing> JobStatuses { get; set; } = [];
