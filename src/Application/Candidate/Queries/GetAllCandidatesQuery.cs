@@ -23,6 +23,7 @@ public class GetAllCandidatesQueryHandler(IApplicationDbContext db)
             .Include(x => x.Cvs)
             .Include(x => x.Interviews)
             .Include(x => x.JobStatuses)
+            .ThenInclude(x => x.Job)
             .AsQueryable();
 
         if (request.AgeFrom is not null) 

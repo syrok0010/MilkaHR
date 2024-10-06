@@ -1,8 +1,13 @@
 import { NgForOf } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+} from '@angular/core';
 import { TuiTagModule } from '@taiga-ui/legacy';
 import { TuiButton, TuiTitle, TuiSurface, TuiOption } from '@taiga-ui/core';
-import { TuiCardLarge } from '@taiga-ui/layout';
+import { TuiCardLarge, TuiHeader } from '@taiga-ui/layout';
 import { TuiBadge } from '@taiga-ui/kit';
 import { Candidate } from '../web-api-client';
 import { TuiDay } from '@taiga-ui/cdk';
@@ -19,6 +24,7 @@ import { TuiDay } from '@taiga-ui/cdk';
     TuiOption,
     TuiTagModule,
     TuiBadge,
+    TuiHeader,
   ],
   templateUrl: './profile-card.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -33,10 +39,9 @@ export class ProfileCardComponent {
 
   age = computed(() => {
     const c = this.candidate();
+    const birthDate = TuiDay.fromUtcNativeDate(new Date(c.birthDate));
     const today = TuiDay.currentUtc();
-    const daysBetween = TuiDay.lengthBetween(today, today);
-    const years = Math.floor(daysBetween / 365.25)
-    return years;
-  })
-
+    const daysBetween = TuiDay.lengthBetween(birthDate, today);
+    return Math.floor(daysBetween / 365.25);
+  });
 }
