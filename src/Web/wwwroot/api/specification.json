@@ -860,6 +860,9 @@
               "category": {
                 "$ref": "#/components/schemas/JobCategory"
               },
+              "description": {
+                "type": "string"
+              },
               "candidateStatuses": {
                 "type": "array",
                 "items": {
@@ -1236,6 +1239,9 @@
           "recruiterId": {
             "type": "integer",
             "format": "int32"
+          },
+          "description": {
+            "type": "string"
           }
         }
       },
@@ -1267,6 +1273,9 @@
             "type": "string",
             "format": "date-time",
             "nullable": true
+          },
+          "description": {
+            "type": "string"
           }
         }
       },
