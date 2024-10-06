@@ -1300,6 +1300,10 @@
             "items": {
               "$ref": "#/components/schemas/Cv"
             }
+          },
+          "birthDate": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       },

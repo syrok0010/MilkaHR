@@ -2070,6 +2070,7 @@ export class UpdateCandidateByIdCommand implements IUpdateCandidateByIdCommand {
     education?: string;
     photo?: string | undefined;
     cvs?: Cv[];
+    birthDate?: Date;
 
     constructor(data?: IUpdateCandidateByIdCommand) {
         if (data) {
@@ -2098,6 +2099,7 @@ export class UpdateCandidateByIdCommand implements IUpdateCandidateByIdCommand {
                 for (let item of _data["cvs"])
                     this.cvs!.push(Cv.fromJS(item));
             }
+            this.birthDate = _data["birthDate"] ? new Date(_data["birthDate"].toString()) : <any>undefined;
         }
     }
 
@@ -2126,6 +2128,7 @@ export class UpdateCandidateByIdCommand implements IUpdateCandidateByIdCommand {
             for (let item of this.cvs)
                 data["cvs"].push(item.toJSON());
         }
+        data["birthDate"] = this.birthDate ? this.birthDate.toISOString() : <any>undefined;
         return data;
     }
 }
@@ -2143,6 +2146,7 @@ export interface IUpdateCandidateByIdCommand {
     education?: string;
     photo?: string | undefined;
     cvs?: Cv[];
+    birthDate?: Date;
 }
 
 export class StatisticByPriority implements IStatisticByPriority {
