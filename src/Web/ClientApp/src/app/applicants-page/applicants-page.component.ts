@@ -13,6 +13,6 @@ import { NgForOf } from '@angular/common';
 export class ApplicantsPageComponent {
   apiClient = inject(CandidatesClient);
   candidates = toSignal(
-    this.apiClient.getAllCandidates(null, null, null, null, null, null),
+    this.apiClient.getAllCandidates(null, null, null, null, null, null, null, null  ),
   );
 }
