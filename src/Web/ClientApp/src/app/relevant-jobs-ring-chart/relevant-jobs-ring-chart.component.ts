@@ -53,6 +53,6 @@ export class RelevantJobsRingChartComponent {
     (level) => PriorityLevel[level],
   );
   jobsByPriority = toSignal(
-    this.apiClient.getJobsCountByPriority().pipe(filter((x) => !!x)),
+    this.apiClient.getJobsCountByPriority(6).pipe(filter((x) => !!x)),
   );
 }

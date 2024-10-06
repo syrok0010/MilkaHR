@@ -1,4 +1,4 @@
-import {Component, computed, signal} from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { DashboardSummaryComponent } from '../summary/dashboard-summary.component';
 import { JobsMonthBarChartComponent } from '../jobs-month-bar-chart/jobs-month-bar-chart.component';
 import { ToDoListComponent } from '../to-do-list/to-do-list.component';
@@ -7,7 +7,8 @@ import { CandidateCountBarChartComponent } from './candidate-count-bar-chart/can
 import { InterviewListComponent } from './interview-list/interview-list.component';
 import { AverageJobLifetimeComponent } from './average-job-lifetime/average-job-lifetime.component';
 import { JobByStatusTableComponent } from './job-by-status-table/job-by-status-table.component';
-import {TuiSegmented} from "@taiga-ui/kit";
+import { TuiSegmented } from '@taiga-ui/kit';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-dashboard',
@@ -40,4 +41,5 @@ export class DashboardComponent {
     }
     return 0;
   });
+  months$ = toObservable(this.months);
 }

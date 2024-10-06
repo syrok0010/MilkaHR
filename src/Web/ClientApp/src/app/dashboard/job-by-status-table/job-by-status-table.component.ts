@@ -53,7 +53,7 @@ import { WaIntersectionRoot } from '@ng-web-apis/intersection-observer';
 })
 export class JobByStatusTableComponent {
   apiClient = inject(CandidatesClient);
-  data = toSignal(this.apiClient.getApiCandidatesCandidatesByStatusByJob());
+  data = toSignal(this.apiClient.getApiCandidatesCandidatesByStatusByJob(6));
   dataProcessed = computed(() =>
     Object.entries(this.data()).map(([key, value]) => [key, ...value]),
   );
