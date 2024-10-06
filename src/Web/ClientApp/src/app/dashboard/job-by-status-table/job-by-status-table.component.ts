@@ -9,9 +9,11 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import {
   TuiTableCell,
   TuiTableDirective,
-  TuiTableTbody, TuiTableTd,
+  TuiTableTbody,
+  TuiTableTd,
   TuiTableTh,
-  TuiTableThGroup, TuiTableTr,
+  TuiTableThGroup,
+  TuiTableTr,
 } from '@taiga-ui/addon-table';
 
 @Component({
@@ -54,5 +56,4 @@ export class JobByStatusTableComponent {
     'hired',
     'denied',
   ];
-  constructor() {}
 }
