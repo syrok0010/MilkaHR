@@ -10,6 +10,10 @@ public class GetCandidateByIdQueryHandler(IApplicationDbContext db) : IRequestHa
     {
         return await db
             .Candidates
+            .Include(x => x.Cvs)
+            .Include(x => x.Interviews)
+            .Include(x => x.JobStatuses)
+            .ThenInclude(x => x.Job)
             .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
     }
 }
