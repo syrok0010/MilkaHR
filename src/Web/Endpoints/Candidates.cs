@@ -1,5 +1,6 @@
 using MilkaHR.Application.Candidate.Commands;
 using MilkaHR.Application.Candidate.Queries;
+using MilkaHR.Domain.Entities;
 
 namespace MilkaHR.Web.Endpoints;
 
@@ -35,10 +36,10 @@ public class Candidates : EndpointGroupBase
         return !isDeleted ? Results.NotFound() : Results.NoContent();
     }
 
-    private async Task<IResult> GetCandidate(ISender sender, int id)
+    private async Task<Candidate?> GetCandidate(ISender sender, int id)
     {
-        var candidate = await sender.Send(new GetCandidateByIdQuery(id));
-        return candidate is null ? Results.NotFound() : Results.Ok(candidate);
+        return await sender.Send(new GetCandidateByIdQuery(id));
+        //return candidate is null ? Results.NotFound() : Results.Ok(candidate);
     }
 
     private Task<IEnumerable<Domain.Entities.Candidate>> GetAllCandidates(ISender sender, [AsParameters] GetAllCandidatesQuery query)
