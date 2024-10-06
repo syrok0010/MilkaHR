@@ -287,32 +287,32 @@ public class ApplicationDbContextInitialiser(
 
         var interview1 = new Interview
         {
-            Candidate = c1, Job = jobs[0], Timing = DateTime.UtcNow.AddDays(10), Type = EventType.VideoConference
+            Candidate = c1, Job = jobs[0], Timing = DateTime.UtcNow.AddHours(2), Type = EventType.VideoConference
         };
 
         var interview2 = new Interview
         {
-            Candidate = c2, Job = jobs[3], Timing = DateTime.UtcNow.AddDays(11), Type = EventType.Meeting
+            Candidate = c2, Job = jobs[3], Timing = DateTime.UtcNow.AddHours(4), Type = EventType.Meeting
         };
         
         var interview3 = new Interview
         {
-            Candidate = c2, Job = jobs[4], Timing = DateTime.UtcNow.AddDays(12), Type = EventType.Interview
+            Candidate = c2, Job = jobs[4], Timing = DateTime.UtcNow.AddDays(1).AddHours(4), Type = EventType.Interview
         };
 
         var interview4 = new Interview
         {
-            Candidate = c3, Job = jobs[6], Timing = DateTime.UtcNow.AddDays(13), Type = EventType.Ride
+            Candidate = c3, Job = jobs[6], Timing = DateTime.UtcNow.AddHours(4), Type = EventType.Ride
         };
         
         var interview5 = new Interview
         {
-            Candidate = c3, Job = jobs[7], Timing = DateTime.UtcNow.AddDays(14), Type = EventType.Meeting
+            Candidate = c3, Job = jobs[7], Timing = DateTime.UtcNow.AddDays(1).AddHours(4), Type = EventType.Meeting
         };
 
         var interview6 = new Interview
         {
-            Candidate = c3, Job = jobs[8], Timing = DateTime.UtcNow.AddDays(20), Type = EventType.Ride
+            Candidate = c3, Job = jobs[8], Timing = DateTime.UtcNow.AddDays(1).AddHours(8), Type = EventType.Ride
         };
 
         recruiter.Entity.Interviews.Add(interview1);
