@@ -17,7 +17,7 @@ public class GetRecruiterInterviewsByIdQueryHandler(IApplicationDbContext db)
         var interviews = await _db.Recruiters
             .Include(x => x.Interviews).ThenInclude(x => x.Job)
             .Include(x => x.Interviews).ThenInclude(x => x.Candidate)
-            .Include(x => x.Interviews).ThenInclude(x => x.Type)
+            .Include(x => x.Interviews)
             //.Where(r => r.Id == request.Id)
             .SelectMany(r => r.Interviews
                 .Where(i => i.Timing.Date == UtcNow.Date || i.Timing.Date == UtcNow.Date.AddDays(1)))
