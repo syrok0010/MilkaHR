@@ -22,14 +22,14 @@ public class Jobs : EndpointGroupBase
         return sender.Send(new GetMonthlyAverageJobLifeTimeQuery());
     }
     
-    private static Task<Dictionary<string, double>> GetAverageJobLifetime(ISender sender)
+    private static Task<Dictionary<string, double>> GetAverageJobLifetime(ISender sender, int months)
     {
-        return sender.Send(new GetAverageJobLifeTimeQuery());
+        return sender.Send(new GetAverageJobLifeTimeQuery(months));
     }
 
-    private static Task<List<StatisticByPriority>> GetJobsCountByPriority(ISender sender)
+    private static Task<List<StatisticByPriority>> GetJobsCountByPriority(ISender sender, int months)
     {
-        return sender.Send(new GetJobsCountByPriorityQuery());
+        return sender.Send(new GetJobsCountByPriorityQuery(months));
     }
 
     private static Task<Job> CreateJob(ISender sender, CreateJobCommand command)

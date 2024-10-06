@@ -3,7 +3,7 @@ using MilkaHR.Domain.Enums;
 
 namespace MilkaHR.Application.Candidate.Queries;
 
-public record GetAllCandidatesByStatusByJobQuery : IRequest<Dictionary<string, List<int>>?>;
+public record GetAllCandidatesByStatusByJobQuery(int Months) : IRequest<Dictionary<string, List<int>>?>;
 
 public class GetAllCandidatesByStatusByJobQueryHandler(IApplicationDbContext db) : IRequestHandler<GetAllCandidatesByStatusByJobQuery, Dictionary<string, List<int>>?>
 {
@@ -11,7 +11,9 @@ public class GetAllCandidatesByStatusByJobQueryHandler(IApplicationDbContext db)
     
     public async Task<Dictionary<string, List<int>>?> Handle(GetAllCandidatesByStatusByJobQuery request, CancellationToken cancellationToken)
     {
-        var jobs = await _db.Jobs.Where(j => j.Status == JobStatus.Opened).ToListAsync(cancellationToken);
+        var jobs = await _db.Jobs.Where(j => j.Status == JobStatus.Opened &&
+                                             j.PublicationDate >= DateTime.UtcNow.AddMonths(-request.Months)
+                                             ).ToListAsync(cancellationToken);
         if (jobs.Count == 0)
             return null;
         var numberOfCandidatesInEachOpenedJob = new Dictionary<string, List<int>>();
