@@ -3,7 +3,7 @@ using MilkaHR.Domain.Enums;
 
 namespace MilkaHR.Application.Job.Queries;
 
-public record GetJobsCountByPriorityQuery : IRequest<List<StatisticByPriority>>;
+public record GetJobsCountByPriorityQuery(int Months) : IRequest<List<StatisticByPriority>>;
 
 public class GetJobsCountByPriorityQueryHandler(IApplicationDbContext db) : IRequestHandler<GetJobsCountByPriorityQuery, List<StatisticByPriority>>
 {
@@ -12,6 +12,7 @@ public class GetJobsCountByPriorityQueryHandler(IApplicationDbContext db) : IReq
     public Task<List<StatisticByPriority>> Handle(GetJobsCountByPriorityQuery request, CancellationToken cancellationToken)
     {
         return _db.Jobs
+            .Where(j => j.PublicationDate >= DateTime.UtcNow.AddMonths(-request.Months))
             .GroupBy(
                 x => x.Priority,
                 x => x,

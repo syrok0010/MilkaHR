@@ -14,42 +14,60 @@
       routerLink="/"
       routerLinkActive="router-link-active"
     >
-      <img
-        class="h-7 w-7"
-        src="/assets/imges/Home-simple-door.png"
-        alt="home"
-      />
+      <tui-icon class="h-7 w-7" icon="@tui.house" />
       <p class="text-zinc-700 text-center text-base">Главная</p>
     </a>
     <a
       class="flex flex-row justify-start h-16 hover:bg-zinc-300 rounded-md p-3"
       routerLink="applicants"
     >
-      <img class="h-7 w-7" src="/assets/imges/User 1.png" alt="user" />
+      <tui-icon class="h-7 w-7" icon="@tui.circle-user-round" />
       <p class="text-zinc-700 text-center text-base">Кандидаты</p>
     </a>
     <a
       class="flex flex-row justify-start h-16 hover:bg-zinc-300 rounded-md p-3"
       routerLink="jobs"
     >
-      <img class="h-7 w-7" src="/assets/imges/Page.png" alt="" />
+      <tui-icon class="h-7 w-7" icon="@tui.file-search-2" />
       <p class="text-zinc-700 text-center text-base">Вакансии</p>
     </a>
   </div>
-  <div class="flex flex-col *:items-center *:gap-x-6 *:font-sans">
-    <a
-      class="flex flex-row justify-self-end h-16 hover:bg-zinc-300 rounded-md p-3"
-      routerLink="/routePath"
+  <div class="flex flex-col gap-y-2 *:items-center *:gap-x-6 *:font-sans">
+    <button
+      appearance="secondary"
+      iconStart="@tui.file-down"
+      tuiButton
+      tuiButtonVertical
+      type="button"
     >
-      <img class="h-7 w-7" src="/assets/imges/Help-circle.png" alt="" />
-      <p class="text-zinc-700 text-center text-base">Помощь</p>
-    </a>
-    <a
-      class="flex flex-row justify-self-end h-16 hover:bg-zinc-300 rounded-md p-3"
-      routerLink="/routePath"
+      Импортировать данные
+    </button>
+    <button
+      appearance="secondary"
+      iconStart="@tui.file-up"
+      tuiButton
+      tuiButtonVertical
+      type="button"
     >
-      <img class="h-7 w-7" src="/assets/imges/Log-out.png" alt="" />
-      <p class="text-red-500 text-center text-base">Выход</p>
-    </a>
+      Экспортировать в .csv
+    </button>
+    <button
+      appearance="secondary"
+      iconStart="@tui.circle-help"
+      tuiButton
+      tuiButtonVertical
+      type="button"
+    >
+      Помощь
+    </button>
+    <button
+      appearance="secondary"
+      iconStart="@tui.log-out"
+      tuiButton
+      tuiButtonVertical
+      type="button"
+    >
+      Выход
+    </button>
   </div>
 </div>

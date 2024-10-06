@@ -24,9 +24,7 @@
       >Номер телефона<input tuiTextfieldLegacy />
     </tui-input>
 
-    <tui-input-date formControlName="birthDate"
-      >Дата рождения
-    </tui-input-date>
+    <tui-input-date formControlName="birthDate">Дата рождения</tui-input-date>
     <tui-input formControlName="address"
       >Адрес<input tuiTextfieldLegacy />
     </tui-input>
@@ -40,4 +38,5 @@
       >Последнее место работы<input tuiTextfieldLegacy />
     </tui-input>
   </form>
+  <button tuiButton (click)="save()">Сохранить</button>
 </div>

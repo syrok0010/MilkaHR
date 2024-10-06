@@ -14,3 +14,13 @@
     <app-candidate-count-bar-chart class="col-span-2" />
   </div>
 </div>
+
+<tui-segmented
+  class="absolute top-10 right-12"
+  [(activeItemIndex)]="monthsIndex"
+>
+  <button type="button">1 месяц</button>
+  <button type="button">3 месяца</button>
+  <button type="button">6 месяцев</button>
+  <button type="button">12 месяцев</button>
+</tui-segmented>

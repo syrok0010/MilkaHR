@@ -3,30 +3,32 @@
     <h2 tuiTitle>Количество кандидатов по этапам</h2>
   </header>
 
-  <table tuiTable class="table" [columns]="columns">
-    <thead>
-      <tr tuiThGroup>
-        <th tuiTh>Вакансия</th>
-        <th tuiTh>Резюме создано</th>
-        <th tuiTh>Резюме отобрено</th>
-        <th tuiTh>Собеседование назначено</th>
-        <th tuiTh>Собеседование проведено</th>
-        <th tuiTh>Нанят</th>
-        <th tuiTh>Отклонен</th>
-      </tr>
-    </thead>
-    <tbody tuiTbody [data]="dataProcessed">
-      <tr *ngFor="let item of dataProcessed" tuiTr>
-        <td *tuiCell="'job'" tuiTd>{{ item[0] }}</td>
-        <td *tuiCell="'cvCreated'" tuiTd>{{ item[1] }}</td>
-        <td *tuiCell="'cvApproved'" tuiTd>{{ item[2] }}</td>
-        <td *tuiCell="'interviewScheduled'" tuiTd>{{ item[3] }}</td>
-        <td *tuiCell="'interviewCompleted'" tuiTd>{{ item[4] }}</td>
-        <td *tuiCell="'hired'" tuiTd>{{ item[5] }}</td>
-        <td *tuiCell="'denied'" tuiTd>{{ item[6] }}</td>
-      </tr>
-    </tbody>
-  </table>
+  <tui-scrollbar waIntersectionRoot [hidden]="true">
+    <table tuiTable class="table" [columns]="columns">
+      <thead>
+        <tr tuiThGroup>
+          <th tuiTh>Вакансия</th>
+          <th tuiTh>Резюме создано</th>
+          <th tuiTh>Резюме одобрено</th>
+          <th tuiTh>Собеседование назначено</th>
+          <th tuiTh>Собеседование проведено</th>
+          <th tuiTh>Нанят</th>
+          <th tuiTh>Отклонен</th>
+        </tr>
+      </thead>
+      <tbody tuiTbody [data]="dataProcessed()">
+        <tr *ngFor="let item of dataProcessed()" tuiTr>
+          <td *tuiCell="'job'" tuiTd>{{ item[0] }}</td>
+          <td *tuiCell="'cvCreated'" tuiTd>{{ item[1] }}</td>
+          <td *tuiCell="'cvApproved'" tuiTd>{{ item[2] }}</td>
+          <td *tuiCell="'interviewScheduled'" tuiTd>{{ item[3] }}</td>
+          <td *tuiCell="'interviewCompleted'" tuiTd>{{ item[4] }}</td>
+          <td *tuiCell="'hired'" tuiTd>{{ item[5] }}</td>
+          <td *tuiCell="'denied'" tuiTd>{{ item[6] }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </tui-scrollbar>
 
   <div></div>
 </div>

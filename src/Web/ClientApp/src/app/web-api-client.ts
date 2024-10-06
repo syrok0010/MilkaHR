@@ -21,8 +21,8 @@ export interface ICandidatesClient {
     updateCandidate(id: number, command: UpdateCandidateByIdCommand): Observable<void>;
     removeCandidate(id: number): Observable<void>;
     getCandidate(id: number): Observable<Candidate>;
-    getCandidatesCountsByJobs(): Observable<void>;
-    getApiCandidatesCandidatesByStatusByJob(): Observable<{ [key: string]: number[]; }>;
+    getCandidatesCountsByJobs(months: number): Observable<void>;
+    getApiCandidatesCandidatesByStatusByJob(months: number): Observable<{ [key: string]: number[]; }>;
 }
 
 @Injectable({
@@ -310,8 +310,12 @@ export class CandidatesClient implements ICandidatesClient {
         return _observableOf(null as any);
     }
 
-    getCandidatesCountsByJobs(): Observable<void> {
-        let url_ = this.baseUrl + "/api/Candidates/get-candidates-count-by-jobs";
+    getCandidatesCountsByJobs(months: number): Observable<void> {
+        let url_ = this.baseUrl + "/api/Candidates/get-candidates-count-by-jobs?";
+        if (months === undefined || months === null)
+            throw new Error("The parameter 'months' must be defined and cannot be null.");
+        else
+            url_ += "months=" + encodeURIComponent("" + months) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -354,8 +358,12 @@ export class CandidatesClient implements ICandidatesClient {
         return _observableOf(null as any);
     }
 
-    getApiCandidatesCandidatesByStatusByJob(): Observable<{ [key: string]: number[]; }> {
-        let url_ = this.baseUrl + "/api/Candidates/candidates-by-status-by-job";
+    getApiCandidatesCandidatesByStatusByJob(months: number): Observable<{ [key: string]: number[]; }> {
+        let url_ = this.baseUrl + "/api/Candidates/candidates-by-status-by-job?";
+        if (months === undefined || months === null)
+            throw new Error("The parameter 'months' must be defined and cannot be null.");
+        else
+            url_ += "months=" + encodeURIComponent("" + months) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -414,8 +422,8 @@ export class CandidatesClient implements ICandidatesClient {
 
 export interface IJobsClient {
     getJobsByMonthStats(): Observable<{ [key: string]: number; }>;
-    getJobsCountByPriority(): Observable<StatisticByPriority[]>;
-    getAverageJobLifetime(): Observable<{ [key: string]: number; }>;
+    getJobsCountByPriority(months: number): Observable<StatisticByPriority[]>;
+    getAverageJobLifetime(months: number): Observable<{ [key: string]: number; }>;
     getAllJobs(title: string | null | undefined, priority: PriorityLevel | null | undefined, status: JobStatus | null | undefined, category: JobCategory | null | undefined): Observable<Job[]>;
     createJob(command: CreateJobCommand): Observable<Job>;
     updateJob(id: number, command: UpdateJobCommand): Observable<void>;
@@ -491,8 +499,12 @@ export class JobsClient implements IJobsClient {
         return _observableOf(null as any);
     }
 
-    getJobsCountByPriority(): Observable<StatisticByPriority[]> {
-        let url_ = this.baseUrl + "/api/Jobs/jobs-count-by-priority";
+    getJobsCountByPriority(months: number): Observable<StatisticByPriority[]> {
+        let url_ = this.baseUrl + "/api/Jobs/jobs-count-by-priority?";
+        if (months === undefined || months === null)
+            throw new Error("The parameter 'months' must be defined and cannot be null.");
+        else
+            url_ += "months=" + encodeURIComponent("" + months) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -546,8 +558,12 @@ export class JobsClient implements IJobsClient {
         return _observableOf(null as any);
     }
 
-    getAverageJobLifetime(): Observable<{ [key: string]: number; }> {
-        let url_ = this.baseUrl + "/api/Jobs/average-lifetime";
+    getAverageJobLifetime(months: number): Observable<{ [key: string]: number; }> {
+        let url_ = this.baseUrl + "/api/Jobs/average-lifetime?";
+        if (months === undefined || months === null)
+            throw new Error("The parameter 'months' must be defined and cannot be null.");
+        else
+            url_ += "months=" + encodeURIComponent("" + months) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -2115,6 +2131,7 @@ export class UpdateCandidateByIdCommand implements IUpdateCandidateByIdCommand {
     education?: string;
     photo?: string | undefined;
     cvs?: Cv[];
+    birthDate?: Date;
 
     constructor(data?: IUpdateCandidateByIdCommand) {
         if (data) {
@@ -2143,6 +2160,7 @@ export class UpdateCandidateByIdCommand implements IUpdateCandidateByIdCommand {
                 for (let item of _data["cvs"])
                     this.cvs!.push(Cv.fromJS(item));
             }
+            this.birthDate = _data["birthDate"] ? new Date(_data["birthDate"].toString()) : <any>undefined;
         }
     }
 
@@ -2171,6 +2189,7 @@ export class UpdateCandidateByIdCommand implements IUpdateCandidateByIdCommand {
             for (let item of this.cvs)
                 data["cvs"].push(item.toJSON());
         }
+        data["birthDate"] = this.birthDate ? this.birthDate.toISOString() : <any>undefined;
         return data;
     }
 }
@@ -2188,6 +2207,7 @@ export interface IUpdateCandidateByIdCommand {
     education?: string;
     photo?: string | undefined;
     cvs?: Cv[];
+    birthDate?: Date;
 }
 
 export class StatisticByPriority implements IStatisticByPriority {
