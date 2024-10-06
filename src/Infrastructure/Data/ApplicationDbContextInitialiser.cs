@@ -236,6 +236,14 @@ public class ApplicationDbContextInitialiser(
         {
             Candidate = c2, Job = jobs[2], ProcessingStatus = CandidateStatus.CvApproved
         });
+        c2.JobStatuses.Add(new CandidateJobProcessing
+        {
+            Candidate = c2, Job = jobs[3], ProcessingStatus = CandidateStatus.InterviewScheduled
+        });
+        c2.JobStatuses.Add(new CandidateJobProcessing
+        {
+            Candidate = c2, Job = jobs[4], ProcessingStatus = CandidateStatus.InterviewScheduled
+        });
 
         var birthDate3 = DateTime.Parse("2002.11.02");
         DateTime.SpecifyKind(birthDate3, DateTimeKind.Utc);
@@ -259,8 +267,60 @@ public class ApplicationDbContextInitialiser(
         {
             Candidate = c3, Job = jobs[5], ProcessingStatus = CandidateStatus.InterviewCompleted
         });
+        c3.JobStatuses.Add(new CandidateJobProcessing()
+        {
+            Candidate = c3, Job = jobs[6], ProcessingStatus = CandidateStatus.InterviewScheduled
+        });
+        c3.JobStatuses.Add(new CandidateJobProcessing()
+        {
+            Candidate = c3, Job = jobs[7], ProcessingStatus = CandidateStatus.InterviewScheduled
+        });
+        c3.JobStatuses.Add(new CandidateJobProcessing()
+        {
+            Candidate = c3, Job = jobs[8], ProcessingStatus = CandidateStatus.InterviewScheduled
+        });
 
         await _context.AddRangeAsync(c1, c2, c3);
+
+        var interview1 = new Interview
+        {
+            Candidate = c1, Job = jobs[0], Timing = DateTime.UtcNow.AddDays(10), Type = EventType.VideoConference
+        };
+
+        var interview2 = new Interview
+        {
+            Candidate = c2, Job = jobs[3], Timing = DateTime.UtcNow.AddDays(11), Type = EventType.Meeting
+        };
+        
+        var interview3 = new Interview
+        {
+            Candidate = c2, Job = jobs[4], Timing = DateTime.UtcNow.AddDays(12), Type = EventType.Interview
+        };
+
+        var interview4 = new Interview
+        {
+            Candidate = c3, Job = jobs[6], Timing = DateTime.UtcNow.AddDays(13), Type = EventType.Ride
+        };
+        
+        var interview5 = new Interview
+        {
+            Candidate = c3, Job = jobs[7], Timing = DateTime.UtcNow.AddDays(14), Type = EventType.Meeting
+        };
+
+        var interview6 = new Interview
+        {
+            Candidate = c3, Job = jobs[8], Timing = DateTime.UtcNow.AddDays(20), Type = EventType.Ride
+        };
+
+        recruiter.Entity.Interviews.Add(interview1);
+        recruiter.Entity.Interviews.Add(interview2);
+        recruiter.Entity.Interviews.Add(interview3);
+        recruiter.Entity.Interviews.Add(interview4);
+        recruiter.Entity.Interviews.Add(interview5);
+        recruiter.Entity.Interviews.Add(interview6);
+        
+        
+        await _context.AddRangeAsync(interview1, interview2, interview3, interview4, interview5, interview6);
         
         await _context.SaveChangesAsync();
     }
