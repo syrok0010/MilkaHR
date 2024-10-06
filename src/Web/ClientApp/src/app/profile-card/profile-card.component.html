@@ -12,19 +12,19 @@
     <div tuiHeader="xs" class="content-center font-sans gap-2">
       <h6 tuiTitle>
         Возраст
-        <div tuiSubtitle class="text-center">23</div>
+        <div tuiSubtitle class="text-center">{{ age() }}</div>
       </h6>
     </div>
     <div tuiHeader="xs" class="content-center font-sans gap-2">
       <h6 tuiTitle>
         Последнее место работы
-        <div tuiSubtitle class="text-center">Apple</div>
+        <div tuiSubtitle class="text-center">{{ candidate().cvs.at(-1) }}</div>
       </h6>
     </div>
     <div tuiHeader="xs" class="content-center font-sans gap-2">
       <h6 tuiTitle>
         Опыт работы
-        <div tuiSubtitle class="text-center">5</div>
+        <div tuiSubtitle class="text-center"></div>
       </h6>
     </div>
     <div
@@ -32,44 +32,23 @@
       class="grid grid-rows-4 place-items-center font-sans gap-2"
     >
       <h6 tuiTitle>Вакансии</h6>
-      <div tuiSubtitle class="text-center">Разработчик</div>
-      <div tuiSubtitle class="text-center">Бизнес-аналитик</div>
-      <div tuiSubtitle class="text-center">UX-дизайнер</div>
+      <div tuiSubtitle class="text-center" *ngFor="let v of candidate().jobStatuses">{{v.processingStatus.toString}}</div>
     </div>
     <div
       tuiHeader="xs"
       class="grid grid-rows-4 place-items-center font-sans gap-2"
     >
       <h6 tuiTitle>Статус</h6>
-      <tui-badge appearance="success" uiStatus> Success</tui-badge>
-      <tui-badge appearance="success" uiStatus> Success</tui-badge>
-      <tui-badge appearance="success" uiStatus> Success</tui-badge>
+      <tui-badge appearance="success" *ngFor="let v of candidate().jobStatuses" uiStatus>{{v.processingStatus.toString}}</tui-badge>
     </div>
     <div class="gap-2 content-center">
       <button
+        *ngFor="let v of candidate().jobStatuses"
         size="l"
         status="custom"
         tuiTag
         type="button"
-        value="SCC"
-        class="tag bg-indigo-100 m-1"
-        [hoverable]="false"
-      ></button>
-      <button
-        size="l"
-        status="custom"
-        tuiTag
-        type="button"
-        value="HTML"
-        class="tag bg-indigo-100 m-1"
-        [hoverable]="false"
-      ></button>
-      <button
-        size="l"
-        status="custom"
-        tuiTag
-        type="button"
-        value="JS"
+        [value]="v.processingStatus.toString()"
         class="tag bg-indigo-100 m-1"
         [hoverable]="false"
       ></button>
