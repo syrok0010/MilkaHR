@@ -1,6 +1,4 @@
 ﻿using MilkaHR.Application.Common.Interfaces;
-using MilkaHR.Application.Recruiter.Queries;
-using MilkaHR.Domain.Entities;
 using MilkaHR.Domain.Enums;
 
 namespace MilkaHR.Application.Candidate.Queries;
