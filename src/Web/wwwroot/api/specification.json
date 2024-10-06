@@ -241,8 +241,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "number",
-                  "format": "double"
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "number",
+                    "format": "double"
+                  }
                 }
               }
             }

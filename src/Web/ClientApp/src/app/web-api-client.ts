@@ -395,7 +395,7 @@ export class CandidatesClient implements ICandidatesClient {
 export interface IJobsClient {
     getJobsByMonthStats(): Observable<{ [key: string]: number; }>;
     getJobsCountByPriority(): Observable<StatisticByPriority[]>;
-    getAverageJobLifetime(): Observable<number>;
+    getAverageJobLifetime(): Observable<{ [key: string]: number; }>;
     createJob(command: CreateJobCommand): Observable<Job>;
     updateJob(id: number, command: UpdateJobCommand): Observable<void>;
 }
@@ -525,7 +525,7 @@ export class JobsClient implements IJobsClient {
         return _observableOf(null as any);
     }
 
-    getAverageJobLifetime(): Observable<number> {
+    getAverageJobLifetime(): Observable<{ [key: string]: number; }> {
         let url_ = this.baseUrl + "/api/Jobs/average-lifetime";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -544,14 +544,14 @@ export class JobsClient implements IJobsClient {
                 try {
                     return this.processGetAverageJobLifetime(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<number>;
+                    return _observableThrow(e) as any as Observable<{ [key: string]: number; }>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<number>;
+                return _observableThrow(response_) as any as Observable<{ [key: string]: number; }>;
         }));
     }
 
-    protected processGetAverageJobLifetime(response: HttpResponseBase): Observable<number> {
+    protected processGetAverageJobLifetime(response: HttpResponseBase): Observable<{ [key: string]: number; }> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -562,8 +562,16 @@ export class JobsClient implements IJobsClient {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = resultData200 !== undefined ? resultData200 : <any>null;
-    
+            if (resultData200) {
+                result200 = {} as any;
+                for (let key in resultData200) {
+                    if (resultData200.hasOwnProperty(key))
+                        (<any>result200)![key] = resultData200[key] !== undefined ? resultData200[key] : <any>null;
+                }
+            }
+            else {
+                result200 = <any>null;
+            }
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
