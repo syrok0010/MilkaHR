@@ -3,7 +3,7 @@ using MilkaHR.Domain.Enums;
 
 namespace MilkaHR.Application.Job.Queries;
 
-public record GetAverageJobLifeTimeQuery : IRequest<Dictionary<string, double>>;
+public record GetAverageJobLifeTimeQuery(int Months) : IRequest<Dictionary<string, double>>;
 
 public class GetAverageJobLifeTimeQueryHandler(IApplicationDbContext db) 
     : IRequestHandler<GetAverageJobLifeTimeQuery, Dictionary<string, double>>
@@ -12,7 +12,8 @@ public class GetAverageJobLifeTimeQueryHandler(IApplicationDbContext db)
         CancellationToken cancellationToken)
     {
         return await db.Jobs
-            .Where(x => x.ClosingDate.HasValue && x.ClosingDate > DateTime.UtcNow.AddMonths(-12))
+            .Where(x => x.ClosingDate.HasValue &&
+                        x.PublicationDate >= DateTime.UtcNow.AddMonths(-request.Months))
             .GroupBy(x => x.Category)
             .Select(x => new
             {

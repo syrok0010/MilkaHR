@@ -47,15 +47,15 @@ public class Candidates : EndpointGroupBase
         return sender.Send(query);
     }
     
-    private async Task<IResult> GetAllCandidatesByStatusByJob(ISender sender)
+    private async Task<IResult> GetAllCandidatesByStatusByJob(ISender sender, int months)
     {
-        var statistics = await sender.Send(new GetAllCandidatesByStatusByJobQuery());
+        var statistics = await sender.Send(new GetAllCandidatesByStatusByJobQuery(months));
         return statistics is null ? Results.NotFound() : Results.Ok(statistics);
     }
 
-    private async Task<IResult> GetCandidatesCountsByJobs(ISender sender)
+    private async Task<IResult> GetCandidatesCountsByJobs(ISender sender, int months)
     {
-        var stats = await sender.Send(new GetCandidatesCountByJobQuery());
+        var stats = await sender.Send(new GetCandidatesCountByJobQuery(months));
         return Results.Ok(stats);
     }
 }
