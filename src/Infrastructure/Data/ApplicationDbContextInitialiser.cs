@@ -363,7 +363,8 @@ public class ApplicationDbContextInitialiser(
             }
         }
         
-        await _context.AddRangeAsync(candidates, interviews);
+        await _context.AddRangeAsync(candidates);
+        await _context.AddRangeAsync(interviews);
         
         // var interview1 = new Interview
         // {
