@@ -23,7 +23,7 @@ public class Recruiter : EndpointGroupBase
             .MapPost(CreateNote, "create-note")
             .MapPut(CompleteNote, "complete-note")
             .MapGet(GetAllNotes, "get-notes")
-            .MapGet("interviews", GetRecruiterInterviews).Produces<List<Interview>>();
+            .MapGet(GetRecruiterInterviews, "interviews");
     }
 
     private Task<Domain.Entities.Recruiter> CreateRecruiter(ISender sender, CreateRecruiterCommand command)
@@ -67,10 +67,10 @@ public class Recruiter : EndpointGroupBase
         return processing is null ? Results.NotFound() : Results.Ok(processing);
     }
     
-    private async Task<IResult> GetRecruiterInterviews(ISender sender)
+    private async Task<List<Interview>?> GetRecruiterInterviews(ISender sender)
     {
-        var interviews = await sender.Send(new GetRecruiterInterviewsQuery());
-        return interviews is null ? Results.NotFound() : Results.Ok(interviews);
+        return await sender.Send(new GetRecruiterInterviewsQuery());
+        //return interviews is null ? Results.NotFound() : Results.Ok(interviews);
     }
     
     private async Task<IResult> DeleteNote(ISender sender, int id)
