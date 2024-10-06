@@ -11,5 +11,7 @@ public class Job : BaseAuditableEntity
     
     public required JobCategory Category { get; set; }
     
+    public required string Description { get; set; }
+    
     public HashSet<CandidateJobProcessing> CandidateStatuses { get; set; } = [];
 }
