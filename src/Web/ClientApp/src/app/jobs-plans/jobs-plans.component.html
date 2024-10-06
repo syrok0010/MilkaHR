@@ -10,10 +10,10 @@
         src="@tui.{{ getIcon(interview.type) }}"
       />
       <div tuiTitle class="ml-2.5">
-
+        {{ interview.timing | date: "short" }}.<br />
         <div tuiSubtitle>
           <span class=""
-            >{{ interview.timing | date: "short" }}.<br />{{
+            >{{
               interview.job.title
             }}</span
           >

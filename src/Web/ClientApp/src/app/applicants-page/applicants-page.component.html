@@ -1,4 +1,32 @@
 <div class="flex flex-col justify-start gap-4">
+  <div tuiCardLarge tuiSurface="elevated">
+    <div tuiHeader>
+      <h2 tuiTitle>Фильтры</h2>
+    </div>
+
+    <div class="flex grow gap-4 *:w-full" [formGroup]="filters">
+      <tui-input-range [min]="14" [max]="120" formControlName="age"
+        >Возраст</tui-input-range
+      >
+      <tui-input-range [max]="100" formControlName="experience"
+        >Стаж</tui-input-range
+      >
+      <tui-multi-select
+        placeholder="Ignored text"
+        [editable]="false"
+        [tuiTextfieldLabelOutside]="true"
+        formControlName="jobs"
+      >
+        Вакансии
+        <tui-data-list-wrapper
+          *tuiDataList
+          tuiMultiSelectGroup
+          [items]="allJobsNames()"
+        />
+      </tui-multi-select>
+    </div>
+  </div>
+
   <app-profile-card
     *ngFor="let candidate of candidates()"
     [candidate]="candidate"
