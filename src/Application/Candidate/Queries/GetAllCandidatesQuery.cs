@@ -6,7 +6,8 @@ using MilkaHR.Domain.Enums;
 namespace MilkaHR.Application.Candidate.Queries;
 
 public record GetAllCandidatesQuery(
-    int? Age,
+    int? AgeFrom,
+    int? AgeTo,
     int? WorkExperience,
     string[]? Tags,
     string[]? JobTitles,
@@ -26,8 +27,11 @@ public class GetAllCandidatesQueryHandler(IApplicationDbContext db)
             .Include(x => x.JobStatuses)
             .AsQueryable();
 
-        if (request.Age is not null) 
-            c = c.Where(x => Math.Floor((DateTime.UtcNow - x.BirthDate).TotalDays / 365.25) == request.Age);
+        if (request.AgeFrom is not null) 
+            c = c.Where(x => Math.Floor((DateTime.UtcNow - x.BirthDate).TotalDays / 365.25) >= request.AgeFrom);
+        
+        if (request.AgeTo is not null) 
+            c = c.Where(x => Math.Floor((DateTime.UtcNow - x.BirthDate).TotalDays / 365.25) <= request.AgeTo);
 
         if (request.WorkExperience is not null) 
             c = c.Where(x => x.WorkExperience == request.WorkExperience);
