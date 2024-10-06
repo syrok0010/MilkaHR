@@ -783,7 +783,7 @@ export interface IRecruiterClient {
     createNote(command: CreateNoteCommand): Observable<Note>;
     completeNote(id: number): Observable<void>;
     getAllNotes(): Observable<Note[]>;
-    getApiRecruiterInterviews(): Observable<Interview[]>;
+    getRecruiterInterviews(): Observable<(Interview | undefined)[]>;
 }
 
 @Injectable({
@@ -1356,7 +1356,7 @@ export class RecruiterClient implements IRecruiterClient {
         return _observableOf(null as any);
     }
 
-    getApiRecruiterInterviews(): Observable<Interview[]> {
+    getRecruiterInterviews(): Observable<(Interview | undefined)[]> {
         let url_ = this.baseUrl + "/api/Recruiter/interviews";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1369,20 +1369,20 @@ export class RecruiterClient implements IRecruiterClient {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetApiRecruiterInterviews(response_);
+            return this.processGetRecruiterInterviews(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetApiRecruiterInterviews(response_ as any);
+                    return this.processGetRecruiterInterviews(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<Interview[]>;
+                    return _observableThrow(e) as any as Observable<(Interview | undefined)[]>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<Interview[]>;
+                return _observableThrow(response_) as any as Observable<(Interview | undefined)[]>;
         }));
     }
 
-    protected processGetApiRecruiterInterviews(response: HttpResponseBase): Observable<Interview[]> {
+    protected processGetRecruiterInterviews(response: HttpResponseBase): Observable<(Interview | undefined)[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :

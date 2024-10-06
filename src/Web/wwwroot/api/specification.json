@@ -810,7 +810,7 @@
         "tags": [
           "Recruiter"
         ],
-        "operationId": "GetApiRecruiterInterviews",
+        "operationId": "GetRecruiterInterviews",
         "responses": {
           "200": {
             "description": "",
@@ -819,7 +819,12 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Interview"
+                    "nullable": true,
+                    "oneOf": [
+                      {
+                        "$ref": "#/components/schemas/Interview"
+                      }
+                    ]
                   }
                 }
               }
