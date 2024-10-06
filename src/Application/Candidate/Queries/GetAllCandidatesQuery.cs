@@ -6,12 +6,12 @@ using MilkaHR.Domain.Enums;
 namespace MilkaHR.Application.Candidate.Queries;
 
 public record GetAllCandidatesQuery(
-    int? AgeFrom,
-    int? AgeTo,
-    int? WorkExperience,
-    string[]? Tags,
-    string[]? JobTitles,
-    CandidateStatus[]? Statuses): IRequest<IEnumerable<Domain.Entities.Candidate>>;
+    int? AgeFrom = null,
+    int? AgeTo = null,
+    int? WorkExperience = null,
+    string[]? Tags = null,
+    string[]? JobTitles = null,
+    CandidateStatus[]? Statuses = null): IRequest<IEnumerable<Domain.Entities.Candidate>>;
 
 public class GetAllCandidatesQueryHandler(IApplicationDbContext db)
     : IRequestHandler<GetAllCandidatesQuery, IEnumerable<Domain.Entities.Candidate>>
