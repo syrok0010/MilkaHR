@@ -7,6 +7,4 @@ import { JobCardComponent } from '../job-card/job-card.component';
   imports: [JobCardComponent],
   templateUrl: './jobs-page.component.html',
 })
-export class JobsPageComponent {
-
-}
+export class JobsPageComponent {}

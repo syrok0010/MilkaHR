@@ -35,7 +35,7 @@ import { CandidatPageComponent } from './candidat-page/candidat-page.component';
         component: JobsPageComponent,
       },
       {
-        path: 'candidate',
+        path: 'candidate/:id',
         component: CandidatPageComponent,
       },
     ]),

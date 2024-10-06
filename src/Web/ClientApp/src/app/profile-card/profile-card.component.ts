@@ -11,6 +11,8 @@ import { TuiCardLarge, TuiHeader } from '@taiga-ui/layout';
 import { TuiBadge } from '@taiga-ui/kit';
 import { Candidate, CandidateStatus } from '../web-api-client';
 import { TuiDay } from '@taiga-ui/cdk';
+import { RouterLink } from '@angular/router';
+import { JobsPlansComponent } from '../jobs-plans/jobs-plans.component';
 
 @Component({
   selector: 'app-profile-card',
@@ -25,6 +27,8 @@ import { TuiDay } from '@taiga-ui/cdk';
     TuiTagModule,
     TuiBadge,
     TuiHeader,
+    RouterLink,
+    JobsPlansComponent
   ],
   templateUrl: './profile-card.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
